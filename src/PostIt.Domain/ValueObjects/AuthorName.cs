@@ -9,6 +9,24 @@ public class AuthorName
     
     private AuthorName(string name)
     {
-        Value = name;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Author name cannot be empty.", nameof(name));
+        }
+
+        Value = name.Length switch
+        {
+            < MinLength => throw new ArgumentException(
+                $"Author name must be at least {MinLength} characters long.",
+                nameof(name)),
+            > MaxLength => throw new ArgumentException(
+                $"Author name must be no longer than {MaxLength} characters.",
+                nameof(name)),
+            _ => name
+        };
     }
+    
+    public static AuthorName Create(string name) => new(name);
+
+    public override string ToString() => Value;
 }
