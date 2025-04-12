@@ -3,6 +3,7 @@ namespace PostIt.Domain.ValueObjects;
 public class AuthorBio
 {
     public const int MaxLength = 150;
+    
     public string Value { get; }
 
     private AuthorBio(string bio)

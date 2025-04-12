@@ -1,10 +1,12 @@
+using PostIt.Domain.ValueObjects;
+
 namespace PostIt.Domain.Entities;
 
 public class Post : Entity<Guid>
 {
     private readonly List<Comment> _comments = [];
     
-    public string Title { get; set; } = string.Empty;
+    public PostTitle Title { get; set; } 
     
     public string Content { get; set; } = string.Empty;
 
@@ -19,4 +21,9 @@ public class Post : Entity<Guid>
     public Guid AuthorId { get; set; }
     
     public Author Author { get; set; } = null!;
+
+    public Post()
+    {
+        
+    }
 }
