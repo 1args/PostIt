@@ -42,8 +42,12 @@ public class Post : Entity<Guid>
         Visibility = visibility;
     }
     
-    public static Post Create(Title title, Content content, Guid authorId) =>
-        new(title, content, authorId);
+    public static Post Create(
+        Title title, 
+        Content content,
+        Guid authorId,
+        Visibility visibility = Visibility.Public) =>
+            new(title, content, authorId, visibility);
     
     public void Like() => Likes++;
 
