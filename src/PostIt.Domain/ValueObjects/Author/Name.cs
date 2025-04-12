@@ -1,13 +1,13 @@
 namespace PostIt.Domain.ValueObjects.Author;
 
-public class AuthorName
+public class Name
 {
     public const int MinLength = 3;
     public const int MaxLength = 30;
     
     public string Value { get; }
     
-    private AuthorName(string name)
+    private Name(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -26,7 +26,7 @@ public class AuthorName
         };
     }
     
-    public static AuthorName Create(string name) => new(name);
+    public static Name Create(string name) => new(name);
 
     public override string ToString() => Value;
 }

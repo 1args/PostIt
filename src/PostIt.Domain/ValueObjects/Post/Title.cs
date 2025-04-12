@@ -1,13 +1,13 @@
 namespace PostIt.Domain.ValueObjects.Post;
 
-public class PostTitle
+public class Title
 {
     public const int MinLength = 1;
     public const int MaxLength = 100;
     
     public string Value { get; set; }
 
-    private PostTitle(string title)
+    private Title(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -28,7 +28,7 @@ public class PostTitle
         Value = title;
     }
 
-    private static PostTitle Create(string title) => new(title);
+    private static Title Create(string title) => new(title);
 
     public override string ToString() => Value;
 }

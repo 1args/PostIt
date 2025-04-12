@@ -6,7 +6,7 @@ public class Post : Entity<Guid>
 {
     private readonly List<Comment> _comments = [];
     
-    public PostTitle Title { get; set; } 
+    public Title Title { get; set; } 
     
     public string Content { get; set; } = string.Empty;
 

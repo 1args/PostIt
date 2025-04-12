@@ -7,9 +7,9 @@ public class Author : Entity<Guid>
     private readonly List<Post> _posts = [];
     private readonly List<Comment> _comments = [];
     
-    public AuthorName Name { get; private set; }
+    public Name Name { get; private set; }
 
-    public AuthorBio Bio { get; private set; }
+    public Bio Bio { get; private set; }
 
     public Guid UserId { get; private set; }
 
@@ -19,11 +19,11 @@ public class Author : Entity<Guid>
     
     public IReadOnlyList<Comment> Comments => _comments;
 
-    private Author(AuthorName name, AuthorBio bio)
+    private Author(Name name, Bio bio)
     {
         Name = name;
         Bio = bio;
     }
     
-    public static Author Create(AuthorName name, AuthorBio bio) => new(name, bio);
+    public static Author Create(Name name, Bio bio) => new(name, bio);
 }

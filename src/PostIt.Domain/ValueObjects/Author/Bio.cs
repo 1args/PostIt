@@ -1,12 +1,12 @@
 namespace PostIt.Domain.ValueObjects.Author;
 
-public class AuthorBio
+public class Bio
 {
     public const int MaxLength = 150;
     
     public string Value { get; }
 
-    private AuthorBio(string bio)
+    private Bio(string bio)
     {
         if(string.IsNullOrWhiteSpace(bio))
         {
@@ -22,7 +22,7 @@ public class AuthorBio
         Value = bio;
     }
 
-    private static AuthorBio Create(string bio) => new(bio);
+    private static Bio Create(string bio) => new(bio);
 
     public override string ToString() => Value;
 }
