@@ -8,7 +8,7 @@ public class Post : Entity<Guid>
     
     public Title Title { get; set; } 
     
-    public string Content { get; set; } = string.Empty;
+    public Content Content { get; set; }
 
     public int Views { get; private set; } = 0;
     
