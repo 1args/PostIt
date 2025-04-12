@@ -10,7 +10,8 @@ public class Bio
     {
         if(string.IsNullOrWhiteSpace(bio))
         {
-            throw new ArgumentException("Author bio cannot be empty.", nameof(bio));
+            Value = "Empty";
+            return;
         }
 
         if (bio.Length > MaxLength)
@@ -22,7 +23,7 @@ public class Bio
         Value = bio;
     }
 
-    private static Bio Create(string bio) => new(bio);
+    public static Bio Create(string bio) => new(bio);
 
     public override string ToString() => Value;
 }

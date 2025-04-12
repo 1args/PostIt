@@ -27,4 +27,6 @@ public class Content
     }
     
     public static Content Create(string content) => new(content);
+
+    public override string ToString() => Value;
 }

@@ -28,7 +28,7 @@ public class Title
         Value = title;
     }
 
-    private static Title Create(string title) => new(title);
+    public static Title Create(string title) => new(title);
 
     public override string ToString() => Value;
 }

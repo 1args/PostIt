@@ -24,4 +24,6 @@ public class Password
     }
 
     public static Password Create(string password) => new(password);
+
+    public override string ToString() => Value;
 }
