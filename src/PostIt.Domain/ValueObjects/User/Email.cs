@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace PostIt.Domain.ValueObjects;
+namespace PostIt.Domain.ValueObjects.User;
 
 public class Email
 {

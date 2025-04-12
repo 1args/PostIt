@@ -1,4 +1,4 @@
-using PostIt.Domain.ValueObjects;
+using PostIt.Domain.ValueObjects.Post;
 
 namespace PostIt.Domain.Entities;
 
@@ -22,7 +22,7 @@ public class Post : Entity<Guid>
     
     public Author Author { get; set; } = null!;
 
-    public Post()
+    private Post()
     {
         
     }

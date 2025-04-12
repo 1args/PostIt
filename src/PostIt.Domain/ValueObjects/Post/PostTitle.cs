@@ -1,4 +1,4 @@
-namespace PostIt.Domain.ValueObjects;
+namespace PostIt.Domain.ValueObjects.Post;
 
 public class PostTitle
 {

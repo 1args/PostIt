@@ -1,4 +1,4 @@
-namespace PostIt.Domain.ValueObjects;
+namespace PostIt.Domain.ValueObjects.User;
 
 public class Password
 {

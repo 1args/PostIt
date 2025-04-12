@@ -1,5 +1,5 @@
 using PostIt.Domain.Enums;
-using PostIt.Domain.ValueObjects;
+using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Entities;
 

@@ -1,4 +1,4 @@
-using PostIt.Domain.ValueObjects;
+using PostIt.Domain.ValueObjects.Author;
 
 namespace PostIt.Domain.Entities;
 
