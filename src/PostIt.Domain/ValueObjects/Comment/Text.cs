@@ -9,7 +9,6 @@ public class Text
     
     private Text(string text)
     {
-        
         if (string.IsNullOrWhiteSpace(text))
         {
             throw new ArgumentException("Comment text cannot be empty.", nameof(text));

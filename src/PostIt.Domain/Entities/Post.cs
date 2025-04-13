@@ -57,7 +57,6 @@ public class Post : Entity<Guid>
         {
             throw new ApplicationException("Likes cannot be negative.");
         }
-        
         Likes--;
     }
     
@@ -75,7 +74,6 @@ public class Post : Entity<Guid>
         {
             throw new ArgumentException("Comment not found");
         }
-        
         _comments.Remove(comment);
     }
     
@@ -83,9 +81,11 @@ public class Post : Entity<Guid>
     {
         ArgumentNullException.ThrowIfNull(title);
         ArgumentNullException.ThrowIfNull(content);
-        
-        if(Title.Equals(title) && Content.Equals(content))
+
+        if (Title.Equals(title) && Content.Equals(content))
+        {
             return;
+        }
         
         Title = title;
         Content = content;

@@ -34,7 +34,6 @@ public class Comment : Entity<Guid>
         {
             throw new ApplicationException("Likes cannot be negative.");
         }
-        
         Likes--;
     }
 }

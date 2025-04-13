@@ -7,7 +7,7 @@ public class Content
     
     public string Value { get; }
 
-    public Content(string content)
+    private Content(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
         {
