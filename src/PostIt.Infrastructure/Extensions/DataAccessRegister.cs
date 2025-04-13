@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Infrastructure.Configuration;
+using PostIt.Infrastructure.Configuration.Repositories;
 
 namespace PostIt.Infrastructure.Extensions;
 
@@ -16,6 +17,7 @@ public static class DataAccessRegister
 
         services.AddSingleton<IDbContextOptionsConfigurator<TDbContext>, TDbContextOptionsConfigurator>();
         services.AddScoped<DbContext>(serviceProvider => serviceProvider.GetRequiredService<TDbContext>());
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         
         return services;
     }

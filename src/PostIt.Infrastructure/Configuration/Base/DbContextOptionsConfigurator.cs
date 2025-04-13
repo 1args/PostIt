@@ -24,6 +24,6 @@ public abstract class DbContextOptionsConfigurator<TDbContext>(
 
         optionsBuilder
             .UseLoggerFactory(loggerFactory)
-            .UseNpgsql(connectionString, x => x.CommandTimeout(60));
+            .UseNpgsql(connectionString, o => o.CommandTimeout(60));
     }
 }
