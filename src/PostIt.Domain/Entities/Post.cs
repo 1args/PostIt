@@ -5,6 +5,7 @@ namespace PostIt.Domain.Entities;
 
 public class Post : Entity<Guid>
 {
+    private readonly HashSet<Guid> _likedUserIds = [];
     private readonly List<Comment> _comments = [];
     
     public Title Title { get; private set; } 
@@ -23,6 +24,8 @@ public class Post : Entity<Guid>
 
     public Visibility Visibility { get; private set; }
 
+    public IReadOnlyCollection<Guid> LikedUserIds => _likedUserIds;
+    
     public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
     public Guid AuthorId { get; private set; }
@@ -48,14 +51,21 @@ public class Post : Entity<Guid>
         Guid authorId,
         Visibility visibility = Visibility.Public) =>
             new(title, content, authorId, visibility);
-    
-    public void Like() => Likes++;
 
-    public void Unlike()
+    public void Like(Guid userId)
     {
-        if (Likes <= 0)
+        if (!_likedUserIds.Add(userId))
         {
-            throw new ApplicationException("Likes cannot be negative.");
+            throw new ArgumentException($"User with id {userId} already liked this post.");
+        }
+        Likes++;
+    }
+
+    public void Unlike(Guid userId)
+    {
+        if (!_likedUserIds.Remove(userId))
+        {
+            throw new ArgumentException($"User with id {userId} not liked this post.");
         }
         Likes--;
     }
@@ -72,7 +82,7 @@ public class Post : Entity<Guid>
     {
         if (!_comments.Contains(comment))
         {
-            throw new ArgumentException("Comment not found");
+            throw new ArgumentException("Comment not found", nameof(comment));
         }
         _comments.Remove(comment);
     }

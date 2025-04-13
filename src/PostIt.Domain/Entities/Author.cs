@@ -21,6 +21,11 @@ public class Author : Entity<Guid>
 
     private Author(Name name, Bio bio, Guid userId)
     {
+        if (userId == Guid.Empty)
+        {
+            throw new ArgumentException("User id cannot be empty.", nameof(userId));
+        }
+        
         Name = name;
         Bio = bio;
         UserId = userId;
@@ -48,7 +53,7 @@ public class Author : Entity<Guid>
     {
         if (!_posts.Contains(post))
         {
-            
+            throw new ArgumentException("Post not found", nameof(post));
         }
         _posts.Remove(post);
     }

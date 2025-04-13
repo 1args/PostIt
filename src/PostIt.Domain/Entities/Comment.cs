@@ -4,11 +4,15 @@ namespace PostIt.Domain.Entities;
 
 public class Comment : Entity<Guid>
 {
+    private readonly HashSet<Guid> _likedUserIds = [];
+    
     public Text Text { get; private set; }
 
     public int Likes { get; private set; } = 0;
     
     public DateTime CreatedAt { get; private set; }
+    
+    public IReadOnlyCollection<Guid> LikedUserIds => _likedUserIds;
     
     public Guid AuthorId { get; private set; }
     
@@ -25,14 +29,21 @@ public class Comment : Entity<Guid>
         PostId = postId;
         CreatedAt = DateTime.UtcNow;
     }
-    
-    public void Like() => Likes++;
 
-    public void Unlike()
+    public void Like(Guid userId)
     {
-        if (Likes <= 0)
+        if (!_likedUserIds.Add(userId))
         {
-            throw new ApplicationException("Likes cannot be negative.");
+            throw new ArgumentException($"User with id {userId} already liked this comment.");
+        }
+        Likes++;
+    }
+
+    public void Unlike(Guid userId)
+    {
+        if (!_likedUserIds.Remove(userId))
+        {
+            throw new ArgumentException($"User with id {userId} not liked this comment.");
         }
         Likes--;
     }
