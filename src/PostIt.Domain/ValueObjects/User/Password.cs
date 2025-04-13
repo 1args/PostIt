@@ -4,6 +4,7 @@ public class Password
 {
     public const int MinPasswordLength = 8;
     public const int MaxPasswordLength = 16;
+    
     public string Value { get; }
 
     private Password(string password)

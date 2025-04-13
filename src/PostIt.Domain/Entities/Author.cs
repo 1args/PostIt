@@ -17,7 +17,7 @@ public class Author : Entity<Guid>
     
     public IReadOnlyList<Post> Posts => _posts;
     
-    public IReadOnlyList<Comment> Comments => _comments;
+    public IReadOnlyList<Comment> Comments => _comments;        
 
     private Author(Name name, Bio bio)
     {
