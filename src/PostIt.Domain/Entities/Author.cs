@@ -15,15 +15,17 @@ public class Author : Entity<Guid>
 
     public User User { get; private set; } = null!;
     
-    public IReadOnlyList<Post> Posts => _posts;
+    public IReadOnlyList<Post> Posts => _posts.AsReadOnly();
     
-    public IReadOnlyList<Comment> Comments => _comments;        
+    public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();        
 
-    private Author(Name name, Bio bio)
+    private Author(Name name, Bio bio, Guid userId)
     {
         Name = name;
         Bio = bio;
+        UserId = userId;
     }
     
-    public static Author Create(Name name, Bio bio) => new(name, bio);
+    public static Author Create(Name name, Bio bio, Guid userId) =>
+        new(name, bio, userId);
 }

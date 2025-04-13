@@ -13,19 +13,14 @@ public class User : Entity<Guid>
 
     public DateTime CreatedAt { get; private set; } 
 
-    private User(Email email, Password password, Role role, DateTime createdAt)
+    private User(Email email, Password password, Role role)
     {
-        if (createdAt > DateTime.UtcNow)
-        {
-            throw new ArgumentException("Creation date cannot be in the future.");
-        }
-        
         Email = email;
         Password = password;
         Role = role;
-        CreatedAt = createdAt;
+        CreatedAt = DateTime.UtcNow;
     }
     
-    public static User Create(Email email, Password password, Role role, DateTime createdAt) =>
-        new(email, password, role, createdAt);
+    public static User Create(Email email, Password password, Role role) =>
+        new(email, password, role);
 }

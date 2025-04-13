@@ -25,4 +25,16 @@ public class Comment : Entity<Guid>
         PostId = postId;
         CreatedAt = DateTime.UtcNow;
     }
+    
+    public void Like() => Likes++;
+
+    public void Unlike()
+    {
+        if (Likes <= 0)
+        {
+            throw new ApplicationException("Likes cannot be negative.");
+        }
+        
+        Likes--;
+    }
 }
