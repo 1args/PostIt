@@ -22,13 +22,21 @@ public class Comment : Entity<Guid>
     
     public Post Post { get; private set; } = null!;
 
-    private Comment(Text text, Guid authorId, Guid postId)
+    private Comment(Text text, Guid authorId, Guid postId, DateTime createdAt)
     {
+        if (createdAt > DateTime.UtcNow)
+        {
+            throw new ArgumentException("Creation date cannot be in the future.");
+        }
+        
         Text = text;
         AuthorId = authorId;
         PostId = postId;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt;
     }
+    
+    public static Comment Create(Text text, Guid authorId, Guid postId, DateTime createdAt) =>
+        new(text, authorId, postId, createdAt);
 
     public void Like(Guid userId)
     {

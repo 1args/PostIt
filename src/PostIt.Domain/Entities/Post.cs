@@ -36,12 +36,18 @@ public class Post : Entity<Guid>
         Title title, 
         Content content,
         Guid authorId, 
+        DateTime createdAt,
         Visibility visibility = Visibility.Public)
     {
+        if (createdAt > DateTime.UtcNow)
+        {
+            throw new ArgumentException("Creation date cannot be in the future.");
+        }
+        
         Title = title;
         Content = content;
         AuthorId = authorId;
-        CreatedAt = DateTime.UtcNow;
+        CreatedAt = createdAt;
         Visibility = visibility;
     }
     
@@ -49,8 +55,9 @@ public class Post : Entity<Guid>
         Title title, 
         Content content,
         Guid authorId,
+        DateTime createdAt,
         Visibility visibility = Visibility.Public) =>
-            new(title, content, authorId, visibility);
+            new(title, content, authorId, createdAt, visibility);
 
     public void Like(Guid userId)
     {
