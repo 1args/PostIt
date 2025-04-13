@@ -1,5 +1,6 @@
 using PostIt.Infrastructure.Configuration.Configurators;
 using PostIt.Infrastructure.Context;
+using PostIt.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;

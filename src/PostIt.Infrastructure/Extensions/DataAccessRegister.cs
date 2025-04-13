@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Infrastructure.Configuration;
 
-namespace PostIt.Infrastructure.Context;
+namespace PostIt.Infrastructure.Extensions;
 
 public static class DataAccessRegister
 {
