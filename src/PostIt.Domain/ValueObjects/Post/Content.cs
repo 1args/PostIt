@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.Post;
 
-public class Content
+public class Content : ValueObject
 {
     public const int MinLength = 20;
     public const int MaxLength = 4800;
@@ -29,4 +29,9 @@ public class Content
     public static Content Create(string content) => new(content);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.User;
 
-public class Password
+public class Password : ValueObject
 {
     public const int MinPasswordLength = 8;
     public const int MaxPasswordLength = 16;
@@ -27,4 +27,9 @@ public class Password
     public static Password Create(string password) => new(password);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

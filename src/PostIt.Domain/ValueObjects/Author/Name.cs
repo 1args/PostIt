@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.Author;
 
-public class Name
+public class Name : ValueObject
 {
     public const int MinLength = 3;
     public const int MaxLength = 30;
@@ -29,4 +29,9 @@ public class Name
     public static Name Create(string name) => new(name);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.Comment;
 
-public class Text
+public class Text : ValueObject
 {
     public const int MinLength = 3;
     public const int MaxLength = 2400;
@@ -29,4 +29,9 @@ public class Text
     public static Text Create(string text) => new Text(text);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.Post;
 
-public class Title
+public class Title : ValueObject
 {
     public const int MinLength = 1;
     public const int MaxLength = 100;
@@ -31,4 +31,9 @@ public class Title
     public static Title Create(string title) => new(title);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace PostIt.Domain.ValueObjects.User;
 
-public class Email
+public class Email : ValueObject
 {
     public string Value { get; }
 
@@ -30,4 +30,9 @@ public class Email
     }
     
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }

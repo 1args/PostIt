@@ -1,6 +1,6 @@
 namespace PostIt.Domain.ValueObjects.Author;
 
-public class Bio
+public class Bio : ValueObject
 {
     public const int MaxLength = 150;
     
@@ -26,4 +26,9 @@ public class Bio
     public static Bio Create(string bio) => new(bio);
 
     public override string ToString() => Value;
+    
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
 }
