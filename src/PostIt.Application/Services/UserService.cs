@@ -55,6 +55,25 @@ public class UserService(
         await userRepository.DeleteAsync([user], cancellationToken);
     }
 
+    public async Task UpdateUserBioAsync(
+        UpdateBioRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository
+            .Where(u => u.Id == request.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        if (user is null)
+        {
+            throw new InvalidOperationException($"User with id {request.UserId} not found");
+        }
+
+        var newBio = Bio.Create(request.Bio);
+        user.UpdateBio(newBio);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
+
     private static UserResponse MapToResponse(User user) =>
         new(user.Id,
             user.Name.Value,
