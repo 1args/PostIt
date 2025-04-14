@@ -11,9 +11,11 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
         builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.Id)
-            .ValueGeneratedOnAdd();
-
+        builder.Property(p => p.Views).IsRequired();
+        builder.Property(p => p.CreatedAt).IsRequired();
+        builder.Property(p => p.UpdatedAt).IsRequired(false);
+        builder.Property(p => p.Visibility).IsRequired();
+        
         builder.OwnsOne(p => p.Title, title =>
         {
             title.Property(t => t.Value)
@@ -29,29 +31,18 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
                 .HasMaxLength(Content.MaxLength)
                 .IsRequired();
         });
-
-        builder.Property(p => p.Views).IsRequired();
-        builder.Property(p => p.CreatedAt).IsRequired();
-        builder.Property(p => p.UpdatedAt).IsRequired(false);
-        builder.Property(p => p.Visibility).IsRequired();
         
         builder.HasOne(p => p.Author)
             .WithMany(a => a.Posts)
             .HasForeignKey(p => p.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Metadata.FindNavigation(nameof(Post.Likes))!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-        builder.HasMany<PostLike>("_likes") 
+        builder.HasMany(p => p.Likes) 
             .WithOne(p => p.Post)
             .HasForeignKey(p => p.PostId)
             .OnDelete(DeleteBehavior.Cascade);
-        
-        builder.Metadata.FindNavigation(nameof(Post.Comments))!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
 
-        builder.HasMany<Comment>("_comments")
+        builder.HasMany(p => p.Comments)
             .WithOne(p => p.Post)
             .HasForeignKey(p => p.PostId)
             .OnDelete(DeleteBehavior.Cascade);

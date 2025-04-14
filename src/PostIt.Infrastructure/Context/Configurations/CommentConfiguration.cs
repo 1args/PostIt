@@ -11,17 +11,14 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.Id)
-            .ValueGeneratedOnAdd();
-
+        builder.Property(c => c.CreatedAt).IsRequired();
+        
         builder.OwnsOne(c => c.Text, text =>
         {
             text.Property(t => t.Value)
                 .HasColumnName("Text")
                 .HasMaxLength(Text.MaxLength);
         });
-
-        builder.Property(c => c.CreatedAt).IsRequired();
 
         builder.HasOne(c => c.Post)
             .WithMany(p => p.Comments)
@@ -33,10 +30,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasForeignKey(c => c.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Metadata.FindNavigation(nameof(Comment.Like))!
-            .SetPropertyAccessMode(PropertyAccessMode.Field);
-
-        builder.HasMany<CommentLike>("_likes")
+        builder.HasMany(c => c.Likes)
             .WithOne(cl => cl.Comment)
             .HasForeignKey(cl => cl.CommentId)
             .OnDelete(DeleteBehavior.Cascade);
