@@ -10,11 +10,11 @@ public class PostLike
 
     public Author Author { get; private set; } = null!;
 
-    private PostLike(Guid postId, Guid userId)
+    private PostLike(Guid postId, Guid authorId)
     {
         PostId = postId;
-        AuthorId = userId;
+        AuthorId = authorId;
     }
     
-    public static PostLike Create(Guid postId, Guid userId) => new(postId, userId);
+    public static PostLike Create(Guid postId, Guid authorId) => new(postId, authorId);
 }

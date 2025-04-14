@@ -29,5 +29,33 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
                 .HasMaxLength(Content.MaxLength)
                 .IsRequired();
         });
+
+        builder.Property(p => p.Views).IsRequired();
+        builder.Property(p => p.CreatedAt).IsRequired();
+        builder.Property(p => p.UpdatedAt).IsRequired(false);
+        builder.Property(p => p.Visibility).IsRequired();
+        
+        builder.HasOne(p => p.Author)
+            .WithMany(a => a.Posts)
+            .HasForeignKey(p => p.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Metadata.FindNavigation(nameof(Post.Likes))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany<PostLike>("_likes") 
+            .WithOne(p => p.Post)
+            .HasForeignKey(p => p.PostId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.Metadata.FindNavigation(nameof(Post.Comments))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany<Comment>("_comments")
+            .WithOne(p => p.Post)
+            .HasForeignKey(p => p.PostId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.ToTable("Posts");
     }
 }
