@@ -8,7 +8,7 @@ public class PostLike
     
     public Guid AuthorId { get; private set; }
 
-    public Author Author { get; set; } = null!;
+    public Author Author { get; private set; } = null!;
 
     private PostLike(Guid postId, Guid userId)
     {
