@@ -29,7 +29,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             password.Property(p => p.Value)
                 .HasColumnName("Password")
-                .HasMaxLength(Password.MaxPasswordLength)
+                .HasMaxLength(Password.MaxLength)
                 .IsRequired();
         });
 

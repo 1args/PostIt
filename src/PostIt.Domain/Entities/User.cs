@@ -12,6 +12,8 @@ public class User : Entity<Guid>
     public Role Role { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
+    
+    public Author Author { get; private set; } = null!;
 
     private User(Email email, Password password, Role role, DateTime createdAt)
     {

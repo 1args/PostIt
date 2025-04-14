@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PostIt.Domain.Entities;
+using PostIt.Infrastructure.Context.Configurations;
 
 namespace PostIt.Infrastructure.Context;
 
@@ -16,6 +17,7 @@ public class ApplicationDbContext(
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthorConfiguration).Assembly);
     }
 }

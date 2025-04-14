@@ -2,22 +2,22 @@ namespace PostIt.Domain.ValueObjects.User;
 
 public class Password : ValueObject
 {
-    public const int MinPasswordLength = 8;
-    public const int MaxPasswordLength = 16;
+    public const int MinLength = 8;
+    public const int MaxLength = 16;
     
     public string Value { get; }
 
     private Password(string password)
     {
-        if (string.IsNullOrWhiteSpace(password) || password.Length < MinPasswordLength)
+        if (string.IsNullOrWhiteSpace(password) || password.Length < MinLength)
         {
-            throw new ArgumentException($"Password must be at least {MinPasswordLength} characters long.", 
+            throw new ArgumentException($"Password must be at least {MinLength} characters long.", 
                 nameof(password));
         }
 
-        if (password.Length > MaxPasswordLength)
+        if (password.Length > MaxLength)
         {
-            throw new ArgumentException($"Password must be less than {MaxPasswordLength}.", 
+            throw new ArgumentException($"Password must be less than {MaxLength}.", 
                 nameof(password));
         }
             
