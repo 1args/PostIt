@@ -34,5 +34,7 @@ public class AuthorConfiguration : IEntityTypeConfiguration<Author>
             .WithOne(u => u.Author)
             .HasForeignKey<Author>(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.ToTable("Authors");
     }
 }
