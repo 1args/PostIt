@@ -11,7 +11,7 @@ public class User : Entity<Guid>
 
     public Role Role { get; private set; }
 
-    public DateTime CreatedAt { get; private set; } 
+    public DateTime CreatedAt { get; private set; }
 
     private User(Email email, Password password, Role role, DateTime createdAt)
     {
@@ -19,7 +19,6 @@ public class User : Entity<Guid>
         {
             throw new ArgumentException("Creation date cannot be in the future.");
         }
-        
         Email = email;
         Password = password;
         Role = role;

@@ -5,5 +5,5 @@ namespace PostIt.Domain.Entities;
 public abstract class Entity<TKey> where TKey : struct
 {
     [Key]
-    protected virtual TKey Id { get; set; }
+    public virtual TKey Id { get; protected set; }
 }
