@@ -7,7 +7,6 @@ public sealed record UserResponse(
     Guid UserId,
     string Name,
     string Bio,
-    string Email,
     Role Role,
     IReadOnlyList<Post> Posts,
     IReadOnlyList<Comment> Comments,
