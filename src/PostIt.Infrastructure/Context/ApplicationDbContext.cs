@@ -9,8 +9,6 @@ public class ApplicationDbContext(
 {
     public DbSet<User> Users { get; set; }
     
-    public DbSet<Author> Authors { get; set; }
-    
     public DbSet<Post> Posts { get; set; }
     
     public DbSet<PostLike> PostLikes { get; set; }
@@ -20,6 +18,5 @@ public class ApplicationDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthorConfiguration).Assembly);
     }
 }

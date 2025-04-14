@@ -14,7 +14,7 @@ public class Comment : Entity<Guid>
     
     public Guid AuthorId { get; private set; }
     
-    public Author Author { get; private set; } = null!;
+    public User Author { get; private set; } = null!;
 
     public Guid PostId { get; private set; }
     

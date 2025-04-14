@@ -1,4 +1,4 @@
-namespace PostIt.Domain.ValueObjects.Author;
+namespace PostIt.Domain.ValueObjects.User;
 
 public class Bio : ValueObject
 {
@@ -16,7 +16,7 @@ public class Bio : ValueObject
 
         if (bio.Length > MaxLength)
         {
-            throw new ArgumentException($"Author bio must be no longer than {MaxLength} characters.", 
+            throw new ArgumentException($"User bio must be no longer than {MaxLength} characters.", 
                 nameof(bio));
         }
         

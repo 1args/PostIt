@@ -17,6 +17,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.CreatedAt)
             .IsRequired();
         
+        builder.OwnsOne(u => u.Name, name =>
+        {
+            name.Property(n => n.Value)
+                .HasColumnName("Name")
+                .HasMaxLength(Name.MaxLength)
+                .IsRequired();
+        });
+
+        builder.OwnsOne(u => u.Bio, bio =>
+        {
+            bio.Property(b => b.Value)
+                .HasColumnName("Bio")
+                .HasMaxLength(Bio.MaxLength)
+                .IsRequired();
+        });
+        
         builder.OwnsOne(u => u.Email, email =>
         {
             email.Property(e => e.Value)
@@ -36,6 +52,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .HasConversion<string>()
             .IsRequired();
+        
+        builder.HasMany(u => u.Posts)
+            .WithOne()
+            .HasForeignKey(p => p.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
+            
+        builder.HasMany(u => u.Comments)
+            .WithOne()
+            .HasForeignKey(c => c.AuthorId)
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.ToTable("Users");
     }
