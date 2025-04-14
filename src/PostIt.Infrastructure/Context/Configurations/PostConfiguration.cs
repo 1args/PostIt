@@ -29,7 +29,5 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
                 .HasMaxLength(Content.MaxLength)
                 .IsRequired();
         });
-        
-        
     }
 }

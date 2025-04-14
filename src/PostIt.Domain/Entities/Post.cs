@@ -5,7 +5,7 @@ namespace PostIt.Domain.Entities;
 
 public class Post : Entity<Guid>
 {
-    private readonly HashSet<Guid> _likedUserIds = [];
+    private readonly List<PostLike> _likes = [];
     private readonly List<Comment> _comments = [];
     
     public Title Title { get; private set; } 
@@ -13,8 +13,6 @@ public class Post : Entity<Guid>
     public Content Content { get; private set; }
 
     public int Views { get; private set; } = 0;
-    
-    public int Likes { get; private set; } = 0;
     
     public DateTime CreatedAt { get; private set; }
 
@@ -24,7 +22,7 @@ public class Post : Entity<Guid>
 
     public Visibility Visibility { get; private set; }
 
-    public IReadOnlyCollection<Guid> LikedUserIds => _likedUserIds;
+    public IReadOnlyList<PostLike> Likes => _likes.AsReadOnly();
     
     public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
 
@@ -61,20 +59,22 @@ public class Post : Entity<Guid>
 
     public void Like(Guid userId)
     {
-        if (!_likedUserIds.Add(userId))
+        if(_likes.Any(l => l.AuthorId == userId))
         {
             throw new ArgumentException($"User with id {userId} already liked this post.");
         }
-        Likes++;
+        _likes.Add(PostLike.Create(Id, userId));
     }
 
     public void Unlike(Guid userId)
     {
-        if (!_likedUserIds.Remove(userId))
+        var like = _likes.FirstOrDefault(l => l.AuthorId == userId);
+        
+        if (like is null)
         {
             throw new ArgumentException($"User with id {userId} not liked this post.");
         }
-        Likes--;
+        _likes.Remove(like);
     }
     
     public void View() => Views++;
