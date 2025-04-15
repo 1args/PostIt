@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PostIt.Application.Contracts.Requests;
+using PostIt.Application.Contracts.Requests.User;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.User;
@@ -12,22 +12,23 @@ public class UserService(
     IRepository<User> userRepository,
     ILogger<UserService> logger)
 {
-    public async Task CreateUserAsync(
+    public async Task<Guid> CreateUserAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Creating user with email: {Email}.", request.Email);
         
         var name = Name.Create(request.Name);
-        var bio = Bio.Create(request.Bio);
+        var bio = Bio.Create(string.Empty);
         var email = Email.Create(request.Email);
         var password = Password.Create(request.Password);
         
         var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
-        
         logger.LogInformation("User created successfully. User ID: {Id}.", user.Id);
+        
+        return user.Id;
     }
 
     public async Task<UserResponse> GetUserByIdAsync(
@@ -42,7 +43,7 @@ public class UserService(
         if (user is null)
         {
             logger.LogWarning("User with ID {Id} not found.", userId);
-            throw new InvalidOperationException($"User with id {userId} not found.");
+            throw new InvalidOperationException($"User with ID '{userId}' not found.");
         }
         
         logger.LogInformation("Retrieved user by ID {Id} retrieved successfully.", userId);
@@ -70,7 +71,7 @@ public class UserService(
     }
 
     public async Task UpdateUserBioAsync(
-        UpdateBioRequest request,
+        UpdateUserBioRequest request,
         CancellationToken cancellationToken = default)
     {
         logger.LogInformation("Updating bio for user with ID: {Id}", request.UserId);
