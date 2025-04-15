@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Contracts.Requests.Comment;
+using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Comment;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -32,4 +33,66 @@ public class CommentService(
         await commentRepository.AddAsync(comment, cancellationToken);
         return comment.Id;
     }
+
+    public async Task DeleteComment(
+        Guid commentId,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+
+        await commentRepository.DeleteAsync([comment], cancellationToken);
+    }
+
+    public async Task LikeCommentAsync(
+        Guid commentId,
+        Guid authorId,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        
+        comment.Like(authorId);
+        await commentRepository.UpdateAsync(comment, cancellationToken);
+    }
+    
+    public async Task UnlikeCommentAsync(
+        Guid commentId,
+        Guid authorId,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        
+        comment.Unlike(authorId);
+        await commentRepository.UpdateAsync(comment, cancellationToken);
+    }
+
+    public async Task<List<CommentResponse>> GetCommentsByPost(
+        Guid postId,
+        CancellationToken cancellationToken = default)
+    {
+        var posts = await commentRepository
+            .Where(c => c.PostId == postId)
+            .Select(c => new CommentResponse(
+                c.Id,
+                c.Text.Value,
+                c.AuthorId,
+                c.PostId,
+                c.CreatedAt,
+                c.Likes.Count))
+            .OrderByDescending(c => c.LikesCount)
+            .ToListAsync(cancellationToken);
+        
+        return posts;
+    }
+
+    private async Task<Comment> GetCommentOrThrowAsync(
+        Guid commentId,
+        CancellationToken cancellationToken = default)
+    {
+        var comment = await commentRepository
+            .Where(c => c.Id == commentId)
+            .FirstOrDefaultAsync(cancellationToken);
+        
+        return comment ?? throw new InvalidOperationException($"Comment with ID '{commentId}' not found.");
+    }
+    
 }
