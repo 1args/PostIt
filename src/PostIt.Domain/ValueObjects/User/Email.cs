@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using PostIt.Domain.Exceptions;
 
 namespace PostIt.Domain.ValueObjects.User;
 
@@ -10,7 +11,7 @@ public class Email : ValueObject
     {
         if (!IsEmailValid(email))
         {
-            throw new ArgumentException("Invalid email format.", nameof(email));
+            throw new DomainException("Invalid email format.");
         }
         
         Value = email;
@@ -22,7 +23,7 @@ public class Email : ValueObject
     {
         if (string.IsNullOrWhiteSpace(email))
         {
-            throw new ArgumentException("Email cannot be empty.", nameof(email));
+            throw new DomainException("Email cannot be empty.");
         }
 
         var pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";

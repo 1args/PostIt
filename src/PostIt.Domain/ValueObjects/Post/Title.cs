@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.ValueObjects.Post;
 
 public class Title : ValueObject
@@ -11,17 +13,15 @@ public class Title : ValueObject
     {
         if (string.IsNullOrWhiteSpace(title))
         {
-            throw new ArgumentException("Post title cannot be empty", nameof(title));
+            throw new DomainException("Post title cannot be empty.");
         }
 
         Value = title.Length switch
         {
-            < MinLength => throw new ArgumentException(
-                $"Post title must be at least {MinLength} characters long",
-                nameof(title)),
-            > MaxLength => throw new ArgumentException(
-                $"Post title must be no longer than {MaxLength} characters.",
-                nameof(title)),
+            < MinLength => throw new DomainException(
+                $"Post title must be at least {MinLength} characters long."),
+            > MaxLength => throw new DomainException(
+                $"Post title must be no longer than {MaxLength} characters."),
             _ => title
         };
         

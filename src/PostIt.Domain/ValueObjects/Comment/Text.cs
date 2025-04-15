@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.ValueObjects.Comment;
 
 public class Text : ValueObject
@@ -11,17 +13,15 @@ public class Text : ValueObject
     {
         if (string.IsNullOrWhiteSpace(text))
         {
-            throw new ArgumentException("Comment text cannot be empty.", nameof(text));
+            throw new DomainException("Comment text cannot be empty.");
         }
         
         Value = text.Length switch
         {
-            < MinLength => throw new ArgumentException(
-                $"Comment text must be at least {MinLength} characters long.",
-                nameof(text)),
-            > MaxLength => throw new ArgumentException(
-                $"Comment text must be no longer than {MaxLength} characters.",
-                nameof(text)),
+            < MinLength => throw new DomainException(
+                $"Comment text must be at least {MinLength} characters long."),
+            > MaxLength => throw new DomainException(
+                $"Comment text must be no longer than {MaxLength} characters."),
             _ => text
         };
     }

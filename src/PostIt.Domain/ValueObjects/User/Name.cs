@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.ValueObjects.User;
 
 public class Name : ValueObject
@@ -11,17 +13,15 @@ public class Name : ValueObject
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("User name cannot be empty.", nameof(name));
+            throw new DomainException("User name cannot be empty.");
         }
 
         Value = name.Length switch
         {
-            < MinLength => throw new ArgumentException(
-                $"User name must be at least {MinLength} characters long.",
-                nameof(name)),
-            > MaxLength => throw new ArgumentException(
-                $"User name must be no longer than {MaxLength} characters.",
-                nameof(name)),
+            < MinLength => throw new DomainException(
+                $"User name must be at least {MinLength} characters long."),
+            > MaxLength => throw new DomainException(
+                $"User name must be no longer than {MaxLength} characters."),
             _ => name
         };
     }

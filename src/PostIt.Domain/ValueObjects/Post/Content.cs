@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.ValueObjects.Post;
 
 public class Content : ValueObject
@@ -11,17 +13,15 @@ public class Content : ValueObject
     {
         if (string.IsNullOrWhiteSpace(content))
         {
-            throw new ArgumentException("Post content cannot be empty.", nameof(content));
+            throw new DomainException("Post content cannot be empty.");
         }
         
         Value = content.Length switch
         {
-            < MinLength => throw new ArgumentException(
-                $"Post content must be at least {MinLength} characters long.",
-                nameof(content)),
-            > MaxLength => throw new ArgumentException(
-                $"Post content must be no longer than {MaxLength} characters.",
-                nameof(content)),
+            < MinLength => throw new DomainException(
+                $"Post content must be at least {MinLength} characters long."),
+            > MaxLength => throw new DomainException(
+                $"Post content must be no longer than {MaxLength} characters."),
             _ => content
         };
     }

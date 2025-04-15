@@ -1,4 +1,5 @@
 using PostIt.Domain.Enums;
+using PostIt.Domain.Exceptions;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Entities;
@@ -30,7 +31,7 @@ public class User : Entity<Guid>
     {
         if (createdAt > DateTime.UtcNow)
         {
-            throw new ArgumentException("Creation date cannot be in the future.");
+            throw new DomainException("Creation date cannot be in the future.");
         }
         
         Name = name;
@@ -71,7 +72,7 @@ public class User : Entity<Guid>
     {
         if (!_posts.Contains(post))
         {
-            throw new ArgumentException("Post not found", nameof(post));
+            throw new DomainException("Post not found", nameof(post));
         }
         _posts.Remove(post);
     }

@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.ValueObjects.User;
 
 public class Password : ValueObject
@@ -11,14 +13,12 @@ public class Password : ValueObject
     {
         if (string.IsNullOrWhiteSpace(password) || password.Length < MinLength)
         {
-            throw new ArgumentException($"Password must be at least {MinLength} characters long.", 
-                nameof(password));
+            throw new DomainException($"Password must be at least {MinLength} characters long.");
         }
 
         if (password.Length > MaxLength)
         {
-            throw new ArgumentException($"Password must be less than {MaxLength}.", 
-                nameof(password));
+            throw new DomainException($"Password must be less than {MaxLength}.");
         }
             
         Value = password;

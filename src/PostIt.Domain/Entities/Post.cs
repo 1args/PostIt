@@ -1,4 +1,5 @@
 using PostIt.Domain.Enums;
+using PostIt.Domain.Exceptions;
 using PostIt.Domain.ValueObjects.Post;
 
 namespace PostIt.Domain.Entities;
@@ -39,7 +40,7 @@ public class Post : Entity<Guid>
     {
         if (createdAt > DateTime.UtcNow)
         {
-            throw new ArgumentException("Creation date cannot be in the future.");
+            throw new DomainException("Creation date cannot be in the future.");
         }
         
         Title = title;
@@ -61,7 +62,7 @@ public class Post : Entity<Guid>
     {
         if(_likes.Any(l => l.AuthorId == userId))
         {
-            throw new ArgumentException($"User with id {userId} already liked this post.");
+            throw new DomainException($"User with id {userId} already liked this post.");
         }
         _likes.Add(PostLike.Create(Id, userId));
     }
@@ -72,7 +73,7 @@ public class Post : Entity<Guid>
         
         if (like is null)
         {
-            throw new ArgumentException($"User with id {userId} not liked this post.");
+            throw new DomainException($"User with id {userId} not liked this post.");
         }
         _likes.Remove(like);
     }
@@ -89,7 +90,7 @@ public class Post : Entity<Guid>
     {
         if (!_comments.Contains(comment))
         {
-            throw new ArgumentException("Comment not found", nameof(comment));
+            throw new DomainException("Comment not found", nameof(comment));
         }
         _comments.Remove(comment);
     }
