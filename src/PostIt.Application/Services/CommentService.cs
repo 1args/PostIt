@@ -79,6 +79,7 @@ public class CommentService(
                 c.CreatedAt,
                 c.Likes.Count))
             .OrderByDescending(c => c.LikesCount)
+            .ThenByDescending(c => c.CreatedAt)
             .ToListAsync(cancellationToken);
         
         return posts;
