@@ -93,6 +93,26 @@ public class PostService(
         await postRepository.UpdateAsync(post, cancellationToken);
     }
 
+    public async Task<List<Post>> GetPostsSortedByLikesAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var posts = await postRepository.AsQueryable()
+            .OrderByDescending(p => p.Likes.Count)
+            .ToListAsync(cancellationToken);
+
+        return posts;
+    }
+
+    public async Task<List<Post>> GetPostsSortedByViewsAsync(
+        CancellationToken cancellationToken = default)
+    {
+        var posts = await postRepository.AsQueryable()
+            .OrderByDescending(p => p.Views)
+            .ToListAsync(cancellationToken);
+
+        return posts;
+    }
+    
     private async Task<Post> GetPostOrThrowAsync(
         Guid postId, 
         CancellationToken cancellationToken = default)
