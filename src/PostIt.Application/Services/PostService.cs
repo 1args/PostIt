@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.Post;
+using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Post;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -9,7 +11,7 @@ namespace PostIt.Application.Services;
 
 public class PostService(
     IRepository<Post> postRepository,
-    ILogger<PostService> logger)
+    ILogger<PostService> logger) : IPostService
 {
     public async Task<Guid> CreatePostAsync(
         CreatePostRequest request,
@@ -93,24 +95,28 @@ public class PostService(
         await postRepository.UpdateAsync(post, cancellationToken);
     }
 
-    public async Task<List<Post>> GetPostsSortedByLikesAsync(
+    public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
         CancellationToken cancellationToken = default)
     {
         var posts = await postRepository.AsQueryable()
             .OrderByDescending(p => p.Likes.Count)
             .ToListAsync(cancellationToken);
 
-        return posts;
+        return posts
+            .Select(MapToResponse)
+            .ToList();
     }
 
-    public async Task<List<Post>> GetPostsSortedByViewsAsync(
+    public async Task<List<PostResponse>> GetPostsSortedByViewsAsync(
         CancellationToken cancellationToken = default)
     {
         var posts = await postRepository.AsQueryable()
             .OrderByDescending(p => p.Views)
             .ToListAsync(cancellationToken);
 
-        return posts;
+        return posts
+            .Select(MapToResponse)
+            .ToList();
     }
     
     private async Task<Post> GetPostOrThrowAsync(
@@ -122,5 +128,21 @@ public class PostService(
             .FirstOrDefaultAsync(cancellationToken);
         
         return post ?? throw new InvalidOperationException($"Post with ID '{postId}' not found.");
+    }
+
+    private static PostResponse MapToResponse(Post post)
+    {
+        return new PostResponse(
+            post.Id,
+            post.Title.Value,
+            post.Content.Value,
+            post.Likes.Count,
+            post.Comments.Count,
+            post.CreatedAt,
+            post.UpdatedAt,
+            post.WasUpdated,
+            post.Visibility,
+            post.AuthorId
+        );
     }
 }

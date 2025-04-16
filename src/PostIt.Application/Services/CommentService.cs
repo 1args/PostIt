@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.Comment;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
@@ -11,7 +12,7 @@ namespace PostIt.Application.Services;
 public class CommentService(
     IRepository<Comment> commentRepository,
     IRepository<Post> postRepository,
-    ILogger<CommentService> logger)
+    ILogger<CommentService> logger) : ICommentService
 {
     public async Task<Guid> CreateComment(
         CreateCommentRequest request,

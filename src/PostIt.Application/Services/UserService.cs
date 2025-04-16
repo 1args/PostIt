@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.User;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
@@ -10,7 +11,7 @@ namespace PostIt.Application.Services;
 
 public class UserService(
     IRepository<User> userRepository,
-    ILogger<UserService> logger)
+    ILogger<UserService> logger) : IUserService
 {
     public async Task<Guid> CreateUserAsync(
         CreateUserRequest request,
