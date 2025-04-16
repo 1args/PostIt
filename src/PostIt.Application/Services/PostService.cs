@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Application.Abstractions.Services.Services;
 using PostIt.Application.Contracts.Requests.Post;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;

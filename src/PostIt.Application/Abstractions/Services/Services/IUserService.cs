@@ -1,7 +1,7 @@
 using PostIt.Application.Contracts.Requests.User;
 using PostIt.Application.Contracts.Responses;
 
-namespace PostIt.Application.Abstractions.Services;
+namespace PostIt.Application.Abstractions.Services.Services;
 
 public interface IUserService
 {

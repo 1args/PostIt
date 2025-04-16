@@ -1,7 +1,7 @@
 using PostIt.Application.Contracts.Requests.Post;
 using PostIt.Application.Contracts.Responses;
 
-namespace PostIt.Application.Abstractions.Services;
+namespace PostIt.Application.Abstractions.Services.Services;
 
 public interface IPostService
 {
