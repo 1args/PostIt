@@ -297,6 +297,20 @@
           }
         }
       },
+      "PostIt.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "PostIt.Domain": "1.0.0",
+          "PostIt.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PostIt.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PostIt.Application.dll": {}
+        }
+      },
       "PostIt.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -766,6 +780,11 @@
         "postgresql.png"
       ]
     },
+    "PostIt.Application/1.0.0": {
+      "type": "project",
+      "path": "../PostIt.Application/PostIt.Application.csproj",
+      "msbuildProject": "../PostIt.Application/PostIt.Application.csproj"
+    },
     "PostIt.Domain/1.0.0": {
       "type": "project",
       "path": "../PostIt.Domain/PostIt.Domain.csproj",
@@ -780,6 +799,7 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.AspNetCore.OpenApi >= 9.0.0",
+      "PostIt.Application >= 1.0.0",
       "PostIt.Infrastructure >= 1.0.0"
     ]
   },
@@ -817,6 +837,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Application\\PostIt.Application.csproj": {
+              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Application\\PostIt.Application.csproj"
+            },
             "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj": {
               "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj"
             }

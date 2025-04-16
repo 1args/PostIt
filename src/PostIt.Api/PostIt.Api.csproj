@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\PostIt.Application\PostIt.Application.csproj" />
       <ProjectReference Include="..\PostIt.Infrastructure\PostIt.Infrastructure.csproj" />
     </ItemGroup>
 
