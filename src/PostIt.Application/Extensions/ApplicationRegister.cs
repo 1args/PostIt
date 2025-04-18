@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Abstractions.Services.Services;
 using PostIt.Application.Services;
 
 namespace PostIt.Application.Extensions;

@@ -11,8 +11,4 @@
       <ProjectReference Include="..\PostIt.Infrastructure\PostIt.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Abstractions\Services\" />
-    </ItemGroup>
-
 </Project>

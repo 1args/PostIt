@@ -29,11 +29,6 @@ public class User : Entity<Guid>
 
     private User(Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt)
     {
-        if (createdAt > DateTime.UtcNow)
-        {
-            throw new DomainException("Creation date cannot be in the future.");
-        }
-        
         Name = name;
         Bio = string.IsNullOrWhiteSpace(bio.ToString())
             ? Bio.Create("Empty")

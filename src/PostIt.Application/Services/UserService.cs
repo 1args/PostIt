@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Abstractions.Services.Services;
 using PostIt.Application.Contracts.Requests.User;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
@@ -16,7 +15,7 @@ public class UserService(
 {
     public async Task<Guid> CreateUserAsync(
         CreateUserRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         logger.LogInformation("Creating user with email: {Email}.", request.Email);
         
@@ -35,18 +34,11 @@ public class UserService(
 
     public async Task<UserResponse> GetUserByIdAsync(
         Guid userId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
-        var user = await userRepository.Where(u => u.Id == userId)
-            .FirstOrDefaultAsync(cancellationToken);
-        
         logger.LogInformation("Getting user by ID {Id}.", userId);
 
-        if (user is null)
-        {
-            logger.LogWarning("User with ID {Id} not found.", userId);
-            throw new InvalidOperationException($"User with ID '{userId}' not found.");
-        }
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
         
         logger.LogInformation("Retrieved user by ID {Id} retrieved successfully.", userId);
         return MapToResponse(user);
@@ -54,19 +46,11 @@ public class UserService(
 
     public async Task DeleteUserAsync(
         Guid userId, 
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         logger.LogInformation("Deleting user with ID: {UserId}.", userId);
         
-        var user = await userRepository
-            .Where(u => u.Id == userId)
-            .FirstOrDefaultAsync(cancellationToken);
-
-        if (user is null)
-        {
-            logger.LogWarning("User with ID {Id} not found for deletion.", userId);
-            throw new InvalidOperationException($"User with id {userId} not found.");
-        }
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
 
         await userRepository.DeleteAsync([user], cancellationToken);
         logger.LogInformation("User with ID {Id} deleted successfully.", userId);
@@ -74,19 +58,11 @@ public class UserService(
 
     public async Task UpdateUserBioAsync(
         UpdateUserBioRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         logger.LogInformation("Updating bio for user with ID: {Id}", request.UserId);
         
-        var user = await userRepository
-            .Where(u => u.Id == request.UserId)
-            .FirstOrDefaultAsync(cancellationToken);
-        
-        if (user is null)
-        {
-            logger.LogWarning("User with ID {Id} not found for bio update", request.UserId);
-            throw new InvalidOperationException($"User with id {request.UserId} not found");
-        }
+        var user = await GetUserOrThrowAsync(request.UserId, cancellationToken);
 
         var newBio = Bio.Create(request.Bio);
         user.UpdateBio(newBio);
@@ -95,6 +71,22 @@ public class UserService(
         logger.LogInformation("Bio updated successfully for user with ID: {Id}", request.UserId);
     }
 
+    private async Task<User> GetUserOrThrowAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var user = await userRepository
+            .Where(u => u.Id == userId)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (user is null)
+        {
+            logger.LogWarning("User with ID {Id} not found.", userId);
+            throw new InvalidOperationException($"User with ID {userId} not found.");
+        }
+
+        return user;
+    }
     private static UserResponse MapToResponse(User user) =>
         new(user.Id,
             user.Name.Value,

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1fce5be527c4fab37489fb361ea41f15e853da3d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+955a7c583b68e26a2137b9e1e057d2353f0e4b71")]
 [assembly: System.Reflection.AssemblyProductAttribute("PostIt.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

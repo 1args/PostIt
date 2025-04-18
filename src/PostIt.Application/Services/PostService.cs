@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Abstractions.Services.Services;
 using PostIt.Application.Contracts.Requests.Post;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
@@ -16,7 +15,7 @@ public class PostService(
 {
     public async Task<Guid> CreatePostAsync(
         CreatePostRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var title = Title.Create(request.Title);
         var content = Content.Create(request.Content);
@@ -34,7 +33,7 @@ public class PostService(
     }
     public async Task UpdatePostAsync(
         UpdatePostRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
         
@@ -47,7 +46,7 @@ public class PostService(
 
     public async Task DeletePostAsync(
         Guid postId, 
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
 
@@ -57,7 +56,7 @@ public class PostService(
     public async Task LikePostAsync(
         Guid postId,
         Guid authorId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(postId, cancellationToken); 
 
@@ -68,7 +67,7 @@ public class PostService(
     public async Task UnlikePostAsync(
         Guid postId,
         Guid authorId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
@@ -78,7 +77,7 @@ public class PostService(
 
     public async Task ViewPostAsync(
         Guid postId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
@@ -88,7 +87,7 @@ public class PostService(
 
     public async Task ChangeVisibilityAsync(
         ChangePostVisibilityRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
         
@@ -97,9 +96,10 @@ public class PostService(
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
-        var posts = await postRepository.AsQueryable()
+        var posts = await postRepository
+            .AsQueryable()
             .OrderByDescending(p => p.Likes.Count)
             .ToListAsync(cancellationToken);
 
@@ -109,9 +109,10 @@ public class PostService(
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByViewsAsync(
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
-        var posts = await postRepository.AsQueryable()
+        var posts = await postRepository
+            .AsQueryable()
             .OrderByDescending(p => p.Views)
             .ToListAsync(cancellationToken);
 
@@ -122,11 +123,11 @@ public class PostService(
     
     private async Task<Post> GetPostOrThrowAsync(
         Guid postId, 
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var post = await postRepository
             .Where(p => p.Id == postId)
-            .FirstOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
         
         return post ?? throw new InvalidOperationException($"Post with ID '{postId}' not found.");
     }

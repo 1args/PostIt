@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Abstractions.Services.Services;
 using PostIt.Application.Contracts.Requests.Comment;
 using PostIt.Application.Contracts.Responses;
 using PostIt.Domain.Entities;
@@ -17,13 +16,13 @@ public class CommentService(
 {
     public async Task<Guid> CreateComment(
         CreateCommentRequest request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var text = Text.Create(request.Text);
 
         var post = await postRepository
             .Where(p => p.Id == request.PostId)
-            .FirstOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (post is null)
         {
@@ -38,7 +37,7 @@ public class CommentService(
 
     public async Task DeleteComment(
         Guid commentId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
 
@@ -48,7 +47,7 @@ public class CommentService(
     public async Task LikeCommentAsync(
         Guid commentId,
         Guid authorId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
         
@@ -59,7 +58,7 @@ public class CommentService(
     public async Task UnlikeCommentAsync(
         Guid commentId,
         Guid authorId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
         
@@ -69,7 +68,7 @@ public class CommentService(
 
     public async Task<List<CommentResponse>> GetCommentsByPost(
         Guid postId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var posts = await commentRepository
             .Where(c => c.PostId == postId)
@@ -89,13 +88,12 @@ public class CommentService(
 
     private async Task<Comment> GetCommentOrThrowAsync(
         Guid commentId,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken)
     {
         var comment = await commentRepository
             .Where(c => c.Id == commentId)
-            .FirstOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
         
         return comment ?? throw new InvalidOperationException($"Comment with ID '{commentId}' not found.");
     }
-    
 }

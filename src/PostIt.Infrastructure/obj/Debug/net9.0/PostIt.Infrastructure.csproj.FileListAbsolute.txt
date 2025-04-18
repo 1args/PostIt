@@ -1,0 +1,16 @@
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\bin\Debug\net9.0\PostIt.Infrastructure.deps.json
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\bin\Debug\net9.0\PostIt.Infrastructure.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\bin\Debug\net9.0\PostIt.Infrastructure.pdb
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\bin\Debug\net9.0\PostIt.Domain.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\bin\Debug\net9.0\PostIt.Domain.pdb
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.AssemblyInfo.cs
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.sourcelink.json
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.I.3F5650F1.Up2Date
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\refint\PostIt.Infrastructure.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\PostIt.Infrastructure.pdb
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Infrastructure\obj\Debug\net9.0\ref\PostIt.Infrastructure.dll
