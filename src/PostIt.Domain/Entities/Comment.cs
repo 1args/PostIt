@@ -23,6 +23,11 @@ public class Comment : Entity<Guid>
 
     private Comment(Text text, Guid authorId, Guid postId, DateTime createdAt)
     {
+        if (createdAt > DateTime.Now)
+        {
+            throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
+        }
+
         Text = text;
         AuthorId = authorId;
         PostId = postId;
@@ -47,7 +52,8 @@ public class Comment : Entity<Guid>
         
         if (like is null)
         {
-            throw new DomainException($"User with id {userId} not liked this comment.");
+            throw new DomainException($"User with id {userId} not liked this comment.",
+                nameof(userId));
         }
         _likes.Remove(like);
     }

@@ -38,6 +38,11 @@ public class Post : Entity<Guid>
         DateTime createdAt,
         Visibility visibility = Visibility.Public)
     {
+        if (createdAt > DateTime.Now)
+        {
+            throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
+        }
+
         Title = title;
         Content = content;
         AuthorId = authorId;

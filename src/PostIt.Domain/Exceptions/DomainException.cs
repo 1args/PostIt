@@ -1,21 +1,18 @@
+using System.Runtime.Serialization;
+
 namespace PostIt.Domain.Exceptions;
 
 public class DomainException : Exception
 {
-    public string Code { get; }
-    
-    public int? StatusCode { get; }
+    public string? ParameterName { get; }
 
-    public DomainException(string message, string? code = null, int? statusCode = null) 
+    public DomainException(string message, string paramName)
         : base(message)
-    {
-        Code = code ?? "Domain.Error";
-        StatusCode = statusCode;
-    }
-
-    public DomainException(string message, Exception innerException, string? code = null)
-        : base(message, innerException)
-    {
-        Code = code ?? "Domain.Error";
-    }
+        => ParameterName = paramName;
+    
+    public DomainException(string message) : base(message) { }
+    
+    public DomainException(string message, Exception innerException) 
+        : base(message, innerException) { }
+    
 }
