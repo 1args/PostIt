@@ -15,6 +15,7 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\M
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
@@ -22,6 +23,19 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\M
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.OpenApi.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Npgsql.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\OpenSearch.Net.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.AspNetCore.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Extensions.Hosting.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Extensions.Logging.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Formatting.Compact.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Formatting.OpenSearch.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Settings.Configuration.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Sinks.Console.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Sinks.Debug.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Sinks.File.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Sinks.OpenSearch.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Serilog.Sinks.PeriodicBatching.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\PostIt.Application.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\PostIt.Domain.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\PostIt.Infrastructure.dll

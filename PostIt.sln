@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5657BD7B-2969-4E56-8B1A-6F63AB256A28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Api", "src\PostIt.Api\PostIt.Api.csproj", "{E92888D2-10F9-43C8-ACE4-AC961482050B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Domain", "src\PostIt.Domain\PostIt.Domain.csproj", "{188790AB-9958-41E0-AB2E-B5B39645D960}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Infrastructure", "src\PostIt.Infrastructure\PostIt.Infrastructure.csproj", "{46F544ED-072E-478D-A343-0A1BDB88CFFF}"
@@ -14,23 +12,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5FA614DC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Domain.Tests", "tests\PostIt.Domain.Tests\PostIt.Domain.Tests.csproj", "{6A208DFF-EAF2-4A09-B040-22E47A62554F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Api", "src\PostIt.Api\PostIt.Api.csproj", "{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{91382D0C-9FA9-4578-91E2-7D1647093D32}"
+	ProjectSection(SolutionItems) = preProject
+		docker\docker-compose.yml = docker\docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{E92888D2-10F9-43C8-ACE4-AC961482050B} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{188790AB-9958-41E0-AB2E-B5B39645D960} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{46F544ED-072E-478D-A343-0A1BDB88CFFF} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{6915A58B-0870-4355-B0FF-4A08C7AE4571} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{6A208DFF-EAF2-4A09-B040-22E47A62554F} = {5FA614DC-2A7B-42C7-B335-AEC673ACD523}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E92888D2-10F9-43C8-ACE4-AC961482050B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E92888D2-10F9-43C8-ACE4-AC961482050B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E92888D2-10F9-43C8-ACE4-AC961482050B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E92888D2-10F9-43C8-ACE4-AC961482050B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{188790AB-9958-41E0-AB2E-B5B39645D960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{188790AB-9958-41E0-AB2E-B5B39645D960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{188790AB-9958-41E0-AB2E-B5B39645D960}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,5 +47,9 @@ Global
 		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

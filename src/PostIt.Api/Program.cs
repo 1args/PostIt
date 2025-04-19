@@ -1,3 +1,4 @@
+using PostIt.Api.Extensions;
 using PostIt.Application.Extensions;
 using PostIt.Infrastructure.Configuration.Configurators;
 using PostIt.Infrastructure.Context;
@@ -5,18 +6,17 @@ using PostIt.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+var configuration = builder.Configuration;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-services.AddOpenApi();
+builder.Services.AddOpenApi();
 
 services
     .AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>()
-    .AddApplication();
+    .AddApplication()
+    .AddSerilog(configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

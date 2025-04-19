@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.User;
 using PostIt.Application.Contracts.Responses;
+using PostIt.Application.Exceptions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.User;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -82,7 +83,7 @@ public class UserService(
         if (user is null)
         {
             logger.LogWarning("User with ID {Id} not found.", userId);
-            throw new InvalidOperationException($"User with ID {userId} not found.");
+            throw new NotFoundException($"User with ID {userId} not found.");
         }
 
         return user;
