@@ -2,9 +2,10 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AArgumentException_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F91cd9ea146b0b01ac23f87423d971d6bcb1120836a59d9b6bdb9873af8e_003FArgumentException_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AGuid_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F92f879b14c3424dd149e6985f9a6baf181248b4b7a17628f3d030b1a79934_003FGuid_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AReferenceNavigationBuilder_00602_002Ecs_002Fl_003A_002E_002E_003F_002E_002E_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FDecompilerCache_003Fdecompiler_003Fd83f823935e343bfaf4ef4c6263b8a12291438_003Fa5_003Fdfdcd031_003FReferenceNavigationBuilder_00602_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1c35ea23_002Dc57e_002D4e62_002Da2ec_002D313f9830b7cb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create_FutureCreatedAt_ThrowsDomainException #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1c35ea23_002Dc57e_002D4e62_002Da2ec_002D313f9830b7cb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_FutureCreatedAt_ThrowsDomainException #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.UserTests.CreateUser_ValidUser_ShouldCreateUserSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.UserTests.CreateUser_InvalidEmail_ShouldThrowDomainException&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=253fb295_002D2cc9_002D4e4e_002D9e4b_002D3d63c1b7b4be/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_WhenDataIsEmpty_ThrowsException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
@@ -13,8 +14,13 @@
     &lt;TestId&gt;xUnit::73427A36-791D-4D18-994A-7C398FA0DCD6::net9.0::PostIt.Domain.Tests.Entities.UserTests.Create_FutureCreatedAt_ThrowsDomainException&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dcd606bf_002Ddc13_002D4ab1_002D9dc1_002D41f4140ae756/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Create_FutureCreatedAt_ThrowsDomainException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3dcc9931_002D44bc_002D46a9_002Da419_002Db6d8654edfa6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CreateUser_InvalidEmail_ShouldThrowDomainException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.UserTests.CreateUser_ValidUser_ShouldCreateUserSuccessfully&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.UserTests.CreateUser_InvalidEmail_ShouldThrowDomainException&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dcd606bf_002Ddc13_002D4ab1_002D9dc1_002D41f4140ae756/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Create_FutureCreatedAt_ThrowsDomainException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.UserTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

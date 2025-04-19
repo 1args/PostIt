@@ -24,20 +24,16 @@ public class User : Entity<Guid>
     public Role Role { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
-    
-    public User Author { get; private set; } = null!;
 
     private User(Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt)
     {
-        if (createdAt > DateTime.Now)
+        if (createdAt > DateTime.UtcNow)
         {
             throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
         }
         
         Name = name;
-        Bio = string.IsNullOrWhiteSpace(bio.ToString())
-            ? Bio.Create("Empty")
-            : bio ;
+        Bio = bio.IsEmpty() ? Bio.Create("Empty") : bio;
         Email = email;
         Password = password;
         Role = role;

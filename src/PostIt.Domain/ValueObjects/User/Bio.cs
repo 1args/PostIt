@@ -25,6 +25,8 @@ public class Bio : ValueObject
     }
 
     public static Bio Create(string bio) => new(bio);
+    
+    public bool IsEmpty() => string.IsNullOrWhiteSpace(Value);
 
     public override string ToString() => Value;
     

@@ -23,7 +23,7 @@ public class Comment : Entity<Guid>
 
     private Comment(Text text, Guid authorId, Guid postId, DateTime createdAt)
     {
-        if (createdAt > DateTime.Now)
+        if (createdAt > DateTime.UtcNow)
         {
             throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
         }
