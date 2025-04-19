@@ -8,22 +8,21 @@ namespace PostIt.Domain.Tests.Entities;
 
 public class UserTests
 {
-    private static (Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt) 
+    private static (Name name, Bio bio, Email email, Password password, Role role) 
         BuildValidUserData() =>
     (
         Name.Create("John Doe"),
         Bio.Create("Bio"),
         Email.Create("john.doe@gmail.com"),
         Password.Create("password123"),
-        Role.User,
-        DateTime.UtcNow
+        Role.User
     );
     
     [Fact]
     public void CreateUser_ValidUser_ShouldCreateUserSuccessfully()
     {
         // Arrange
-        var (name, bio, email, password, role, _) = BuildValidUserData();
+        var (name, bio, email, password, role) = BuildValidUserData();
         
         // Act
         var before = DateTime.UtcNow;
@@ -48,7 +47,7 @@ public class UserTests
     public void CreateUser_FutureDate_ShouldThrowDomainException()
     {
         // Arrange 
-        var (name, bio, email, password, role, _) = BuildValidUserData();
+        var (name, bio, email, password, role) = BuildValidUserData();
         var futureDate = DateTime.UtcNow.AddMinutes(10);
         
         // Action
