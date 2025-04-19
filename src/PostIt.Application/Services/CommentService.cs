@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.Comment;
 using PostIt.Application.Contracts.Responses;
+using PostIt.Application.Exceptions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Comment;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -26,7 +27,7 @@ public class CommentService(
 
         if (post is null)
         {
-            throw new InvalidOperationException($"Post with ID '{request.PostId}' not found.");
+            throw new NotFoundException($"Post with ID '{request.PostId}' not found.");
         }
 
         var comment = Comment.Create(text, request.AuthorId, post.Id, DateTime.UtcNow);
@@ -94,6 +95,6 @@ public class CommentService(
             .Where(c => c.Id == commentId)
             .SingleOrDefaultAsync(cancellationToken);
         
-        return comment ?? throw new InvalidOperationException($"Comment with ID '{commentId}' not found.");
+        return comment ?? throw new NotFoundException($"Comment with ID '{commentId}' not found.");
     }
 }

@@ -19,7 +19,7 @@ public interface IPostService
 
     Task ChangeVisibilityAsync(ChangePostVisibilityRequest request, CancellationToken cancellationToken);
 
-    Task<List<PostResponse>> GetPostsSortedByLikesAsync(CancellationToken cancellationToken);
+    Task<List<PostResponse>> GetPostsSortedByLikesAsync(Guid currentUserId, CancellationToken cancellationToken);
 
-    Task<List<PostResponse>> GetPostsSortedByViewsAsync(CancellationToken cancellationToken);
+    Task<List<PostResponse>> GetPostsSortedByViewsAsync(Guid currentUserId, CancellationToken cancellationToken);
 }

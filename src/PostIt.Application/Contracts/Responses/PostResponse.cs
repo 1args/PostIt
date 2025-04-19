@@ -12,4 +12,5 @@ public record PostResponse(
     DateTime? UpdatedAt,
     bool WasUpdated,
     Visibility Visibility,
-    Guid AuthorId);
+    Guid AuthorId,
+    bool IsLiked);

@@ -22,4 +22,8 @@
       <ProjectReference Include="..\PostIt.Infrastructure\PostIt.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
+
 </Project>

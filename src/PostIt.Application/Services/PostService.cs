@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Contracts.Requests.Post;
 using PostIt.Application.Contracts.Responses;
+using PostIt.Application.Exceptions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Post;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -96,6 +97,7 @@ public class PostService(
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
+        Guid currentUserId,
         CancellationToken cancellationToken)
     {
         var posts = await postRepository
@@ -104,11 +106,12 @@ public class PostService(
             .ToListAsync(cancellationToken);
 
         return posts
-            .Select(MapToResponse)
+            .Select(p => MapToResponse(p, currentUserId))
             .ToList();
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByViewsAsync(
+        Guid currentUserId,
         CancellationToken cancellationToken)
     {
         var posts = await postRepository
@@ -117,7 +120,7 @@ public class PostService(
             .ToListAsync(cancellationToken);
 
         return posts
-            .Select(MapToResponse)
+            .Select(p => MapToResponse(p, currentUserId))
             .ToList();
     }
     
@@ -129,11 +132,13 @@ public class PostService(
             .Where(p => p.Id == postId)
             .SingleOrDefaultAsync(cancellationToken);
         
-        return post ?? throw new InvalidOperationException($"Post with ID '{postId}' not found.");
+        return post ?? throw new NotFoundException($"Post with ID '{postId}' not found.");
     }
 
-    private static PostResponse MapToResponse(Post post)
+    private static PostResponse MapToResponse(Post post, Guid currentUserId)
     {
+        var isLiked = post.Likes.Any(like => like.AuthorId == currentUserId);
+        
         return new PostResponse(
             post.Id,
             post.Title.Value,
@@ -144,7 +149,8 @@ public class PostService(
             post.UpdatedAt,
             post.WasUpdated,
             post.Visibility,
-            post.AuthorId
+            post.AuthorId,
+            isLiked
         );
     }
 }
