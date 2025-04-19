@@ -1,0 +1,63 @@
+version: '3.9'
+
+volumes:
+  postit-postgres: 
+  postit-logs:
+    
+services:
+  
+  postit.api:
+    build:
+      context: ../
+      dockerfile: localhost/Dockerfile
+    container_name: postit-api
+    restart: unless-stopped
+    ports:
+      - "5000:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=postit-general;Username=postgres;Password=bvytnfr,jkmyj;ApplicationName=postit-api"
+    depends_on:
+      - postgres
+      - opensearch
+      
+  postgres:
+    container_name: postit-postgres
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: postit-general
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bvytnfr,jkmyj
+    volumes:
+      - postit-postgres:/var/lib/postgresql/data
+  
+  opensearch:
+    container_name: postit-opensearch
+    image: opensearchproject/opensearch:2.19.0
+    restart: unless-stopped
+    ports:
+      - '9200:9200'
+      - '9600:9600'
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: true
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: SAFjfhHA$252SFS421152
+    volumes:
+      - postit-logs:/usr/share/opensearch/data
+        
+  opensearch-dashboard:
+    container_name: postit-opensearch-dashboard
+    image: opensearchproject/opensearch-dashboards:2.19.0
+    restart: unless-stopped
+    ports:
+      - '5601:5601'
+    environment:
+      OPENSEARCH_HOSTS: '["http://postit-opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+    depends_on:
+      - opensearch  
+    
+    

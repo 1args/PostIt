@@ -14,9 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Domain.Tests", "test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Api", "src\PostIt.Api\PostIt.Api.csproj", "{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{91382D0C-9FA9-4578-91E2-7D1647093D32}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "localhost", "localhost", "{C6079579-4B84-457C-AF48-3A1865C6DBF2}"
 	ProjectSection(SolutionItems) = preProject
-		docker\docker-compose.yml = docker\docker-compose.yml
+		localhost\docker-compose.yml = localhost\docker-compose.yml
+		localhost\Dockerfile = localhost\Dockerfile
 	EndProjectSection
 EndProject
 Global
@@ -29,6 +30,7 @@ Global
 		{46F544ED-072E-478D-A343-0A1BDB88CFFF} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{6915A58B-0870-4355-B0FF-4A08C7AE4571} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 		{6A208DFF-EAF2-4A09-B040-22E47A62554F} = {5FA614DC-2A7B-42C7-B335-AEC673ACD523}
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{188790AB-9958-41E0-AB2E-B5B39645D960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
