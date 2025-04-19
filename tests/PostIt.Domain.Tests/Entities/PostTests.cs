@@ -17,6 +17,18 @@ public class PostTests
             Guid.NewGuid(),
             DateTime.UtcNow
         );
+    
+    private static Post CreatePost() 
+    {
+        var (title, content, authorId, createdAt) = BuildValidPostData();
+        return Post.Create(title, content, authorId, createdAt);
+    }
+
+    private static Comment CreateComment(Post post)
+    {
+        var text = Text.Create("Comment text");
+        return Comment.Create(text, Guid.NewGuid(), post.Id, DateTime.UtcNow);
+    }
 
     [Fact]
     public void CreatePost_ValidPost_ShouldCreatePostSuccessfully()
@@ -59,8 +71,7 @@ public class PostTests
     public void Like_UserCanLikeOnlyOnce()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         var userId = Guid.NewGuid();
         
         // Act
@@ -80,8 +91,7 @@ public class PostTests
     public void Unlike_UserCanUnlikeOnlyIfLikedBefore()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         var userId = Guid.NewGuid();
         
         // Act
@@ -102,8 +112,7 @@ public class PostTests
     public void View_ShouldIncrementViews()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         
         // Act
         post.View();
@@ -117,10 +126,8 @@ public class PostTests
     public void AddComment_ShouldAddCommentToList()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
-        var text = Text.Create("Comment text");
-        var comment = Comment.Create(text, Guid.NewGuid(), post.Id, DateTime.UtcNow);
+        var post = CreatePost();
+        var comment = CreateComment(post);
         
         // Act
         post.AddComment(comment);
@@ -133,10 +140,8 @@ public class PostTests
     public void RemoveComment_ShouldRemoveIfExists()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
-        var text = Text.Create("Comment text");
-        var comment = Comment.Create(text, Guid.NewGuid(), post.Id, DateTime.UtcNow);
+        var post = CreatePost();
+        var comment = CreateComment(post);
         
         // Act
         post.AddComment(comment);
@@ -150,10 +155,8 @@ public class PostTests
     public void RemoveComment_ShouldThrowIfCommentNotExists()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
-        var text = Text.Create("Comment text");
-        var comment = Comment.Create(text, Guid.NewGuid(), post.Id, DateTime.UtcNow);
+        var post = CreatePost();
+        var comment = CreateComment(post);
         
         // Act
         var act = () => post.RemoveComment(comment);
@@ -167,8 +170,7 @@ public class PostTests
     public void UpdateContent_ShouldUpdateAndSetUpdatedAt()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         var newTitle = Title.Create("New title");
         var newContent = Content.Create("New content");
         
@@ -205,8 +207,7 @@ public class PostTests
     public void SetVisibility_ShouldChangeVisibility(Visibility visibility)
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         
         // Act
         post.SetVisibility(visibility);
@@ -219,8 +220,7 @@ public class PostTests
     public void IsVisibleToUser_ShouldReturnTrueIfPublic()
     {
         // Arrange
-        var (title, content, authorId, createdAt) = BuildValidPostData();
-        var post = Post.Create(title, content, authorId, createdAt);
+        var post = CreatePost();
         var userId = Guid.NewGuid();
         
         // Act & Assert
