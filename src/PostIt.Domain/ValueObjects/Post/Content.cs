@@ -4,7 +4,7 @@ namespace PostIt.Domain.ValueObjects.Post;
 
 public class Content : ValueObject
 {
-    public const int MinLength = 20;
+    public const int MinLength = 5;
     public const int MaxLength = 4800;
     
     public string Value { get; }

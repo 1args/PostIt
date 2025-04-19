@@ -90,7 +90,7 @@ public class Post : Entity<Guid>
     {
         if (!_comments.Contains(comment))
         {
-            throw new DomainException("Comment not found", nameof(comment));
+            throw new DomainException($"Comment with ID {comment.Id} not found", nameof(comment));
         }
         _comments.Remove(comment);
     }
