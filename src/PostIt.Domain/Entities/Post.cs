@@ -62,7 +62,7 @@ public class Post : Entity<Guid>
     {
         if(_likes.Any(l => l.AuthorId == userId))
         {
-            throw new DomainException($"User with id {userId} already liked this post.");
+            throw new DomainException($"User with ID {userId} already liked this post.");
         }
         _likes.Add(PostLike.Create(Id, userId));
     }
@@ -73,7 +73,7 @@ public class Post : Entity<Guid>
         
         if (like is null)
         {
-            throw new DomainException($"User with id {userId} not liked this post.");
+            throw new DomainException($"User with ID {userId} not liked this post.");
         }
         _likes.Remove(like);
     }

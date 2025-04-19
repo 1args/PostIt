@@ -10,13 +10,13 @@ namespace PostIt.Domain.Tests.Entities;
 public class PostTests
 {
     private static (Title title, Content content, Guid authorId, DateTime createdAt)
-        BuildValidPostData() =>
-        (
-            Title.Create("Test Title"),
-            Content.Create("Test Content"),
-            Guid.NewGuid(),
-            DateTime.UtcNow
-        );
+        BuildValidPostData() => 
+    (
+        Title.Create("Test Title"),
+        Content.Create("Test Content"),
+        Guid.NewGuid(),
+        DateTime.UtcNow
+    );
     
     private static Post CreatePost() 
     {
@@ -55,7 +55,7 @@ public class PostTests
     public void CreatePost_FutureDate_ShouldThrowDomainException()
     {
         // Arrange 
-        var (title, content, authorId, createdAt) = BuildValidPostData();
+        var (title, content, authorId, _) = BuildValidPostData();
         var futureDate = DateTime.UtcNow.AddMinutes(10);
         
         // Act
@@ -84,7 +84,7 @@ public class PostTests
         var secondLike = () => post.Like(userId);
         
         secondLike.Should().Throw<DomainException>()
-            .WithMessage($"User with id {userId} already liked this post.");
+            .WithMessage($"User with ID {userId} already liked this post.");
     }
 
     [Fact]
@@ -105,7 +105,7 @@ public class PostTests
         var unlikeAgain = () => post.Unlike(userId);
 
         unlikeAgain.Should().Throw<DomainException>()
-            .WithMessage($"User with id {userId} not liked this post.");
+            .WithMessage($"User with ID {userId} not liked this post.");
     }
 
     [Fact]

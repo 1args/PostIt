@@ -41,7 +41,7 @@ public class Comment : Entity<Guid>
     {
         if(_likes.Any(l => l.AuthorId == userId))
         {
-            throw new DomainException($"User with id {userId} already liked this comment.");
+            throw new DomainException($"User with ID {userId} already liked this comment.");
         }
         _likes.Add(CommentLike.Create(Id, userId));
     }
@@ -52,7 +52,7 @@ public class Comment : Entity<Guid>
         
         if (like is null)
         {
-            throw new DomainException($"User with id {userId} not liked this comment.",
+            throw new DomainException($"User with ID {userId} not liked this comment.",
                 nameof(userId));
         }
         _likes.Remove(like);
