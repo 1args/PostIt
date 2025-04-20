@@ -398,11 +398,23 @@
       "System.Diagnostics.DiagnosticSource/9.0.0": {},
       "PostIt.Application/1.0.0": {
         "dependencies": {
+          "PostIt.Contracts": "1.0.0",
           "PostIt.Domain": "1.0.0",
           "PostIt.Infrastructure": "1.0.0"
         },
         "runtime": {
           "PostIt.Application.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PostIt.Contracts/1.0.0": {
+        "dependencies": {
+          "PostIt.Domain": "1.0.0"
+        },
+        "runtime": {
+          "PostIt.Contracts.dll": {
             "assemblyVersion": "1.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -704,6 +716,11 @@
       "hashPath": "system.diagnostics.diagnosticsource.9.0.0.nupkg.sha512"
     },
     "PostIt.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PostIt.Contracts/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

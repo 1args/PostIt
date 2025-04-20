@@ -6,12 +6,13 @@ volumes:
     
 services:
   
+  # Api
   postit.api:
     build:
       context: ../
       dockerfile: localhost/Dockerfile
     container_name: postit-api
-    restart: unless-stopped
+    restart: on-failure
     ports:
       - "5000:80"
     environment:
@@ -21,12 +22,13 @@ services:
       - postgres
       - opensearch
       
+  # PostgreSQL db
   postgres:
     container_name: postit-postgres
     image: postgres:latest
     ports:
       - '5432:5432'
-    restart: unless-stopped
+    restart: on-failure
     environment:
       POSTGRES_DB: postit-general
       POSTGRES_USER: postgres
@@ -34,10 +36,11 @@ services:
     volumes:
       - postit-postgres:/var/lib/postgresql/data
   
+  # OpenSearch
   opensearch:
     container_name: postit-opensearch
     image: opensearchproject/opensearch:2.19.0
-    restart: unless-stopped
+    restart: on-failure
     ports:
       - '9200:9200'
       - '9600:9600'
@@ -48,10 +51,11 @@ services:
     volumes:
       - postit-logs:/usr/share/opensearch/data
         
+  # OpenSearch Dashboard
   opensearch-dashboard:
     container_name: postit-opensearch-dashboard
     image: opensearchproject/opensearch-dashboards:2.19.0
-    restart: unless-stopped
+    restart: on-failure
     ports:
       - '5601:5601'
     environment:
@@ -59,5 +63,3 @@ services:
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
     depends_on:
       - opensearch  
-    
-    

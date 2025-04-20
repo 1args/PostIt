@@ -66,3 +66,5 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\r
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\PostIt.Api.pdb
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\PostIt.Api.genruntimeconfig.cache
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\ref\PostIt.Api.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\PostIt.Contracts.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\PostIt.Contracts.pdb

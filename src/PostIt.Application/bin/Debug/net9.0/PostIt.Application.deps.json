@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v9.0": {
       "PostIt.Application/1.0.0": {
         "dependencies": {
+          "PostIt.Contracts": "1.0.0",
           "PostIt.Domain": "1.0.0",
           "PostIt.Infrastructure": "1.0.0"
         },
@@ -176,6 +177,17 @@
           }
         }
       },
+      "PostIt.Contracts/1.0.0": {
+        "dependencies": {
+          "PostIt.Domain": "1.0.0"
+        },
+        "runtime": {
+          "PostIt.Contracts.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "PostIt.Domain/1.0.0": {
         "runtime": {
           "PostIt.Domain.dll": {
@@ -309,6 +321,11 @@
       "sha512": "sha512-mw5vcY2IEc7L+IeGrxpp/J5OSnCcjkjAgJYCm/eD52wpZze8zsSifdqV7zXslSMmfJG2iIUGZyo3KuDtEFKwMQ==",
       "path": "npgsql.entityframeworkcore.postgresql/9.0.4",
       "hashPath": "npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512"
+    },
+    "PostIt.Contracts/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "PostIt.Domain/1.0.0": {
       "type": "project",
