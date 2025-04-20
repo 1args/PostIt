@@ -20,6 +20,11 @@ public class CommentService(
         CreateCommentRequest request,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation(
+            "Creating comment from author with ID `{AuthorId}` to post with ID `{PostId}`.",
+            request.AuthorId,
+            request.PostId);
+        
         var text = Text.Create(request.Text);
 
         var post = await postRepository
@@ -30,12 +35,19 @@ public class CommentService(
 
         if (post is null)
         {
-            throw new NotFoundException($"Post with ID '{request.PostId}' not found.");
+            logger.LogWarning("Post with ID `{PostId}` not found. Cannot create comment.", request.PostId);
+            throw new NotFoundException($"Post with ID `{request.PostId}` not found.");
         }
 
         var comment = Comment.Create(text, request.AuthorId, post.Id, DateTime.UtcNow);
         
         await commentRepository.AddAsync(comment, cancellationToken);
+        
+        logger.LogInformation(
+            "Comment created successfully with ID `{CommentId}` to post with ID `{PostId}`.",
+            comment.Id,
+            comment.PostId);
+        
         return comment.Id;
     }
 
@@ -43,9 +55,12 @@ public class CommentService(
         Guid commentId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Deleting comment with ID `{CommentId}`.", commentId);
+        
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
 
         await commentRepository.DeleteAsync([comment], cancellationToken);
+        logger.LogInformation("Comment with ID `{CommentId}` deleted successfully.", commentId);
     }
 
     public async Task LikeCommentAsync(
@@ -53,10 +68,20 @@ public class CommentService(
         Guid authorId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation(
+            "Liking comment with ID `{CommentId}` by user `{AuthorId}`.",
+            commentId,
+            authorId);
+        
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
         
         comment.Like(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
+        
+        logger.LogInformation(
+            "Comment with ID `{CommentId}` liked by user `{AuthorId}` successfully.", 
+            commentId,
+            authorId);
     }
     
     public async Task UnlikeCommentAsync(
@@ -64,17 +89,29 @@ public class CommentService(
         Guid authorId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation(
+            "Unliking comment with ID `{CommentId}` by user `{AuthorId}`.", 
+            commentId,
+            authorId);
+        
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
         
         comment.Unlike(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
+        
+        logger.LogInformation(
+            "Comment with ID `{CommentId}` unliked by user `{AuthorId}` successfully.",
+            commentId,
+            authorId);
     }
 
     public async Task<List<CommentResponse>> GetCommentsByPost(
         Guid postId,
         CancellationToken cancellationToken)
     {
-        var posts = await commentRepository
+        logger.LogInformation("Fetching comments for post with ID `{PostId}`.", postId);
+        
+        var comments = await commentRepository
             .AsQueryable()
             .AsNoTracking()
             .Where(c => c.PostId == postId)
@@ -82,7 +119,12 @@ public class CommentService(
             .ThenByDescending(c => c.CreatedAt)
             .ToListAsync(cancellationToken);
         
-        return posts
+        logger.LogInformation(
+            "Fetched `{Count}` comments for post with ID `{PostId}`.",
+            comments.Count, 
+            postId);
+        
+        return comments
             .Select(c => c.MapToPublic())
             .ToList();
     }
@@ -97,6 +139,14 @@ public class CommentService(
             .Where(c => c.Id == commentId)
             .SingleOrDefaultAsync(cancellationToken);
         
-        return comment ?? throw new NotFoundException($"Comment with ID '{commentId}' not found.");
+        if (comment is null)
+        {
+            logger.LogWarning("Comment with ID `{CommentId}` not found.", commentId);
+            throw new NotFoundException($"Comment with ID '{commentId}' not found.");
+        }
+        
+        logger.LogInformation("Comment with ID `{CommentId}` retrieved successfully.", commentId);
+        
+        return comment;
     }
 }

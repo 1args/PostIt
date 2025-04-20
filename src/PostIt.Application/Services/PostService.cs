@@ -19,6 +19,8 @@ public class PostService(
         CreatePostRequest request,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Creating post by author ID `{AuthorId}`.", request.AuthorId);
+        
         var title = Title.Create(request.Title);
         var content = Content.Create(request.Content);
 
@@ -31,12 +33,16 @@ public class PostService(
 
         await postRepository.AddAsync(post, cancellationToken);
         
+        logger.LogInformation("Post with ID `{PostId}` created successfully.", post.Id);
+        
         return post.Id;
     }
     public async Task UpdatePostAsync(
         UpdatePostRequest request,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Updating post with ID `{PostId}`.", request.PostId);
+        
         var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
         
         var newTitle = Title.Create(request.Title);
@@ -44,15 +50,21 @@ public class PostService(
         
         post.UpdateContent(newTitle, newContent);
         await postRepository.UpdateAsync(post, cancellationToken);
+        
+        logger.LogInformation("Post with ID `{PostId}` updated successfully.", request.PostId);
     }
 
     public async Task DeletePostAsync(
         Guid postId, 
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Deleting post with ID `{PostId}`.", postId);
+        
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
 
         await postRepository.DeleteAsync([post], cancellationToken);
+        
+        logger.LogInformation("Post with ID `{PostId}` deleted successfully.", postId);
     }
     
     public async Task LikePostAsync(
@@ -60,10 +72,14 @@ public class PostService(
         Guid authorId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Liking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
+        
         var post = await GetPostOrThrowAsync(postId, cancellationToken); 
 
         post.Like(authorId);
         await postRepository.UpdateAsync(post, cancellationToken);
+        
+        logger.LogInformation("Post `{PostId}` liked by user `{AuthorId}`.", postId, authorId);
     }
 
     public async Task UnlikePostAsync(
@@ -71,36 +87,56 @@ public class PostService(
         Guid authorId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Unliking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
+        
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         post.Unlike(authorId);
         await postRepository.UpdateAsync(post, cancellationToken);
+        
+        logger.LogInformation("Post `{PostId}` unliked by `{AuthorId}`.", postId, authorId);
     }
 
     public async Task ViewPostAsync(
         Guid postId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Viewing post with ID `{PostId}`.", postId);
+        
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         post.View();
         await postRepository.UpdateAsync(post, cancellationToken);
+        
+        logger.LogInformation("Post with ID `{PostId}` viewed.", postId);
     }
 
     public async Task ChangeVisibilityAsync(
         ChangePostVisibilityRequest request,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation(
+            "Changing visibility for post `{PostId}` to `{Visibility}`.", 
+            request.PostId,
+            request.Visibility);
+
         var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
         
         post.SetVisibility(request.Visibility);
         await postRepository.UpdateAsync(post, cancellationToken);
+        
+        logger.LogInformation(
+            "Visibility for post `{PostId}` changed to `{Visibility}`.",
+            request.PostId, 
+            request.Visibility);
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
         Guid currentUserId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Fetching posts sorted by likes.");
+        
         var posts = await postRepository
             .AsQueryable()
             .AsNoTracking()
@@ -109,6 +145,8 @@ public class PostService(
             .OrderByDescending(p => p.Likes.Count)
             .ToListAsync(cancellationToken);
 
+        logger.LogInformation("Fetched `{Count}` posts sorted by likes.", posts.Count);
+        
         return posts
             .Select(p => p.MapToPublic(currentUserId))
             .ToList();
@@ -118,6 +156,8 @@ public class PostService(
         Guid currentUserId,
         CancellationToken cancellationToken)
     {
+        logger.LogInformation("Fetching posts sorted by views.");
+        
         var posts = await postRepository
             .AsQueryable()
             .AsNoTracking()
@@ -125,7 +165,9 @@ public class PostService(
             .Include(p => p.Comments)
             .OrderByDescending(p => p.Views)
             .ToListAsync(cancellationToken);
-
+        
+        logger.LogInformation("Fetched `{Count}` posts sorted by views.", posts.Count);
+        
         return posts
             .Select(p => p.MapToPublic(currentUserId))
             .ToList();
@@ -139,6 +181,14 @@ public class PostService(
             .Where(p => p.Id == postId)
             .SingleOrDefaultAsync(cancellationToken);
         
-        return post ?? throw new NotFoundException($"Post with ID '{postId}' not found.");
+        if (post == null)
+        {
+            logger.LogWarning("Post with ID `{PostId}` not found.", postId);
+            throw new NotFoundException($"Post with ID '{postId}' not found.");
+        }
+        
+        logger.LogInformation("Post with ID `{PostId}` retrieved successfully.", postId);
+
+        return post;
     }
 }
