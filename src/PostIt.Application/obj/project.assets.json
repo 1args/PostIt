@@ -265,6 +265,19 @@
           }
         }
       },
+      "PostIt.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "PostIt.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PostIt.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PostIt.Contracts.dll": {}
+        }
+      },
       "PostIt.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -703,6 +716,11 @@
         "postgresql.png"
       ]
     },
+    "PostIt.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../PostIt.Contracts/PostIt.Contracts.csproj",
+      "msbuildProject": "../PostIt.Contracts/PostIt.Contracts.csproj"
+    },
     "PostIt.Domain/1.0.0": {
       "type": "project",
       "path": "../PostIt.Domain/PostIt.Domain.csproj",
@@ -716,6 +734,7 @@
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "PostIt.Contracts >= 1.0.0",
       "PostIt.Domain >= 1.0.0",
       "PostIt.Infrastructure >= 1.0.0"
     ]
@@ -754,6 +773,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
+            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Contracts\\PostIt.Contracts.csproj": {
+              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Contracts\\PostIt.Contracts.csproj"
+            },
             "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
               "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
             },

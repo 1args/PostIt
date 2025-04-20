@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Contracts.Requests.Comment;
-using PostIt.Application.Contracts.Responses;
 using PostIt.Application.Exceptions;
+using PostIt.Contracts.ApiContracts.Requests.Comment;
+using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Comment;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -22,6 +23,8 @@ public class CommentService(
         var text = Text.Create(request.Text);
 
         var post = await postRepository
+            .AsQueryable()
+            .AsNoTracking()
             .Where(p => p.Id == request.PostId)
             .SingleOrDefaultAsync(cancellationToken);
 
@@ -72,25 +75,24 @@ public class CommentService(
         CancellationToken cancellationToken)
     {
         var posts = await commentRepository
+            .AsQueryable()
+            .AsNoTracking()
             .Where(c => c.PostId == postId)
-            .Select(c => new CommentResponse(
-                c.Id,
-                c.Text.Value,
-                c.AuthorId,
-                c.PostId,
-                c.CreatedAt,
-                c.Likes.Count))
-            .OrderByDescending(c => c.LikesCount)
+            .OrderByDescending(c => c.Likes.Count)
             .ThenByDescending(c => c.CreatedAt)
             .ToListAsync(cancellationToken);
         
-        return posts;
+        return posts
+            .Select(c => c.MapToPublic())
+            .ToList();
     }
 
     private async Task<Comment> GetCommentOrThrowAsync(
         Guid commentId,
         CancellationToken cancellationToken)
     {
+        var query = commentRepository.AsQueryable();
+        
         var comment = await commentRepository
             .Where(c => c.Id == commentId)
             .SingleOrDefaultAsync(cancellationToken);

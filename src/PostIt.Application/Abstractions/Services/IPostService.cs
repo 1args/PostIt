@@ -1,5 +1,5 @@
-using PostIt.Application.Contracts.Requests.Post;
-using PostIt.Application.Contracts.Responses;
+using PostIt.Contracts.ApiContracts.Requests.Post;
+using PostIt.Contracts.ApiContracts.Responses;
 
 namespace PostIt.Application.Abstractions.Services;
 

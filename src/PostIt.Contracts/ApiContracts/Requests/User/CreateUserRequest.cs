@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using PostIt.Domain.Enums;
 
-namespace PostIt.Application.Contracts.Requests.User;
+namespace PostIt.Contracts.ApiContracts.Requests.User;
 
 public sealed record CreateUserRequest(
     [Required] string Name,

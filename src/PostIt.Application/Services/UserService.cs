@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Contracts.Requests.User;
-using PostIt.Application.Contracts.Responses;
 using PostIt.Application.Exceptions;
+using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.User;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -39,10 +40,11 @@ public class UserService(
     {
         logger.LogInformation("Getting user by ID {Id}.", userId);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken, asNoTracking: true);
         
         logger.LogInformation("Retrieved user by ID {Id} retrieved successfully.", userId);
-        return MapToResponse(user);
+        
+        return user.MapToPublic();
     }
 
     public async Task DeleteUserAsync(
@@ -74,9 +76,17 @@ public class UserService(
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool asNoTracking = false)
     {
-        var user = await userRepository
+        var query = userRepository.AsQueryable();
+
+        if (asNoTracking)
+        {
+            query.AsNoTracking();
+        }
+        
+        var user = await query
             .Where(u => u.Id == userId)
             .SingleOrDefaultAsync(cancellationToken);
 
@@ -88,12 +98,4 @@ public class UserService(
 
         return user;
     }
-    private static UserResponse MapToResponse(User user) =>
-        new(user.Id,
-            user.Name.Value,
-            user.Bio.Value,
-            user.Role,
-            user.Posts,
-            user.Comments,
-            user.CreatedAt);
 }

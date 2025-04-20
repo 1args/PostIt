@@ -1,10 +1,10 @@
 using PostIt.Domain.Entities;
 using PostIt.Domain.Enums;
 
-namespace PostIt.Application.Contracts.Responses;
+namespace PostIt.Contracts.ApiContracts.Responses;
 
 public sealed record UserResponse(
-    Guid UserId,
+    Guid Id,
     string Name,
     string Bio,
     Role Role,

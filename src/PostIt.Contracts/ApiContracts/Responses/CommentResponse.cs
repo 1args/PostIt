@@ -1,7 +1,7 @@
-namespace PostIt.Application.Contracts.Responses;
+namespace PostIt.Contracts.ApiContracts.Responses;
 
 public record CommentResponse(
-    Guid CommentId,
+    Guid Id,
     string Text,
     Guid AuthorId,
     Guid PostId,

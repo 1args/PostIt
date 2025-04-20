@@ -668,6 +668,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "PostIt.Contracts": "1.0.0",
           "PostIt.Domain": "1.0.0",
           "PostIt.Infrastructure": "1.0.0"
         },
@@ -676,6 +677,19 @@
         },
         "runtime": {
           "bin/placeholder/PostIt.Application.dll": {}
+        }
+      },
+      "PostIt.Contracts/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "PostIt.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PostIt.Contracts.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PostIt.Contracts.dll": {}
         }
       },
       "PostIt.Domain/1.0.0": {
@@ -1723,6 +1737,11 @@
       "type": "project",
       "path": "../PostIt.Application/PostIt.Application.csproj",
       "msbuildProject": "../PostIt.Application/PostIt.Application.csproj"
+    },
+    "PostIt.Contracts/1.0.0": {
+      "type": "project",
+      "path": "../PostIt.Contracts/PostIt.Contracts.csproj",
+      "msbuildProject": "../PostIt.Contracts/PostIt.Contracts.csproj"
     },
     "PostIt.Domain/1.0.0": {
       "type": "project",

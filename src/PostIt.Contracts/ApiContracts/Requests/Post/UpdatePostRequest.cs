@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PostIt.Application.Contracts.Requests.Post;
+namespace PostIt.Contracts.ApiContracts.Requests.Post;
 
 public record UpdatePostRequest(
     [Required] Guid PostId,

@@ -1,6 +1,6 @@
 using PostIt.Domain.Enums;
 
-namespace PostIt.Application.Contracts.Responses;
+namespace PostIt.Contracts.ApiContracts.Responses;
 
 public record PostResponse(
     Guid Id,

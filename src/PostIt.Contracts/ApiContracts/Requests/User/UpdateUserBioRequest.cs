@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PostIt.Application.Contracts.Requests.User;
+namespace PostIt.Contracts.ApiContracts.Requests.User;
 
 public record UpdateUserBioRequest(
     [Required] Guid UserId,

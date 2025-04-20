@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace PostIt.Application.Contracts.Requests.Comment;
+namespace PostIt.Contracts.ApiContracts.Requests.Comment;
 
 public record CreateCommentRequest(
     [Required] string Text,

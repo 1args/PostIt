@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Contracts.Requests.Post;
-using PostIt.Application.Contracts.Responses;
 using PostIt.Application.Exceptions;
+using PostIt.Contracts.ApiContracts.Requests.Post;
+using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Post;
 using PostIt.Infrastructure.Configuration.Repositories;
@@ -102,11 +103,14 @@ public class PostService(
     {
         var posts = await postRepository
             .AsQueryable()
+            .AsNoTracking()
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
             .OrderByDescending(p => p.Likes.Count)
             .ToListAsync(cancellationToken);
 
         return posts
-            .Select(p => MapToResponse(p, currentUserId))
+            .Select(p => p.MapToPublic(currentUserId))
             .ToList();
     }
 
@@ -116,11 +120,14 @@ public class PostService(
     {
         var posts = await postRepository
             .AsQueryable()
+            .AsNoTracking()
+            .Include(p => p.Likes)
+            .Include(p => p.Comments)
             .OrderByDescending(p => p.Views)
             .ToListAsync(cancellationToken);
 
         return posts
-            .Select(p => MapToResponse(p, currentUserId))
+            .Select(p => p.MapToPublic(currentUserId))
             .ToList();
     }
     
@@ -133,24 +140,5 @@ public class PostService(
             .SingleOrDefaultAsync(cancellationToken);
         
         return post ?? throw new NotFoundException($"Post with ID '{postId}' not found.");
-    }
-
-    private static PostResponse MapToResponse(Post post, Guid currentUserId)
-    {
-        var isLiked = post.Likes.Any(like => like.AuthorId == currentUserId);
-        
-        return new PostResponse(
-            post.Id,
-            post.Title.Value,
-            post.Content.Value,
-            post.Likes.Count,
-            post.Comments.Count,
-            post.CreatedAt,
-            post.UpdatedAt,
-            post.WasUpdated,
-            post.Visibility,
-            post.AuthorId,
-            isLiked
-        );
     }
 }

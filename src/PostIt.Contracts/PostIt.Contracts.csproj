@@ -7,9 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PostIt.Contracts\PostIt.Contracts.csproj" />
       <ProjectReference Include="..\PostIt.Domain\PostIt.Domain.csproj" />
-      <ProjectReference Include="..\PostIt.Infrastructure\PostIt.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
