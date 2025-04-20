@@ -1,3 +1,5 @@
+using PostIt.Domain.Exceptions;
+
 namespace PostIt.Domain.Entities;
 
 public class CommentLike
@@ -9,10 +11,22 @@ public class CommentLike
     public Guid AuthorId { get; private set; }
 
     public User Author { get; private set; } = null!;
+    
+    private CommentLike() { }
 
-    private CommentLike(Guid postId, Guid authorId)
+    private CommentLike(Guid commentId, Guid authorId)
     {
-        CommentId = postId;
+        if (commentId == Guid.Empty)
+        {
+            throw new DomainException("Comment ID cannot be empty", nameof(commentId));
+        }
+
+        if (authorId == Guid.Empty)
+        {
+            throw new DomainException("Author ID cannot be empty", nameof(authorId));
+        }
+        
+        CommentId = commentId;
         AuthorId = authorId;
     }
     

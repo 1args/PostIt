@@ -20,6 +20,8 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=postit-general;Username=postgres;Password=bvytnfr,jkmyj;ApplicationName=postit-api"
       ConnectionStrings__Redis: "redis:6379"
+    volumes:
+      - ./src/PostIt.Infrastructure/Migrations:/app/Data/Migrations
     depends_on:
       - postgres
       - opensearch

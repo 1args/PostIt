@@ -17,7 +17,8 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         {
             text.Property(t => t.Value)
                 .HasColumnName("Text")
-                .HasMaxLength(Text.MaxLength);
+                .HasMaxLength(Text.MaxLength)
+                .IsRequired();
         });
 
         builder.HasOne(c => c.Post)

@@ -9,6 +9,8 @@ public class Name : ValueObject
     
     public string Value { get; }
     
+    private Name() { }
+    
     private Name(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

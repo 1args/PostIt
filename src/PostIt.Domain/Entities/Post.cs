@@ -31,6 +31,8 @@ public class Post : Entity<Guid>
     
     public User Author { get; private set; } = null!;
 
+    public Post() { }
+
     private Post(
         Title title, 
         Content content,

@@ -1,10 +1,10 @@
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Application.deps.json
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Application.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Application.pdb
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Contracts.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Domain.dll
-C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Infrastructure.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Contracts.pdb
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Domain.pdb
-C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Infrastructure.pdb
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\PostIt.Application.csproj.AssemblyReference.cache
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\PostIt.Application.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\PostIt.Application.AssemblyInfoInputs.cache
@@ -16,5 +16,3 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\refint\PostIt.Application.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\PostIt.Application.pdb
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\obj\Debug\net9.0\ref\PostIt.Application.dll
-C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Contracts.dll
-C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Application\bin\Debug\net9.0\PostIt.Contracts.pdb

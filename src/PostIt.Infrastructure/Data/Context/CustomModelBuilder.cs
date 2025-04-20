@@ -11,6 +11,6 @@ public static class CustomModelBuilder
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new PostLikeConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());
-        modelBuilder.ApplyConfiguration(new PostConfiguration());
+        modelBuilder.ApplyConfiguration(new CommentLikeConfiguration());
     }
 }

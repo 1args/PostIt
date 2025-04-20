@@ -8,7 +8,9 @@ public class Content : ValueObject
     public const int MaxLength = 4800;
     
     public string Value { get; }
-
+    
+    private Content() { }
+    
     private Content(string content)
     {
         if (string.IsNullOrWhiteSpace(content))

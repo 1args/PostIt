@@ -19,5 +19,7 @@ public class CommentLikeConfiguration : IEntityTypeConfiguration<CommentLike>
             .WithMany()
             .HasForeignKey(cl => cl.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.ToTable("CommentLikes");
     }
 }

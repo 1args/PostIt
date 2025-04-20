@@ -8,6 +8,8 @@ public class Text : ValueObject
     public const int MaxLength = 2400;
     
     public string Value { get; }
+
+    private Text() { }
     
     private Text(string text)
     {

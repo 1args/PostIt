@@ -24,6 +24,8 @@ public class User : Entity<Guid>
     public Role Role { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
+    
+    private User() { }
 
     private User(Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt)
     {

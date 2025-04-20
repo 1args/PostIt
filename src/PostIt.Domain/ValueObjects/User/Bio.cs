@@ -8,6 +8,8 @@ public class Bio : ValueObject
     
     public string Value { get; }
 
+    private Bio() { }
+    
     private Bio(string bio)
     {
         if(string.IsNullOrWhiteSpace(bio))

@@ -20,6 +20,6 @@ public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
             .HasForeignKey(pl => pl.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.ToTable("PostLike");
+        builder.ToTable("PostLikes");
     }
 }

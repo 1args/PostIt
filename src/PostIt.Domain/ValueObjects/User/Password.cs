@@ -8,6 +8,8 @@ public class Password : ValueObject
     public const int MaxLength = 16;
     
     public string Value { get; }
+    
+    private Password() { }
 
     private Password(string password)
     {

@@ -7,6 +7,8 @@ public class Email : ValueObject
 {
     public string Value { get; }
 
+    private Email() { }
+    
     private Email(string email) 
     {
         if (!IsEmailValid(email))

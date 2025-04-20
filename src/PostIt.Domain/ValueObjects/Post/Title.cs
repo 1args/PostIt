@@ -8,6 +8,8 @@ public class Title : ValueObject
     public const int MaxLength = 100;
     
     public string Value { get; set; }
+    
+    private Title() { }
 
     private Title(string title)
     {

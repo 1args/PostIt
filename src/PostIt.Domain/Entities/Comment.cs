@@ -21,6 +21,8 @@ public class Comment : Entity<Guid>
     
     public Post Post { get; private set; } = null!;
 
+    private Comment() { }
+
     private Comment(Text text, Guid authorId, Guid postId, DateTime createdAt)
     {
         if (createdAt > DateTime.UtcNow)
