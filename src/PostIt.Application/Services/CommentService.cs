@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
@@ -7,7 +7,6 @@ using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Comment;
-using PostIt.Infrastructure.Configuration.Repositories;
 
 namespace PostIt.Application.Services;
 
@@ -28,10 +27,7 @@ public class CommentService(
         var text = Text.Create(request.Text);
 
         var post = await postRepository
-            .AsQueryable()
-            .AsNoTracking()
-            .Where(p => p.Id == request.PostId)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(p => p.Id == request.PostId, cancellationToken, tracking: false);
 
         if (post is null)
         {
@@ -110,21 +106,23 @@ public class CommentService(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching comments for post with ID `{PostId}`.", postId);
-        
-        var comments = await commentRepository
-            .AsQueryable()
-            .AsNoTracking()
-            .Where(c => c.PostId == postId)
+
+        var comments = await commentRepository.ToListAsync(
+            expression:c => c.PostId == postId,
+            cancellationToken: cancellationToken,
+            tracking: false);
+
+        var sortedComment = comments
             .OrderByDescending(c => c.Likes.Count)
             .ThenByDescending(c => c.CreatedAt)
-            .ToListAsync(cancellationToken);
+            .ToList();
         
         logger.LogInformation(
             "Fetched `{Count}` comments for post with ID `{PostId}`.",
             comments.Count, 
             postId);
         
-        return comments
+        return sortedComment
             .Select(c => c.MapToPublic())
             .ToList();
     }
@@ -133,11 +131,8 @@ public class CommentService(
         Guid commentId,
         CancellationToken cancellationToken)
     {
-        var query = commentRepository.AsQueryable();
-        
         var comment = await commentRepository
-            .Where(c => c.Id == commentId)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(c => c.Id == commentId, cancellationToken);
         
         if (comment is null)
         {

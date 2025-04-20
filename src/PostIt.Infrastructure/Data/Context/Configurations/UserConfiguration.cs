@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.User;
 
-namespace PostIt.Infrastructure.Context.Configurations;
+namespace PostIt.Infrastructure.Data.Context.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

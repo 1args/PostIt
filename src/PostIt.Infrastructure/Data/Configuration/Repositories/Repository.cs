@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using PostIt.Application.Abstractions.Data;
 
-namespace PostIt.Infrastructure.Configuration.Repositories;
+namespace PostIt.Infrastructure.Data.Configuration.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> 
     where TEntity : class
@@ -51,9 +52,11 @@ public class Repository<TEntity> : IRepository<TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
-    public IQueryable<TEntity> AsQueryable()
+    public IQueryable<TEntity> AsQueryable(bool tracking = true)
     {
-        return DbSet.AsQueryable<TEntity>();
+        return tracking 
+            ? DbSet.AsQueryable<TEntity>()
+            : DbSet.AsQueryable<TEntity>().AsNoTracking();
     }
 
     public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
@@ -65,5 +68,39 @@ public class Repository<TEntity> : IRepository<TEntity>
     private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
         return DbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<TEntity?> SingleOrDefaultAsync(
+        Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken,
+        bool tracking = true)
+    {
+        return await AsQueryable(tracking)
+            .SingleOrDefaultAsync(expression, cancellationToken);
+    }
+
+    public async Task<List<TEntity>> ToListAsync(
+        Expression<Func<TEntity, bool>> expression,
+        CancellationToken cancellationToken,
+        bool tracking = true)
+    {
+        return await AsQueryable(tracking)
+            .Where(expression)
+            .ToListAsync(cancellationToken);
+    }
+    
+    public async Task<List<TEntity>> ToListAsync(
+        CancellationToken cancellationToken,
+        Expression<Func<TEntity, bool>>? expression = null,
+        bool tracking = true)
+    {
+        var query = AsQueryable(tracking);
+        
+        if (expression is not null)
+        {
+            query = query.Where(expression);
+        }
+
+        return await query.ToListAsync(cancellationToken);
     }
 }

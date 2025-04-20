@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
 
-namespace PostIt.Infrastructure.Context.Configurations;
+namespace PostIt.Infrastructure.Data.Context.Configurations;
 
 public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
 {

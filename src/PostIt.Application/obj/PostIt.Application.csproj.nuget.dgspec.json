@@ -36,12 +36,6 @@
             "projectReferences": {
               "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Contracts\\PostIt.Contracts.csproj": {
                 "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Contracts\\PostIt.Contracts.csproj"
-              },
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
-              },
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj"
               }
             }
           }
@@ -60,6 +54,16 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -196,86 +200,6 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj",
-        "projectName": "PostIt.Infrastructure",
-        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\obj\\",
-        "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\incrysteer 1args\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net9.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
-            "projectReferences": {
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[9.0.4, )"
-            },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
-              "target": "Package",
-              "version": "[9.0.4, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

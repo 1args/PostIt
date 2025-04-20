@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace PostIt.Infrastructure.Configuration.Base;
+namespace PostIt.Infrastructure.Data.Configuration.Base;
 
 public abstract class DbContextOptionsConfigurator<TDbContext>(
     IConfiguration configuration,

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace PostIt.Infrastructure.Configuration;
+namespace PostIt.Infrastructure.Data.Configuration.Base;
 
 public interface IDbContextOptionsConfigurator<TDbContext> 
     where TDbContext : DbContext

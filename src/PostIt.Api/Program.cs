@@ -1,7 +1,7 @@
 using PostIt.Api.Extensions;
 using PostIt.Application.Extensions;
-using PostIt.Infrastructure.Configuration.Configurators;
-using PostIt.Infrastructure.Context;
+using PostIt.Infrastructure.Data.Configuration.Configurators;
+using PostIt.Infrastructure.Data.Context;
 using PostIt.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +12,7 @@ builder.Services.AddOpenApi();
 
 services
     .AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>()
+    .AddCachingDataAccess(configuration)
     .AddApplication()
     .AddSerilog(configuration);
 

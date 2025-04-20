@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PostIt.Infrastructure.Configuration;
-using PostIt.Infrastructure.Configuration.Repositories;
+using PostIt.Application.Abstractions.Data;
+using PostIt.Infrastructure.Data.Configuration.Base;
+using PostIt.Infrastructure.Data.Configuration.Repositories;
 
 namespace PostIt.Infrastructure.Extensions;
 

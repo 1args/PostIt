@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PostIt.Domain.Entities;
-using PostIt.Infrastructure.Context.Configurations;
 
-namespace PostIt.Infrastructure.Context;
+namespace PostIt.Infrastructure.Data.Context;
 
 public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options) : DbContext(options)
@@ -17,10 +16,6 @@ public class ApplicationDbContext(
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new PostConfiguration());
-        modelBuilder.ApplyConfiguration(new PostLikeConfiguration());
-        modelBuilder.ApplyConfiguration(new CommentConfiguration());
-        modelBuilder.ApplyConfiguration(new PostConfiguration());
+        CustomModelBuilder.OnModelCreating(modelBuilder);
     }
 }

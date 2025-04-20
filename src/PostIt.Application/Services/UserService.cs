@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
 using PostIt.Contracts.ApiContracts.Requests.User;
@@ -7,7 +7,6 @@ using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.User;
-using PostIt.Infrastructure.Configuration.Repositories;
 
 namespace PostIt.Application.Services;
 
@@ -40,7 +39,7 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken, asNoTracking: true);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
         
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
         
@@ -71,24 +70,18 @@ public class UserService(
         user.UpdateBio(newBio);
         
         await userRepository.UpdateAsync(user, cancellationToken);
-        logger.LogInformation("Bio updated successfully for user with ID `{UserId}`.", request.UserId);
+        
+        logger.LogInformation("Bio updated successfully for user with ID `{UserId}`.",
+            request.UserId);
     }
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
         CancellationToken cancellationToken,
-        bool asNoTracking = false)
+        bool tracking = true)
     {
-        var query = userRepository.AsQueryable();
-
-        if (asNoTracking)
-        {
-            query.AsNoTracking();
-        }
-        
-        var user = await query
-            .Where(u => u.Id == userId)
-            .SingleOrDefaultAsync(cancellationToken);
+        var user = await userRepository
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken, tracking: tracking);
 
         if (user is null)
         {

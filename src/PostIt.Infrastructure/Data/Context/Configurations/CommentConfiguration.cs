@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Comment;
 
-namespace PostIt.Infrastructure.Context.Configurations;
+namespace PostIt.Infrastructure.Data.Context.Configurations;
 
 public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {

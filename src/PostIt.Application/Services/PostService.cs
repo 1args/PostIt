@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
 using PostIt.Contracts.ApiContracts.Requests.Post;
@@ -7,7 +7,6 @@ using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects.Post;
-using PostIt.Infrastructure.Configuration.Repositories;
 
 namespace PostIt.Application.Services;
 
@@ -136,18 +135,17 @@ public class PostService(
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching posts sorted by likes.");
-        
+
         var posts = await postRepository
-            .AsQueryable()
-            .AsNoTracking()
-            .Include(p => p.Likes)
-            .Include(p => p.Comments)
+            .ToListAsync(cancellationToken: cancellationToken, tracking: false);
+        
+        var sortedPosts = posts
             .OrderByDescending(p => p.Likes.Count)
-            .ToListAsync(cancellationToken);
+            .ToList();
 
         logger.LogInformation("Fetched `{Count}` posts sorted by likes.", posts.Count);
         
-        return posts
+        return sortedPosts
             .Select(p => p.MapToPublic(currentUserId))
             .ToList();
     }
@@ -159,16 +157,15 @@ public class PostService(
         logger.LogInformation("Fetching posts sorted by views.");
         
         var posts = await postRepository
-            .AsQueryable()
-            .AsNoTracking()
-            .Include(p => p.Likes)
-            .Include(p => p.Comments)
+            .ToListAsync(cancellationToken: cancellationToken, tracking: false);
+        
+        var sortedPosts = posts
             .OrderByDescending(p => p.Views)
-            .ToListAsync(cancellationToken);
+            .ToList();
         
         logger.LogInformation("Fetched `{Count}` posts sorted by views.", posts.Count);
         
-        return posts
+        return sortedPosts
             .Select(p => p.MapToPublic(currentUserId))
             .ToList();
     }
@@ -177,11 +174,10 @@ public class PostService(
         Guid postId, 
         CancellationToken cancellationToken)
     {
-        var post = await postRepository
-            .Where(p => p.Id == postId)
-            .SingleOrDefaultAsync(cancellationToken);
+        var post =await postRepository
+            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken, tracking: true);
         
-        if (post == null)
+        if (post is null)
         {
             logger.LogWarning("Post with ID `{PostId}` not found.", postId);
             throw new NotFoundException($"Post with ID '{postId}' not found.");

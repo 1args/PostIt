@@ -2,11 +2,12 @@ version: '3.9'
 
 volumes:
   postit-postgres: 
+  postit-redis:
   postit-logs:
     
 services:
   
-  # Api
+  # GeneralApi
   postit.api:
     build:
       context: ../
@@ -18,11 +19,12 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=postit-general;Username=postgres;Password=bvytnfr,jkmyj;ApplicationName=postit-api"
+      ConnectionStrings__Redis: "redis:6379"
     depends_on:
       - postgres
       - opensearch
       
-  # PostgreSQL db
+  # PostgreSQL
   postgres:
     container_name: postit-postgres
     image: postgres:latest
@@ -35,6 +37,16 @@ services:
       POSTGRES_PASSWORD: bvytnfr,jkmyj
     volumes:
       - postit-postgres:/var/lib/postgresql/data
+  
+  # Redis
+  redis:
+    container_name: postit-redis
+    image: redis:7.2-alpine
+    restart: on-failure
+    ports:
+      - '6379:6379'
+    volumes:
+      - postit-redis:/data
   
   # OpenSearch
   opensearch:
