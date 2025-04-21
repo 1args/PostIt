@@ -8,9 +8,9 @@ public static class PostEndpoints
 {
     public static IEndpointRouteBuilder MapPostEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/posts/").WithTags("Posts");
+        var group = endpoints.MapGroup("/posts").WithTags("Posts");
 
-        group.MapPost(" ", CreatePostAsync);
+        group.MapPost("/", CreatePostAsync);
         group.MapPut("{id:guid}", UpdatePostAsync).WithName(nameof(UpdatePostAsync));
         group.MapDelete("{id:guid}", DeletePostAsync).WithName(nameof(DeletePostAsync));
         group.MapPost("{id:guid}/like/{authorId:guid}", LikePostAsync).WithName("LikePost");

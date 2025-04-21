@@ -8,13 +8,13 @@ public static class CommentEndpoints
 {
     public static IEndpointRouteBuilder MapCommentEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/comments/").WithTags("Comments");
+        var group = endpoints.MapGroup("/comments").WithTags("Comments");
 
-        group.MapPost(" ", CreateCommentAsync).WithName("CreateComment");
+        group.MapPost("/", CreateCommentAsync).WithName("CreateComment");
         group.MapDelete("{id:guid}", DeleteCommentAsync).WithName("DeleteComment");
         group.MapPost("{id:guid}/like/{authorId:guid}", LikeCommentAsync).WithName("LikeComment");
         group.MapDelete("{id:guid}/like/{authorId:guid}", UnlikeCommentAsync).WithName("UnlikeComment");
-        group.MapGet("post/{id:guid}", GetCommentsByPostAsync).WithName("GetCommentsByPost");
+        group.MapGet("{id:guid}", GetCommentsByPostAsync).WithName("GetCommentsByPost");
         
         return endpoints;
     }

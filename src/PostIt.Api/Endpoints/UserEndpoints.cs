@@ -8,9 +8,9 @@ public static class UserEndpoints
 {
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/users/").WithTags("Users");
+        var group = endpoints.MapGroup("/users").WithTags("Users");
 
-        group.MapGet("{id:guid}", GetUserByIdAsync).WithName(nameof(GetUserByIdAsync));
+        group.MapGet("/{id:guid}", GetUserByIdAsync).WithName(nameof(GetUserByIdAsync));
         group.MapDelete("{id:guid}", DeleteUserAsync).WithName(nameof(DeleteUserAsync));
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync).WithName(nameof(UpdateUserBioAsync));
         
