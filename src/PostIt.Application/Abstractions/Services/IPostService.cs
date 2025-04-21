@@ -7,7 +7,7 @@ public interface IPostService
 {
     Task<Guid> CreatePostAsync(CreatePostRequest request, CancellationToken cancellationToken);
 
-    public Task UpdatePostAsync(UpdatePostRequest request, CancellationToken cancellationToken);
+    Task UpdatePostAsync(Guid postId, UpdatePostRequest request, CancellationToken cancellationToken);
 
     Task DeletePostAsync(Guid postId, CancellationToken cancellationToken);
 
@@ -17,7 +17,7 @@ public interface IPostService
 
     Task ViewPostAsync(Guid postId, CancellationToken cancellationToken);
 
-    Task ChangeVisibilityAsync(ChangePostVisibilityRequest request, CancellationToken cancellationToken);
+    Task ChangeVisibilityAsync(Guid postId, ChangePostVisibilityRequest request, CancellationToken cancellationToken);
 
     Task<List<PostResponse>> GetPostsSortedByLikesAsync(Guid currentUserId, CancellationToken cancellationToken);
 

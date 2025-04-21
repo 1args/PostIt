@@ -1010,6 +1010,7 @@
       "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\tests\\PostIt.Domain.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
@@ -1045,8 +1046,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net9.0": {

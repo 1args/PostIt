@@ -868,6 +868,22 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.1.17": {
+        "type": "package",
+        "compile": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "Serilog/4.2.0": {
         "type": "package",
         "compile": {
@@ -3204,6 +3220,23 @@
         "pipelines.sockets.unofficial.nuspec"
       ]
     },
+    "Scalar.AspNetCore/2.1.17": {
+      "sha512": "jhl41CCbqEEGIMfkbh7z3YZ8Fr1+RxSTaAXWAG3y2RoKVsIvaFKIFgLojbe7UnOw92FeEPW+PxXiqTugll+YVg==",
+      "type": "package",
+      "path": "scalar.aspnetcore/2.1.17",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.2.1.17.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "Serilog/4.2.0": {
       "sha512": "gmoWVOvKgbME8TYR+gwMf7osROiWAURterc6Rt2dQyX7wtjZYpqFiA/pY6ztjGQKKV62GGCyOcmtP1UKMHgSmA==",
       "type": "package",
@@ -3966,6 +3999,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.4",
       "PostIt.Application >= 1.0.0",
       "PostIt.Infrastructure >= 1.0.0",
+      "Scalar.AspNetCore >= 2.1.17",
       "Serilog.AspNetCore >= 9.0.0",
       "Serilog.Sinks.Console >= 6.0.1-dev-00953",
       "Serilog.Sinks.OpenSearch >= 1.3.0"
@@ -3984,6 +4018,7 @@
       "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Api\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
@@ -4022,8 +4057,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net9.0": {
@@ -4044,6 +4078,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[9.0.4, )"
+          },
+          "Scalar.AspNetCore": {
+            "target": "Package",
+            "version": "[2.1.17, )"
           },
           "Serilog.AspNetCore": {
             "target": "Package",

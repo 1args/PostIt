@@ -37,12 +37,13 @@ public class PostService(
         return post.Id;
     }
     public async Task UpdatePostAsync(
+        Guid postId,
         UpdatePostRequest request,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Updating post with ID `{PostId}`.", request.PostId);
+        logger.LogInformation("Updating post with ID `{PostId}`.", postId);
         
-        var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
+        var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         var newTitle = Title.Create(request.Title);
         var newContent = Content.Create(request.Content);
@@ -50,7 +51,7 @@ public class PostService(
         post.UpdateContent(newTitle, newContent);
         await postRepository.UpdateAsync(post, cancellationToken);
         
-        logger.LogInformation("Post with ID `{PostId}` updated successfully.", request.PostId);
+        logger.LogInformation("Post with ID `{PostId}` updated successfully.", postId);
     }
 
     public async Task DeletePostAsync(
@@ -111,22 +112,23 @@ public class PostService(
     }
 
     public async Task ChangeVisibilityAsync(
+        Guid postId,
         ChangePostVisibilityRequest request,
         CancellationToken cancellationToken)
     {
         logger.LogInformation(
             "Changing visibility for post `{PostId}` to `{Visibility}`.", 
-            request.PostId,
+            postId,
             request.Visibility);
 
-        var post = await GetPostOrThrowAsync(request.PostId, cancellationToken);
+        var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         post.SetVisibility(request.Visibility);
         await postRepository.UpdateAsync(post, cancellationToken);
         
         logger.LogInformation(
             "Visibility for post `{PostId}` changed to `{Visibility}`.",
-            request.PostId, 
+            postId, 
             request.Visibility);
     }
 

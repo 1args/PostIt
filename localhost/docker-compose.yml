@@ -15,9 +15,10 @@ services:
     container_name: postit-api
     restart: on-failure
     ports:
-      - "5000:80"
+      - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
+      ASPNET_URLS: 'http://0.0.0.0:8080'
       ConnectionStrings__Postgres: "Host=postgres;Port=5432;Database=postit-general;Username=postgres;Password=bvytnfr,jkmyj;ApplicationName=postit-api"
       ConnectionStrings__Redis: "redis:6379"
     volumes:

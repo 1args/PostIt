@@ -59,12 +59,13 @@ public class UserService(
     }
 
     public async Task UpdateUserBioAsync(
+        Guid userId,
         UpdateUserBioRequest request,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Updating bio for user with ID `{UserId}`.", request.UserId);
+        logger.LogInformation("Updating bio for user with ID `{UserId}`.", userId);
         
-        var user = await GetUserOrThrowAsync(request.UserId, cancellationToken);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
 
         var newBio = Bio.Create(request.Bio);
         user.UpdateBio(newBio);
@@ -72,7 +73,7 @@ public class UserService(
         await userRepository.UpdateAsync(user, cancellationToken);
         
         logger.LogInformation("Bio updated successfully for user with ID `{UserId}`.",
-            request.UserId);
+            userId);
     }
 
     private async Task<User> GetUserOrThrowAsync(

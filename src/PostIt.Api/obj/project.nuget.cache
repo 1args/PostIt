@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WQOeIO587Lw=",
+  "dgSpecHash": "Z6QfWK5Z8ik=",
   "success": true,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Api\\PostIt.Api.csproj",
   "expectedPackageFiles": [
@@ -43,6 +43,7 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\opensearch.net\\1.8.0\\opensearch.net.1.8.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\pipelines.sockets.unofficial\\2.2.8\\pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\scalar.aspnetcore\\2.1.17\\scalar.aspnetcore.2.1.17.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\serilog.aspnetcore\\9.0.0\\serilog.aspnetcore.9.0.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\serilog.extensions.hosting\\9.0.0\\serilog.extensions.hosting.9.0.0.nupkg.sha512",

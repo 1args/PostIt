@@ -11,5 +11,5 @@ public interface IUserService
     
     Task DeleteUserAsync(Guid userId, CancellationToken cancellationToken);
     
-    Task UpdateUserBioAsync(UpdateUserBioRequest request, CancellationToken cancellationToken);
+    Task UpdateUserBioAsync(Guid userId, UpdateUserBioRequest request, CancellationToken cancellationToken);
 }

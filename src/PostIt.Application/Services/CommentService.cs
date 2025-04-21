@@ -15,7 +15,7 @@ public class CommentService(
     IRepository<Post> postRepository,
     ILogger<CommentService> logger) : ICommentService
 {
-    public async Task<Guid> CreateComment(
+    public async Task<Guid> CreateCommentAsync(
         CreateCommentRequest request,
         CancellationToken cancellationToken)
     {
@@ -47,7 +47,7 @@ public class CommentService(
         return comment.Id;
     }
 
-    public async Task DeleteComment(
+    public async Task DeleteCommentAsync(
         Guid commentId,
         CancellationToken cancellationToken)
     {
@@ -101,7 +101,7 @@ public class CommentService(
             authorId);
     }
 
-    public async Task<List<CommentResponse>> GetCommentsByPost(
+    public async Task<List<CommentResponse>> GetCommentsByPostAsync(
         Guid postId,
         CancellationToken cancellationToken)
     {
