@@ -16,16 +16,6 @@ public class PostLike
 
     private PostLike(Guid postId, Guid authorId)
     {
-        if (postId == Guid.Empty)
-        {
-            throw new DomainException("Comment ID cannot be empty", nameof(postId));
-        }
-
-        if (authorId == Guid.Empty)
-        {
-            throw new DomainException("Author ID cannot be empty", nameof(authorId));
-        }
-        
         PostId = postId;
         AuthorId = authorId;
     }

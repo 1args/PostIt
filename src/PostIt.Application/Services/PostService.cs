@@ -162,7 +162,7 @@ public class PostService(
             .ToListAsync(cancellationToken: cancellationToken, tracking: false);
         
         var sortedPosts = posts
-            .OrderByDescending(p => p.Views)
+            .OrderByDescending(p => p.ViewCount)
             .ToList();
         
         logger.LogInformation("Fetched `{Count}` posts sorted by views.", posts.Count);

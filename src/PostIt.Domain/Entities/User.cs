@@ -12,6 +12,8 @@ public class User : Entity<Guid>
     public Name Name { get; private set; }
 
     public Bio Bio { get; private set; }
+
+    public int PostsCount { get; set; }
     
     public IReadOnlyList<Post> Posts => _posts.AsReadOnly();
 
@@ -63,15 +65,18 @@ public class User : Entity<Guid>
     public void AddPost(Post post)
     {
         ArgumentNullException.ThrowIfNull(post);
+        
         _posts.Add(post);
+        PostsCount++;
     }
 
     public void RemovePost(Post post)
     {
         if (!_posts.Contains(post))
         {
-            throw new DomainException("Post not found", nameof(post));
+            throw new DomainException("Post not found.", nameof(post));
         }
         _posts.Remove(post);
+        PostsCount--;
     }
 }

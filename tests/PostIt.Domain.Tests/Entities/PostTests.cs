@@ -45,7 +45,8 @@ public class PostTests
         post.Content.Should().Be(content);
         post.AuthorId.Should().Be(authorId);
         post.CreatedAt.Should().BeCloseTo(createdAt, precision);
-        post.Views.Should().Be(0);
+        post.ViewCount.Should().Be(0);
+        post.LikesCount.Should().Be(0);
         post.Likes.Should().BeEmpty();
         post.Comments.Should().BeEmpty();
         post.WasUpdated.Should().BeFalse();
@@ -79,6 +80,7 @@ public class PostTests
         
         // Assert
         post.Likes.Should().ContainSingle(l => l.AuthorId == userId);
+        post.LikesCount.Should().Be(1);
         
         // Act & Assert
         var secondLike = () => post.Like(userId);
@@ -100,6 +102,7 @@ public class PostTests
         
         // Assert
         post.Likes.Should().BeEmpty();
+        post.LikesCount.Should().Be(0);
         
         // Act & Assert
         var unlikeAgain = () => post.Unlike(userId);
@@ -119,7 +122,7 @@ public class PostTests
         post.View();
         
         // Assert
-        post.Views.Should().Be(2);
+        post.ViewCount.Should().Be(2);
     }
 
     [Fact]

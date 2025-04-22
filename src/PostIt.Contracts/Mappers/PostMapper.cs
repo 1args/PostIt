@@ -13,7 +13,7 @@ public static class PostMapper
             Id: post.Id,
             Title: post.Title.Value,
             Content: post.Content.Value,
-            LikesCount: post.Likes.Count,
+            LikesCount: post.LikesCount,
             CommentsCount: post.Comments.Count,
             CreatedAt: post.CreatedAt,
             UpdatedAt: post.UpdatedAt,

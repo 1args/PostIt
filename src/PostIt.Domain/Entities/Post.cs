@@ -13,7 +13,9 @@ public class Post : Entity<Guid>
     
     public Content Content { get; private set; }
 
-    public int Views { get; private set; } = 0;
+    public int ViewCount { get; private set; }
+    
+    public int LikesCount { get; private set; }
     
     public DateTime CreatedAt { get; private set; }
 
@@ -67,6 +69,7 @@ public class Post : Entity<Guid>
             throw new DomainException($"User with ID {userId} already liked this post.");
         }
         _likes.Add(PostLike.Create(Id, userId));
+        LikesCount++;
     }
 
     public void Unlike(Guid userId)
@@ -78,9 +81,10 @@ public class Post : Entity<Guid>
             throw new DomainException($"User with ID {userId} not liked this post.");
         }
         _likes.Remove(like);
+        LikesCount--;
     }
     
-    public void View() => Views++;
+    public void View() => ViewCount++;
 
     public void AddComment(Comment comment)
     {
@@ -92,7 +96,7 @@ public class Post : Entity<Guid>
     {
         if (!_comments.Contains(comment))
         {
-            throw new DomainException($"Comment with ID {comment.Id} not found", nameof(comment));
+            throw new DomainException($"Comment with ID {comment.Id} not found");
         }
         _comments.Remove(comment);
     }

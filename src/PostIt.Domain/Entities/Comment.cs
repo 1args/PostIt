@@ -10,6 +10,8 @@ public class Comment : Entity<Guid>
     public Text Text { get; private set; }
     
     public DateTime CreatedAt { get; private set; }
+
+    public int LikesCount { get; private set; }
     
     public IReadOnlyList<CommentLike> Likes => _likes;
     
@@ -46,6 +48,7 @@ public class Comment : Entity<Guid>
             throw new DomainException($"User with ID {userId} already liked this comment.");
         }
         _likes.Add(CommentLike.Create(Id, userId));
+        LikesCount++;
     }
 
     public void Unlike(Guid userId)
@@ -58,5 +61,6 @@ public class Comment : Entity<Guid>
                 nameof(userId));
         }
         _likes.Remove(like);
+        LikesCount--;
     }
 }

@@ -16,16 +16,6 @@ public class CommentLike
 
     private CommentLike(Guid commentId, Guid authorId)
     {
-        if (commentId == Guid.Empty)
-        {
-            throw new DomainException("Comment ID cannot be empty", nameof(commentId));
-        }
-
-        if (authorId == Guid.Empty)
-        {
-            throw new DomainException("Author ID cannot be empty", nameof(authorId));
-        }
-        
         CommentId = commentId;
         AuthorId = authorId;
     }

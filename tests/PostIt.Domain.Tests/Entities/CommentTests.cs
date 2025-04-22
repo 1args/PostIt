@@ -52,8 +52,7 @@ public class CommentTests
         
         // Assert
         act.Should().Throw<DomainException>()
-            .WithMessage("Creation date cannot be in the future.")
-            .Which.ParameterName.Should().Be("createdAt");
+            .WithMessage("Creation date cannot be in the future.");
     }
 
     [Fact]

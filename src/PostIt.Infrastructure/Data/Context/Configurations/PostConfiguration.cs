@@ -11,7 +11,8 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
     {
         builder.HasKey(p => p.Id);
 
-        builder.Property(p => p.Views).IsRequired();
+        builder.Property(p => p.ViewCount).IsRequired();
+        builder.Property(p => p.LikesCount).IsRequired();
         builder.Property(p => p.CreatedAt).IsRequired();
         builder.Property(p => p.UpdatedAt).IsRequired(false);
         builder.Property(p => p.Visibility).IsRequired();

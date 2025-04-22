@@ -11,6 +11,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.HasKey(c => c.Id);
 
+        builder.Property(c =>c.LikesCount).IsRequired();
         builder.Property(c => c.CreatedAt).IsRequired();
         
         builder.OwnsOne(c => c.Text, text =>

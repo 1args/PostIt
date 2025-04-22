@@ -11,6 +11,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
         
+        builder.Property(u => u.PostsCount).IsRequired();
         builder.Property(u => u.CreatedAt).IsRequired();
         
         builder.OwnsOne(u => u.Name, name =>
