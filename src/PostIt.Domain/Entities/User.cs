@@ -69,7 +69,7 @@ public class User : Entity<Guid>
     
     public void DecrementCommentsCount()
     {
-        if (CommentsCount <= 0) throw new InvalidOperationException("Comment count cannot be negative.");
+        if (CommentsCount <= 0) throw new DomainException("Comment count cannot be negative.");
         PostsCount--;
     }
     

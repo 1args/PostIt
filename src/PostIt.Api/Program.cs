@@ -15,7 +15,8 @@ services
     .AddSerilog(configuration)
     .AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>()
     .AddCachingDataAccess(configuration)
-    .AddApplication();
+    .AddApplication()
+    .AddExceptionHandlers();
 
 var app = builder.Build();
 
@@ -23,10 +24,12 @@ app.MapApiEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandler();
 
 app.Run();
