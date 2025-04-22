@@ -6,18 +6,13 @@ namespace PostIt.Domain.Entities;
 
 public class User : Entity<Guid>
 {
-    private readonly List<Post> _posts = [];
-    private readonly List<Comment> _comments = [];
-    
     public Name Name { get; private set; }
 
     public Bio Bio { get; private set; }
 
-    public int PostsCount { get; set; }
+    public int PostsCount { get; private set; }
     
-    public IReadOnlyList<Post> Posts => _posts.AsReadOnly();
-
-    public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
+    public int CommentsCount { get; private set; }
     
     public Email Email { get; private set; }
     
@@ -61,22 +56,21 @@ public class User : Entity<Guid>
         }
         Bio = bio;
     }
-
-    public void AddPost(Post post)
+    
+    public void IncrementPostsCount() => PostsCount++;
+    
+    public void DecrementPostsCount()
     {
-        ArgumentNullException.ThrowIfNull(post);
-        
-        _posts.Add(post);
-        PostsCount++;
-    }
-
-    public void RemovePost(Post post)
-    {
-        if (!_posts.Contains(post))
-        {
-            throw new DomainException("Post not found.", nameof(post));
-        }
-        _posts.Remove(post);
+        if (PostsCount <= 0) throw new DomainException("Posts count cannot be negative.");
         PostsCount--;
     }
+    
+    public void IncrementCommentsCount() => CommentsCount++;
+    
+    public void DecrementCommentsCount()
+    {
+        if (CommentsCount <= 0) throw new InvalidOperationException("Comment count cannot be negative.");
+        PostsCount--;
+    }
+    
 }

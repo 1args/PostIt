@@ -10,8 +10,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(u => u.Id);
-        
-        builder.Property(u => u.PostsCount).IsRequired();
+
         builder.Property(u => u.CreatedAt).IsRequired();
         
         builder.OwnsOne(u => u.Name, name =>
@@ -49,16 +48,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .HasConversion<string>()
             .IsRequired();
-        
-        builder.HasMany(u => u.Posts)
-            .WithOne()
-            .HasForeignKey(p => p.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-            
-        builder.HasMany(u => u.Comments)
-            .WithOne()
-            .HasForeignKey(c => c.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
         
         builder.ToTable("Users");
     }

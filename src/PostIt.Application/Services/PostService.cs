@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -12,6 +13,7 @@ namespace PostIt.Application.Services;
 
 public class PostService(
     IRepository<Post> postRepository,
+    IRepository<User> userRepository,
     ILogger<PostService> logger) : IPostService
 {
     public async Task<Guid> CreatePostAsync(
@@ -32,6 +34,14 @@ public class PostService(
 
         await postRepository.AddAsync(post, cancellationToken);
         
+        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == post.AuthorId, cancellationToken);
+        
+        if (user is not null)
+        {
+            user.IncrementPostsCount();
+            await userRepository.UpdateAsync(user, cancellationToken);
+        }
+
         logger.LogInformation("Post with ID `{PostId}` created successfully.", post.Id);
         
         return post.Id;
@@ -64,6 +74,14 @@ public class PostService(
 
         await postRepository.DeleteAsync([post], cancellationToken);
         
+        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == post.AuthorId, cancellationToken);
+
+        if (user is not null)
+        {
+            user.DecrementPostsCount();
+            await userRepository.UpdateAsync(user, cancellationToken);
+        }
+        
         logger.LogInformation("Post with ID `{PostId}` deleted successfully.", postId);
     }
     
@@ -89,7 +107,7 @@ public class PostService(
     {
         logger.LogInformation("Unliking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
         
-        var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        var post = await GetPostOrThrowAsync(postId, cancellationToken, includes: [p => p.Likes]);
         
         post.Unlike(authorId);
         await postRepository.UpdateAsync(post, cancellationToken);
@@ -174,10 +192,11 @@ public class PostService(
     
     private async Task<Post> GetPostOrThrowAsync(
         Guid postId, 
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        params Expression<Func<Post, object>>[] includes)
     {
         var post =await postRepository
-            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken, tracking: true);
+            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken, tracking: true, includes);
         
         if (post is null)
         {

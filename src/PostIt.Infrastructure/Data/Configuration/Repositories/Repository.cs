@@ -65,28 +65,24 @@ public class Repository<TEntity> : IRepository<TEntity>
         return DbSet.Where(expression);
     }
 
-    private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
     {
-        return DbContext.SaveChangesAsync(cancellationToken);
+        return await DbSet.AnyAsync(expression, cancellationToken);
     }
+
 
     public async Task<TEntity?> SingleOrDefaultAsync(
         Expression<Func<TEntity, bool>> expression,
         CancellationToken cancellationToken,
-        bool tracking = true)
+        bool tracking = true,
+        params Expression<Func<TEntity, object>>[] includes)
     {
-        return await AsQueryable(tracking)
-            .SingleOrDefaultAsync(expression, cancellationToken);
-    }
+        var query = AsQueryable(tracking);
 
-    public async Task<List<TEntity>> ToListAsync(
-        Expression<Func<TEntity, bool>> expression,
-        CancellationToken cancellationToken,
-        bool tracking = true)
-    {
-        return await AsQueryable(tracking)
-            .Where(expression)
-            .ToListAsync(cancellationToken);
+        query = includes
+            .Aggregate(query, (current, include) => current.Include(include));
+
+        return await query.SingleOrDefaultAsync(expression, cancellationToken);
     }
     
     public async Task<List<TEntity>> ToListAsync(
@@ -102,5 +98,10 @@ public class Repository<TEntity> : IRepository<TEntity>
         }
 
         return await query.ToListAsync(cancellationToken);
+    }
+    
+    private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+    {
+        return DbContext.SaveChangesAsync(cancellationToken);
     }
 }

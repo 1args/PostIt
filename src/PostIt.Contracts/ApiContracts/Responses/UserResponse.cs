@@ -8,7 +8,6 @@ public sealed record UserResponse(
     string Name,
     string Bio,
     Role Role,
-    int PostCount,
-    IReadOnlyList<Post> Posts,
-    IReadOnlyList<Comment> Comments,
+    int PostsCount,
+    int CommentsCount,
     DateTime CreatedAt);

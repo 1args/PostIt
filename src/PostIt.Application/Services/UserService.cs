@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -39,7 +40,10 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
+        var user = await GetUserOrThrowAsync(
+            userId,
+            cancellationToken,
+            tracking: false);
         
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
         
@@ -79,10 +83,11 @@ public class UserService(
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
         CancellationToken cancellationToken,
-        bool tracking = true)
+        bool tracking = true,
+        params Expression<Func<User, object>>[] includes)
     {
         var user = await userRepository
-            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken, tracking: tracking);
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken, tracking: tracking, includes: includes);
 
         if (user is null)
         {

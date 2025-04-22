@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -13,6 +14,7 @@ namespace PostIt.Application.Services;
 public class CommentService(
     IRepository<Comment> commentRepository,
     IRepository<Post> postRepository,
+    IRepository<User> userRepository,
     ILogger<CommentService> logger) : ICommentService
 {
     public async Task<Guid> CreateCommentAsync(
@@ -26,18 +28,22 @@ public class CommentService(
         
         var text = Text.Create(request.Text);
 
-        var post = await postRepository
-            .SingleOrDefaultAsync(p => p.Id == request.PostId, cancellationToken, tracking: false);
+        var state = await postRepository.AnyAsync(p => p.Id == request.PostId, cancellationToken);
 
-        if (post is null)
+        if (!state)
         {
-            logger.LogWarning("Post with ID `{PostId}` not found. Cannot create comment.", request.PostId);
-            throw new NotFoundException($"Post with ID `{request.PostId}` not found.");
+            logger.LogWarning("Post with ID '{PostId}' not found.", request.PostId);
+            throw new NotFoundException($"Post with ID '{request.PostId}' not found.");
         }
-
-        var comment = Comment.Create(text, request.AuthorId, post.Id, DateTime.UtcNow);
+        
+        var comment = Comment.Create(text, request.AuthorId, request.PostId, DateTime.UtcNow);
         
         await commentRepository.AddAsync(comment, cancellationToken);
+
+        var user = await GetUserOrThrowAsync(request.AuthorId,cancellationToken);
+        user.IncrementCommentsCount();
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
         
         logger.LogInformation(
             "Comment created successfully with ID `{CommentId}` to post with ID `{PostId}`.",
@@ -90,7 +96,7 @@ public class CommentService(
             commentId,
             authorId);
         
-        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken, includes: [p => p.Likes]);
         
         comment.Unlike(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
@@ -129,10 +135,11 @@ public class CommentService(
 
     private async Task<Comment> GetCommentOrThrowAsync(
         Guid commentId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        params Expression<Func<Comment, object>>[] includes)
     {
         var comment = await commentRepository
-            .SingleOrDefaultAsync(c => c.Id == commentId, cancellationToken);
+            .SingleOrDefaultAsync(c => c.Id == commentId, cancellationToken, includes: includes);
         
         if (comment is null)
         {
@@ -143,5 +150,21 @@ public class CommentService(
         logger.LogInformation("Comment with ID `{CommentId}` retrieved successfully.", commentId);
         
         return comment;
+    }
+
+    private async Task<User> GetUserOrThrowAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+
+        if (user is null)
+        {
+            logger.LogWarning("User with ID `{UserId}` not found.", userId);
+            throw new NotFoundException($"User with ID '{userId}' not found.");
+        }
+        
+        logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
+        return user;
     }
 }

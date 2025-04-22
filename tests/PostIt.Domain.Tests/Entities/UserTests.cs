@@ -39,8 +39,8 @@ public class UserTests
             Role = role
         });
         user.CreatedAt.Should().BeCloseTo(createdAt, precision);
-        user.Posts.Should().BeEmpty();
-        user.Comments.Should().BeEmpty();
+        user.PostsCount.Should().Be(0);
+        user.CommentsCount.Should().Be(0);
     }
 
     [Fact]

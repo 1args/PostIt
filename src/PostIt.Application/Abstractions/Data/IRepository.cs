@@ -14,12 +14,16 @@ public interface IRepository<TEntity> where TEntity : class
     
     IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
 
+   Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken);
+   
     Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> expression,
         CancellationToken cancellationToken,
-        bool tracking = true);
+        bool tracking = true,
+        params Expression<Func<TEntity, object>>[] includes);
 
     Task<List<TEntity>> ToListAsync(
         CancellationToken cancellationToken,
         Expression<Func<TEntity, bool>>? expression = null,
         bool tracking = true);
+
 }
