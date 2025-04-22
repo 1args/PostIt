@@ -5,14 +5,14 @@ using PostIt.Application.Abstractions.Data;
 
 namespace PostIt.Infrastructure.Caching;
 
-public class CacheService(IDistributedCache distributedCache) : ICacheService
+public class CacheService(IDistributedCache redisCache) : ICacheService
 {
     private static readonly ConcurrentDictionary<string, bool> CacheKeys = [];
         
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken) 
         where T : class
     {
-        var cachedValue = await distributedCache.GetStringAsync(key, cancellationToken);
+        var cachedValue = await redisCache .GetStringAsync(key, cancellationToken);
 
         return cachedValue is null 
             ? null 
@@ -30,14 +30,14 @@ public class CacheService(IDistributedCache distributedCache) : ICacheService
             SlidingExpiration = TimeSpan.FromMinutes(3)               
         };
         
-        await distributedCache.SetStringAsync(key, cachedValue, cacheOptions, cancellationToken);
+        await redisCache.SetStringAsync(key, cachedValue, cacheOptions, cancellationToken);
         
         CacheKeys.TryAdd(key, false);
     }
     
     public async Task RemoveAsync(string key, CancellationToken cancellationToken)
     {
-        await distributedCache.RemoveAsync(key, cancellationToken);
+        await redisCache.RemoveAsync(key, cancellationToken);
         CacheKeys.TryRemove(key, out _);
     }
 

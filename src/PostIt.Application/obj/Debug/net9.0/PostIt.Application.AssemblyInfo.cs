@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf697d126290874e36dbf3cbdabd69b9c2711420")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+990d3eb00d6161b419a447f6106ccb9b0de0d5ad")]
 [assembly: System.Reflection.AssemblyProductAttribute("PostIt.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

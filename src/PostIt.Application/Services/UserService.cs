@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
+using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
@@ -13,9 +14,11 @@ namespace PostIt.Application.Services;
 
 public class UserService(
     IRepository<User> userRepository,
+    IRepository<RecognizedUser> recognizedUserRepository,
+    IPasswordHasher passwordHasher,
     ILogger<UserService> logger) : IUserService
 {
-    public async Task<Guid> CreateUserAsync(
+    public async Task<Guid> RegisterAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken)
     {
@@ -24,11 +27,27 @@ public class UserService(
         var name = Name.Create(request.Name);
         var bio = Bio.Create(request.Bio);
         var email = Email.Create(request.Email);
-        var password = Password.Create(request.Password);
         
-        var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
+        var isExistingUser = await userRepository.AnyAsync(u => u.Email == email, cancellationToken);
+
+        if (isExistingUser)
+        {
+            throw new ValidationException($"User with email {request.Email} already exists.");
+        }
+        
+        var user = User.Create(name, bio, email, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
+        
+        var generatedSalt = passwordHasher.GenerateSalt();
+        var salt = Salt.Create(generatedSalt);
+        
+        var passwordHash = passwordHasher.HashPassword(request.Password);
+        var password = Password.Create(passwordHash);
+        
+        var recognizedUser = RecognizedUser.Create(user.Id, salt, password);
+        await recognizedUserRepository.AddAsync(recognizedUser, cancellationToken);
+        
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         
         return user.Id;

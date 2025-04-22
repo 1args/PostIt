@@ -11,7 +11,7 @@ public static class UserEndpoints
     {
         var group = endpoints.MapGroup("/users").WithTags("Users");
         
-        group.MapPost("/", CreateUserAsync);
+        group.MapPost("/register", RegisterAsync);
         group.MapGet("/{id:guid}", GetUserByIdAsync).WithName(nameof(GetUserByIdAsync));
         group.MapDelete("{id:guid}", DeleteUserAsync).WithName(nameof(DeleteUserAsync));
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync).WithName(nameof(UpdateUserBioAsync));
@@ -19,12 +19,12 @@ public static class UserEndpoints
         return endpoints;
     }
 
-    private static async Task<IResult> CreateUserAsync(
+    private static async Task<IResult> RegisterAsync(
         [FromBody] CreateUserRequest request,
         [FromServices] IUserService userService,
         CancellationToken cancellationToken)
     {
-        await userService.CreateUserAsync(request, cancellationToken);
+        await userService.RegisterAsync(request, cancellationToken);
 
         return Results.Created();
     }

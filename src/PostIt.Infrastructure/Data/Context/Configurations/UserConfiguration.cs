@@ -37,14 +37,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .IsRequired();
         });
 
-        builder.OwnsOne(u => u.Password, password =>
-        {
-            password.Property(p => p.Value)
-                .HasColumnName("Password")
-                .HasMaxLength(Password.MaxLength)
-                .IsRequired();
-        });
-
         builder.Property(u => u.Role)
             .HasConversion<string>()
             .IsRequired();

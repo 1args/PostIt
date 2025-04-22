@@ -5,7 +5,7 @@ namespace PostIt.Domain.ValueObjects.User;
 public class Password : ValueObject
 {
     public const int MinLength = 8;
-    public const int MaxLength = 16;
+    public const int MaxLength = 32;
     
     public string Value { get; }
     
