@@ -27,9 +27,4 @@ public class PasswordHasher : IPasswordHasher
         
         return BCrypt.Net.BCrypt.EnhancedVerify(password, hashedPassword);
     }
-
-    public string GenerateSalt()
-    {
-        return BCrypt.Net.BCrypt.GenerateSalt();
-    }
 }

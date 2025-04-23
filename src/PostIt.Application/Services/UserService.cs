@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
@@ -14,8 +15,8 @@ namespace PostIt.Application.Services;
 
 public class UserService(
     IRepository<User> userRepository,
-    IRepository<RecognizedUser> recognizedUserRepository,
     IPasswordHasher passwordHasher,
+    IAuthenticationService authenticationService,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<Guid> RegisterAsync(
@@ -35,24 +36,61 @@ public class UserService(
             throw new ValidationException($"User with email {request.Email} already exists.");
         }
         
-        var user = User.Create(name, bio, email, request.Role, DateTime.UtcNow);
+        var passwordHash = passwordHasher.HashPassword(request.Password);
+        var user = User.Create(name, bio, email, passwordHash, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
-        
-        var generatedSalt = passwordHasher.GenerateSalt();
-        var salt = Salt.Create(generatedSalt);
-        
-        var passwordHash = passwordHasher.HashPassword(request.Password);
-        var password = Password.Create(passwordHash);
-        
-        var recognizedUser = RecognizedUser.Create(user.Id, salt, password);
-        await recognizedUserRepository.AddAsync(recognizedUser, cancellationToken);
         
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         
         return user.Id;
     }
 
+    public async Task<(string acessToken, string refreshToken)> LoginAsync(
+        string email,
+        string password,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Login attempt for `{Email}`...", email);
+
+        var user = await userRepository
+            .SingleOrDefaultAsync(u => u.Email.Value == email, cancellationToken, tracking: false);
+
+        if (user is null)
+        {
+            throw new ValidationException($"User with email {email} does not exist.");
+        }
+
+        var result = passwordHasher.VerifyHashedPassword(password, user.PasswordHash);
+
+        if (!result)
+        {
+            throw new ValidationException("Invalid email or password.");
+        }
+        
+        var (access, refresh) = await authenticationService
+            .GenerateAccessAndRefreshTokensAsync(user, cancellationToken);
+        
+        return (access, refresh);
+    }
+
+    public async Task LogoutAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
+    {
+        await authenticationService.RevokeRefreshTokenAsync(request, response, cancellationToken);
+    }
+
+    public async Task RefreshToken(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
+    {
+        var refreshToken = authenticationService.GetRefreshTokenFromHeader(request)
+                          ?? throw new ValidationException("Refresh token is missing.");
+
+        var (userId, _) = authenticationService.GetUserDataFromToken(refreshToken);
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
+        
+        await authenticationService.RefreshAccessTokenAsync(request, response, user, cancellationToken);
+    }
+    
     public async Task<UserResponse> GetUserByIdAsync(
         Guid userId,
         CancellationToken cancellationToken)

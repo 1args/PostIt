@@ -15,6 +15,8 @@ public class User : Entity<Guid>
     public int CommentsCount { get; private set; }
     
     public Email Email { get; private set; }
+    
+    public string PasswordHash { get; set; }
 
     public Role Role { get; private set; }
 
@@ -22,11 +24,9 @@ public class User : Entity<Guid>
     
     public Guid? RecognizedUserId { get; private set; }
     
-    public RecognizedUser? RecognizedUser { get; private set; }
-    
     private User() { }
 
-    private User(Name name, Bio bio, Email email, Role role, DateTime createdAt)
+    private User(Name name, Bio bio, Email email, string passwordHash, Role role, DateTime createdAt)
     {
         if (createdAt > DateTime.UtcNow)
         {
@@ -36,6 +36,7 @@ public class User : Entity<Guid>
         Name = name;
         Bio = bio.IsEmpty() ? Bio.Create("Empty") : bio;
         Email = email;
+        PasswordHash = passwordHash;
         Role = role;
         CreatedAt = createdAt;
     }
@@ -44,9 +45,10 @@ public class User : Entity<Guid>
         Name name,
         Bio bio, 
         Email email, 
+        string passwordHash,
         Role role,
         DateTime createdAt) =>
-        new(name, bio, email, role, createdAt);
+        new(name, bio, email, passwordHash, role, createdAt);
 
     public void UpdateBio(Bio bio)
     {

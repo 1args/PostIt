@@ -8,7 +8,6 @@ public static class CustomModelBuilder
     public static void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new UserConfiguration());
-        modelBuilder.ApplyConfiguration(new RecognizedUserConfiguration());
         modelBuilder.ApplyConfiguration(new PostConfiguration());
         modelBuilder.ApplyConfiguration(new PostLikeConfiguration());
         modelBuilder.ApplyConfiguration(new CommentConfiguration());

@@ -52,6 +52,13 @@ public class Repository<TEntity> : IRepository<TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
+    {
+        return await DbSet
+            .AsNoTracking()
+            .SingleOrDefaultAsync(expression);
+    }
+
     public IQueryable<TEntity> AsQueryable(bool tracking = true)
     {
         return tracking 

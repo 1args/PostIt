@@ -8,12 +8,13 @@ namespace PostIt.Domain.Tests.Entities;
 
 public class UserTests
 {
-    private static (Name name, Bio bio, Email email, Role role, DateTime createdAt) 
+    private static (Name name, Bio bio, Email email, string password, Role role, DateTime createdAt) 
         BuildValidUserData() =>
     (
         Name.Create("John Doe"),
         Bio.Create("Bio"),
         Email.Create("john.doe@gmail.com"),
+        "password123",
         Role.User,
         DateTime.UtcNow
     );
@@ -22,11 +23,11 @@ public class UserTests
     public void CreateUser_ValidUser_ShouldCreateUserSuccessfully()
     {
         // Arrange
-        var (name, bio, email, role, createdAt) = BuildValidUserData();
+        var (name, bio, email, password, role, createdAt) = BuildValidUserData();
         var precision = TimeSpan.FromSeconds(1);
         
         // Act
-        var user = User.Create(name, bio, email, role, createdAt);
+        var user = User.Create(name, bio, email, password, role, createdAt);
         
         // Assert
         user.Should().BeEquivalentTo(new
@@ -45,11 +46,11 @@ public class UserTests
     public void CreateUser_FutureDate_ShouldThrowDomainException()
     {
         // Arrange 
-        var (name, bio, email, role, _) = BuildValidUserData();
+        var (name, bio, email, password, role, _) = BuildValidUserData();
         var futureDate = DateTime.UtcNow.AddMinutes(10);
         
         // Actions
-        Action act = () => User.Create(name, bio, email, role, futureDate);
+        Action act = () => User.Create(name, bio, email, password, role, futureDate);
         
         // Assert
         act.Should().Throw<DomainException>()
