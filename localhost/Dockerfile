@@ -8,9 +8,13 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/PostIt.Api/PostIt.Api.csproj", "src/PostIt.Api/"]
+COPY ["src/PostIt.Application/PostIt.Application.csproj", "src/PostIt.Application/"]
+COPY ["src/PostIt.Contracts/PostIt.Contracts.csproj", "src/PostIt.Contracts/"]
+COPY ["src/PostIt.Domain/PostIt.Domain.csproj", "src/PostIt.Domain/"]
+COPY ["src/PostIt.Infrastructure/PostIt.Infrastructure.csproj", "src/PostIt.Infrastructure/"]
 RUN dotnet restore "src/PostIt.Api/PostIt.Api.csproj"
 COPY . .
-WORKDIR "/src/src/PostIt.Api"
+WORKDIR "/src/PostIt.Api"
 RUN dotnet build "PostIt.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish

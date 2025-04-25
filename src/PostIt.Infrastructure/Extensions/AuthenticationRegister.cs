@@ -7,11 +7,11 @@ namespace PostIt.Infrastructure.Extensions;
 
 public static class AuthenticationRegister
 {
-    public static IServiceCollection AddAuthentication(
+    public static IServiceCollection AddAuthenticationData(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddOptions<JwtOptions>(configuration.GetSection(nameof(JwtOptions)).ToString());
+        services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
         
         return services;
     }

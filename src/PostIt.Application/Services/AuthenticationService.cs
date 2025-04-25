@@ -24,7 +24,7 @@ public class AuthenticationService(
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Email, user.Email.ToString()),
             new(ClaimTypes.Role, user.Role.ToString())
-        };
+        }; 
 
         if (additionalClaims is not null)
         {

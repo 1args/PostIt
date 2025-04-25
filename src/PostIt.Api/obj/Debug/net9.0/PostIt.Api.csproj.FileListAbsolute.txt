@@ -155,3 +155,12 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\P
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\PostIt.Api.genruntimeconfig.cache
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\obj\Debug\net9.0\ref\PostIt.Api.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Scalar.AspNetCore.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

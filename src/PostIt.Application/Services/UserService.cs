@@ -29,7 +29,7 @@ public class UserService(
         var bio = Bio.Create(request.Bio);
         var email = Email.Create(request.Email);
         
-        var isExistingUser = await userRepository.AnyAsync(u => u.Email == email, cancellationToken);
+        var isExistingUser = await userRepository.AnyAsync(u => u.Email.Value == email.Value, cancellationToken);
 
         if (isExistingUser)
         {
@@ -47,21 +47,20 @@ public class UserService(
     }
 
     public async Task<(string acessToken, string refreshToken)> LoginAsync(
-        string email,
-        string password,
+        LoginRequest request,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Login attempt for `{Email}`...", email);
+        logger.LogInformation("Login attempt for `{Email}`...", request.Email);
 
         var user = await userRepository
-            .SingleOrDefaultAsync(u => u.Email.Value == email, cancellationToken, tracking: false);
+            .SingleOrDefaultAsync(u => u.Email.Value == request.Email, cancellationToken, tracking: false);
 
         if (user is null)
         {
-            throw new ValidationException($"User with email {email} does not exist.");
+            throw new ValidationException($"User with email {request.Email} does not exist.");
         }
 
-        var result = passwordHasher.VerifyHashedPassword(password, user.PasswordHash);
+        var result = passwordHasher.VerifyHashedPassword(request.Password, user.PasswordHash);
 
         if (!result)
         {

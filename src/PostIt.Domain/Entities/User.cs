@@ -22,8 +22,6 @@ public class User : Entity<Guid>
 
     public DateTime CreatedAt { get; private set; }
     
-    public Guid? RecognizedUserId { get; private set; }
-    
     private User() { }
 
     private User(Name name, Bio bio, Email email, string passwordHash, Role role, DateTime createdAt)
