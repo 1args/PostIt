@@ -15,8 +15,8 @@ public static class PostEndpoints
             .WithRequestValidation<CreatePostRequest>();
         
         group.MapPut("{id:guid}", UpdatePostAsync)
-            .WithName(nameof(UpdatePostAsync))
-            .WithRequestValidation<UpdatePostRequest>();
+            .WithRequestValidation<UpdatePostRequest>()
+            .WithName(nameof(UpdatePostAsync));
         
         group.MapDelete("{id:guid}", DeletePostAsync)
             .WithName(nameof(DeletePostAsync));
@@ -29,10 +29,10 @@ public static class PostEndpoints
         
         group.MapPost("{id:guid}/view", ViewPostAsync)
             .WithName("ViewPost");
-        
+
         group.MapPut("{id:guid}/visibility", ChangeVisibilityAsync)
-            .WithName("ChangePostVisibility")
-            .WithRequestValidation<ChangePostVisibilityRequest>();
+            .WithRequestValidation<ChangePostVisibilityRequest>()
+            .WithName("ChangePostVisibility");
         
         return endpoints;
     }
