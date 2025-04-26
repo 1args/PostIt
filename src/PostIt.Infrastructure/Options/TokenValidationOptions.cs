@@ -1,4 +1,4 @@
-namespace PostIt.Infrastructure.Options.Jwt;
+namespace PostIt.Infrastructure.Options;
 
 public class TokenValidationOptions
 {

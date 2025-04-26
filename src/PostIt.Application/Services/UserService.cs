@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth;
@@ -17,6 +18,7 @@ public class UserService(
     IRepository<User> userRepository,
     IPasswordHasher passwordHasher,
     IAuthenticationService authenticationService,
+    IBackgroundJobClient backgroundJobClient,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<Guid> RegisterAsync(
@@ -41,6 +43,10 @@ public class UserService(
         var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
+
+        // Test version
+        backgroundJobClient.Enqueue<IEmailService>(emailService => 
+            emailService.SendEmailAsync(user.Email.Value, "Welcome", $"User {user.Name} Created!"));
         
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         

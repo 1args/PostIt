@@ -1,5 +1,7 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Services;
 using PostIt.Application.Validators.User;
@@ -10,10 +12,11 @@ public static class ApplicationRegister
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IPostService, PostService>();
-        services.AddScoped<ICommentService, CommentService>();
-
+        services
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<IPostService, PostService>()
+            .AddScoped<ICommentService, CommentService>();
+        
         services
             .AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();
         

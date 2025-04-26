@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Infrastructure.Options;
-using PostIt.Infrastructure.Options.Jwt;
 
 namespace PostIt.Infrastructure.Extensions;
 
