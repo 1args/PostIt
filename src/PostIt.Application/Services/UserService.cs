@@ -33,11 +33,12 @@ public class UserService(
 
         if (isExistingUser)
         {
-            throw new ValidationException($"User with email {request.Email} already exists.");
+            throw new ConflictException($"User with email {request.Email} already exists.");
         }
         
         var passwordHash = passwordHasher.HashPassword(request.Password);
-        var user = User.Create(name, bio, email, passwordHash, request.Role, DateTime.UtcNow);
+        var password = Password.Create(passwordHash);
+        var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
         
@@ -46,7 +47,7 @@ public class UserService(
         return user.Id;
     }
 
-    public async Task<(string acessToken, string refreshToken)> LoginAsync(
+    public async Task<LoginResponse> LoginAsync(
         LoginRequest request,
         CancellationToken cancellationToken)
     {
@@ -57,20 +58,23 @@ public class UserService(
 
         if (user is null)
         {
-            throw new ValidationException($"User with email {request.Email} does not exist.");
+            throw new UnauthorizedException($"User with email {request.Email} does not exist.");
         }
 
-        var result = passwordHasher.VerifyHashedPassword(request.Password, user.PasswordHash);
+        var verifiedPasswordHash = passwordHasher.VerifyHashedPassword(request.Password, user.Password.Value);
 
-        if (!result)
+        if (!verifiedPasswordHash)
         {
-            throw new ValidationException("Invalid email or password.");
+            throw new UnauthorizedException("Invalid email or password.");
         }
         
-        var (access, refresh) = await authenticationService
+        var (accessToken, refreshToken) = await authenticationService
             .GenerateAccessAndRefreshTokensAsync(user, cancellationToken);
         
-        return (access, refresh);
+        return new LoginResponse(
+            user.Id,
+            accessToken,
+            refreshToken);
     }
 
     public async Task LogoutAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
@@ -81,7 +85,7 @@ public class UserService(
     public async Task RefreshToken(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
     {
         var refreshToken = authenticationService.GetRefreshTokenFromHeader(request)
-                          ?? throw new ValidationException("Refresh token is missing.");
+                          ?? throw new UnauthorizedException("Refresh token is missing.");
 
         var (userId, _) = authenticationService.GetUserDataFromToken(refreshToken);
         

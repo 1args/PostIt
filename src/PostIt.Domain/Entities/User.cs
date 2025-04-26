@@ -16,7 +16,7 @@ public class User : Entity<Guid>
     
     public Email Email { get; private set; }
     
-    public string PasswordHash { get; set; }
+    public Password Password { get; private set; }
 
     public Role Role { get; private set; }
 
@@ -24,7 +24,7 @@ public class User : Entity<Guid>
     
     private User() { }
 
-    private User(Name name, Bio bio, Email email, string passwordHash, Role role, DateTime createdAt)
+    private User(Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt)
     {
         if (createdAt > DateTime.UtcNow)
         {
@@ -34,7 +34,7 @@ public class User : Entity<Guid>
         Name = name;
         Bio = bio.IsEmpty() ? Bio.Create("Empty") : bio;
         Email = email;
-        PasswordHash = passwordHash;
+        Password = password;
         Role = role;
         CreatedAt = createdAt;
     }
@@ -43,10 +43,10 @@ public class User : Entity<Guid>
         Name name,
         Bio bio, 
         Email email, 
-        string passwordHash,
+        Password password,
         Role role,
         DateTime createdAt) =>
-        new(name, bio, email, passwordHash, role, createdAt);
+        new(name, bio, email, password, role, createdAt);
 
     public void UpdateBio(Bio bio)
     {
@@ -70,7 +70,6 @@ public class User : Entity<Guid>
     public void DecrementCommentsCount()
     {
         if (CommentsCount <= 0) throw new DomainException("Comment count cannot be negative.");
-        PostsCount--;
+        CommentsCount--;
     }
-    
 }

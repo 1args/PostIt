@@ -8,13 +8,13 @@ namespace PostIt.Domain.Tests.Entities;
 
 public class UserTests
 {
-    private static (Name name, Bio bio, Email email, string password, Role role, DateTime createdAt) 
+    private static (Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt) 
         BuildValidUserData() =>
     (
         Name.Create("John Doe"),
         Bio.Create("Bio"),
         Email.Create("john.doe@gmail.com"),
-        "password123",
+        Password.Create("password123"),
         Role.User,
         DateTime.UtcNow
     );

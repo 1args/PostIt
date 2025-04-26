@@ -1,6 +1,6 @@
 using PostIt.Api.Endpoints;
 
-namespace PostIt.Api.Extensions;
+namespace PostIt.Api.Extensions.Endpoints;
 
 public static class EndpointsRegister
 {

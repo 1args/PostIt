@@ -23,7 +23,7 @@ public class Name : ValueObject
             < MinLength => throw new DomainException(
                 $"User name must be at least {MinLength} characters long."),
             > MaxLength => throw new DomainException(
-                $"User name must be no longer than {MaxLength} characters."),
+                $"User name must be no longer than {MaxLength} characters long."),
             _ => name
         };
     }

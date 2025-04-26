@@ -122,10 +122,6 @@ namespace PostIt.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("PostsCount")
                         .HasColumnType("integer");
 
@@ -331,6 +327,24 @@ namespace PostIt.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.OwnsOne("PostIt.Domain.ValueObjects.User.Password", "Password", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("text")
+                                .HasColumnName("Password");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.Navigation("Bio")
                         .IsRequired();
 
@@ -338,6 +352,9 @@ namespace PostIt.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Name")
+                        .IsRequired();
+
+                    b.Navigation("Password")
                         .IsRequired();
                 });
 

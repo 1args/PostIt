@@ -8,8 +8,7 @@ public interface IUserService
 {
     Task<Guid> RegisterAsync(CreateUserRequest request, CancellationToken cancellationToken);
 
-    Task<(string acessToken, string refreshToken)> LoginAsync(LoginRequest request,
-        CancellationToken cancellationToken);
+    Task<LoginResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken);
 
     Task LogoutAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken);
 

@@ -1,4 +1,7 @@
+using FluentValidation;
 using PostIt.Api.Extensions;
+using PostIt.Api.Extensions.DependencyInjection;
+using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Extensions;

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http.Features;
 using PostIt.Api.ErrorHandling;
 
-namespace PostIt.Api.Extensions;
+namespace PostIt.Api.Extensions.DependencyInjection;
 
 public static class ExceptionHandlerRegister
 {

@@ -1,6 +1,6 @@
 using Serilog;
 
-namespace PostIt.Api.Extensions;
+namespace PostIt.Api.Extensions.DependencyInjection;
 
 public static class SerilogRegister
 {

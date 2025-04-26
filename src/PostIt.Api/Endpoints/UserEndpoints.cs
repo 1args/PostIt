@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using PostIt.Api.Extensions.Endpoints;
+using PostIt.Api.Filters;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Application.Validators.User;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Requests.User;
 
@@ -11,11 +14,21 @@ public static class UserEndpoints
     {
         var group = endpoints.MapGroup("/users").WithTags("Users");
         
-        group.MapPost("/register", RegisterAsync);
-        group.MapPost("/login", LoginAsync);
-        group.MapGet("/{id:guid}", GetUserByIdAsync).WithName(nameof(GetUserByIdAsync));
-        group.MapDelete("{id:guid}", DeleteUserAsync).WithName(nameof(DeleteUserAsync));
-        group.MapPut("{id:guid}/bio", UpdateUserBioAsync).WithName(nameof(UpdateUserBioAsync));
+        group.MapPost("/register", RegisterAsync)
+            .WithRequestValidation<CreateUserRequest>();
+        
+        group.MapPost("/login", LoginAsync)
+            .WithRequestValidation<LoginRequest>();
+        
+        group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
+            .WithName(nameof(UpdateUserBioAsync))
+            .WithRequestValidation<UpdateUserBioRequest>();
+        
+        group.MapGet("/{id:guid}", GetUserByIdAsync)
+            .WithName(nameof(GetUserByIdAsync));
+        
+        group.MapDelete("{id:guid}", DeleteUserAsync).
+            WithName(nameof(DeleteUserAsync));
         
         return endpoints;
     }
@@ -35,10 +48,21 @@ public static class UserEndpoints
         [FromServices] IUserService userService,
         CancellationToken cancellationToken)
     {
-        var (accessToken, refreshToken) = await userService
+        var data = await userService
             .LoginAsync(request, cancellationToken);
 
-        return Results.Ok(new[] { accessToken, refreshToken });
+        return Results.Ok(data);
+    }
+    
+    private static async Task<IResult> UpdateUserBioAsync(
+        [FromRoute] Guid id,
+        [FromBody] UpdateUserBioRequest request,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.UpdateUserBioAsync(id, request, cancellationToken);
+        
+        return Results.NoContent();
     }
     
     private static async Task<IResult> GetUserByIdAsync(
@@ -58,17 +82,6 @@ public static class UserEndpoints
     {
         await userService.DeleteUserAsync(id, cancellationToken);
 
-        return Results.NoContent();
-    }
-
-    private static async Task<IResult> UpdateUserBioAsync(
-        [FromRoute] Guid id,
-        [FromBody] UpdateUserBioRequest request,
-        [FromServices] IUserService userService,
-        CancellationToken cancellationToken)
-    {
-        await userService.UpdateUserBioAsync(id, request, cancellationToken);
-        
         return Results.NoContent();
     }
 }

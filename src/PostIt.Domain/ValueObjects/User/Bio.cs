@@ -20,7 +20,7 @@ public class Bio : ValueObject
 
         if (bio.Length > MaxLength)
         {
-            throw new DomainException($"User bio must be no longer than {MaxLength} characters.");
+            throw new DomainException($"User bio must be no longer than {MaxLength} characters long.");
         }
         
         Value = bio;

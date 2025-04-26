@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Application.Exceptions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.Enums;
 
@@ -98,16 +99,16 @@ public class AuthenticationService(
         CancellationToken cancellationToken)
     {
         var oldRefresh = GetRefreshTokenFromHeader(request) 
-                         ?? throw new ArgumentException("Refresh token is missing.");
+                         ?? throw new SecurityException("Refresh token is missing.");
         
         var oldAccess = GetAccessTokenFromHeader(request)
-                        ?? throw new ArgumentException("Access token is missing.");
+                        ?? throw new SecurityException("Access token is missing.");
         
         var claimsPrincipal = ValidateToken(oldRefresh);
         
         if (claimsPrincipal is null)
         {
-            throw new ArgumentException("Invalid refresh token");
+            throw new SecurityException("Invalid refresh token");
         }
 
         var (userId, _) = GetUserDataFromToken(oldRefresh);
@@ -117,7 +118,7 @@ public class AuthenticationService(
 
         if (cachedToken != oldRefresh)
         {
-            throw new ArgumentException("Refresh token not found or expired.");
+            throw new SecurityException("Refresh token not found or expired.");
         }
         
         await cacheService.RemoveAsync(key, cancellationToken);
@@ -133,7 +134,7 @@ public class AuthenticationService(
         response.Headers.Remove(AuthorizationHeader);
         
         var refreshToken = GetRefreshTokenFromHeader(request) ??
-                           throw new ArgumentException("Refresh token is missing.");;
+                           throw new SecurityException("Refresh token is missing.");;
         
         var (userId, _) = GetUserDataFromToken(refreshToken);
         var key = GetRefreshKey(userId, refreshToken);
