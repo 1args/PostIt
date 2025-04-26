@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
+using PostIt.Contracts.ApiContracts.Requests.Post;
 
 namespace PostIt.Api.Endpoints;
 
@@ -10,11 +12,21 @@ public static class CommentEndpoints
     {
         var group = endpoints.MapGroup("/comments").WithTags("Comments");
 
-        group.MapPost("/", CreateCommentAsync).WithName("CreateComment");
-        group.MapDelete("{id:guid}", DeleteCommentAsync).WithName("DeleteComment");
-        group.MapPost("{id:guid}/like/{authorId:guid}", LikeCommentAsync).WithName("LikeComment");
-        group.MapDelete("{id:guid}/like/{authorId:guid}", UnlikeCommentAsync).WithName("UnlikeComment");
-        group.MapGet("{id:guid}", GetCommentsByPostAsync).WithName("GetCommentsByPost");
+        group.MapPost("/", CreateCommentAsync)
+            .WithRequestValidation<CreatePostRequest>()
+            .WithName("CreateComment");
+        
+        group.MapDelete("{id:guid}", DeleteCommentAsync)
+            .WithName("DeleteComment");
+        
+        group.MapPost("{id:guid}/like/{authorId:guid}", LikeCommentAsync)
+            .WithName("LikeComment");
+        
+        group.MapDelete("{id:guid}/like/{authorId:guid}", UnlikeCommentAsync)
+            .WithName("UnlikeComment");
+        
+        group.MapGet("{id:guid}", GetCommentsByPostAsync)
+            .WithName("GetCommentsByPost");
         
         return endpoints;
     }

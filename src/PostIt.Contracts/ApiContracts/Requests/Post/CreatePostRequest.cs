@@ -1,10 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using PostIt.Domain.Enums;
 
 namespace PostIt.Contracts.ApiContracts.Requests.Post;
 
 public sealed record CreatePostRequest(
-    [Required] string Title,
-    [Required] string Content,
-    [Required] Guid AuthorId,
+    string Title,
+    string Content,
+    Guid AuthorId,
     Visibility Visibility = Visibility.Public);

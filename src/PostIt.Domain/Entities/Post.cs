@@ -46,6 +46,8 @@ public class Post : Entity<Guid>
         {
             throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
         }
+        
+        ValidateVisibility(visibility);
 
         Title = title;
         Content = content;
@@ -115,9 +117,21 @@ public class Post : Entity<Guid>
         Content = content;
         UpdatedAt = DateTime.UtcNow;
     }
-    
-    public void SetVisibility(Visibility visibility) => Visibility = visibility;
+
+    public void SetVisibility(Visibility visibility)
+    {
+        ValidateVisibility(visibility);
+        Visibility = visibility;
+    }
 
     public bool IsVisibleToUser(Guid userId) =>
         Visibility == Visibility.Public || AuthorId == userId;
+    
+    private static void ValidateVisibility(Visibility visibility)
+    {
+        if (visibility != Visibility.Public && visibility != Visibility.Private)
+        {
+            throw new DomainException("Invalid visibility value.");
+        }
+    }
 }

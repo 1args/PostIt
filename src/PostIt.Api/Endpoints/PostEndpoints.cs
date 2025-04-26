@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.Post;
 
@@ -10,13 +11,28 @@ public static class PostEndpoints
     {
         var group = endpoints.MapGroup("/posts").WithTags("Posts");
 
-        group.MapPost("/", CreatePostAsync);
-        group.MapPut("{id:guid}", UpdatePostAsync).WithName(nameof(UpdatePostAsync));
-        group.MapDelete("{id:guid}", DeletePostAsync).WithName(nameof(DeletePostAsync));
-        group.MapPost("{id:guid}/like/{authorId:guid}", LikePostAsync).WithName("LikePost");
-        group.MapDelete("{id:guid}/unlike/{authorId:guid}", UnlikePostAsync).WithName("UnlikePost");
-        group.MapPost("{id:guid}/view", ViewPostAsync).WithName("ViewPost");
-        group.MapPut("{id:guid}/visibility", ChangeVisibilityAsync).WithName("ChangePostVisibility");
+        group.MapPost("/", CreatePostAsync)
+            .WithRequestValidation<CreatePostRequest>();
+        
+        group.MapPut("{id:guid}", UpdatePostAsync)
+            .WithName(nameof(UpdatePostAsync))
+            .WithRequestValidation<UpdatePostRequest>();
+        
+        group.MapDelete("{id:guid}", DeletePostAsync)
+            .WithName(nameof(DeletePostAsync));
+        
+        group.MapPost("{id:guid}/like/{authorId:guid}", LikePostAsync)
+            .WithName("LikePost");
+        
+        group.MapDelete("{id:guid}/unlike/{authorId:guid}", UnlikePostAsync)
+            .WithName("UnlikePost");
+        
+        group.MapPost("{id:guid}/view", ViewPostAsync)
+            .WithName("ViewPost");
+        
+        group.MapPut("{id:guid}/visibility", ChangeVisibilityAsync)
+            .WithName("ChangePostVisibility")
+            .WithRequestValidation<ChangePostVisibilityRequest>();
         
         return endpoints;
     }
