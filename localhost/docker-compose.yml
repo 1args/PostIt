@@ -58,3 +58,12 @@ services:
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
     depends_on:
       - opensearch  
+  
+  # CalConnect Papercut
+  calconnect-papercut:
+    container_name: postit-calconnect-papercut
+    image: changemakerstudiosus/papercut-smtp:latest
+    restart: on-failure
+    ports:
+      - '25:25'
+      - '8080:80'
