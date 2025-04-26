@@ -89,7 +89,7 @@ public class UserService(
 
         var (userId, _) = authenticationService.GetUserDataFromToken(refreshToken);
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
         
         await authenticationService.RefreshAccessTokenAsync(request, response, user, cancellationToken);
     }
@@ -100,10 +100,7 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(
-            userId,
-            cancellationToken,
-            tracking: false);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
         
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
         
@@ -142,12 +139,10 @@ public class UserService(
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
-        CancellationToken cancellationToken,
-        bool tracking = true,
-        params Expression<Func<User, object>>[] includes)
+        CancellationToken cancellationToken)
     {
         var user = await userRepository
-            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken, tracking: tracking, includes: includes);
+            .GetByIdAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)
         {

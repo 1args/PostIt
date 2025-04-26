@@ -156,7 +156,7 @@ public class CommentService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var user = await userRepository.GetByIdAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)
         {

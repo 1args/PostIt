@@ -10,7 +10,10 @@ public interface IRepository<TEntity> where TEntity : class
     
     Task DeleteAsync(TEntity[] entities, CancellationToken cancellationToken);
 
-    Task<TEntity> GetByIdAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken);
+    Task<TEntity> GetByIdAsync(
+        Expression<Func<TEntity, bool>> expression, 
+        CancellationToken cancellationToken,
+        bool tracking = true);
     
     IQueryable<TEntity> AsQueryable(bool tracking = true);
     
