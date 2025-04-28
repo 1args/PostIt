@@ -61,7 +61,7 @@ public class UserService(
         if (user.IsConfirmed)
         {
             logger.LogInformation("Email already confirmed for user {UserId}", userId);
-            return true;
+            return false;
         }
 
         var isVerified = await emailVerificationService.VerifyEmailAsync(user, token, cancellationToken);
