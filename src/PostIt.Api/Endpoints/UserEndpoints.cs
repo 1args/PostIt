@@ -16,6 +16,9 @@ public static class UserEndpoints
         
         group.MapPost("/register", RegisterAsync)
             .WithRequestValidation<CreateUserRequest>();
+
+        group.MapGet("/verify-email/{userId:guid}/{token:guid}", VerifyEmailAsync)
+            .WithName("VerifyEmail");
         
         group.MapPost("/login", LoginAsync)
             .WithRequestValidation<LoginRequest>();
@@ -41,6 +44,19 @@ public static class UserEndpoints
         await userService.RegisterAsync(request, cancellationToken);
 
         return Results.Created();
+    }
+
+    private static async Task<IResult> VerifyEmailAsync(
+        [FromRoute] Guid userId,
+        [FromRoute] Guid token,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var success = await userService.VerifyEmailAsync(userId, token, cancellationToken);
+        
+        return success
+            ? Results.Ok("Email verified. You can close this window.")
+            : Results.BadRequest("Validation token is expired.");
     }
     
     private static async Task<IResult> LoginAsync(

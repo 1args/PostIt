@@ -15,7 +15,7 @@ public interface IAuthenticationService
     
     ClaimsPrincipal? ValidateToken(string token);
 
-    string? GetAccessTokenFromHeader(HttpRequest request);
+    ValueTask<string?> GetAccessTokenFromHeader(HttpRequest request);
 
     string? GetRefreshTokenFromHeader(HttpRequest request);
 

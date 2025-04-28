@@ -60,7 +60,6 @@ public class Repository<TEntity> : IRepository<TEntity>
         var query = AsQueryable(tracking);
         
         return await query
-            .AsNoTracking()
             .SingleOrDefaultAsync(expression, cancellationToken);
     }
     

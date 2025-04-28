@@ -37,6 +37,10 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasForeignKey(cl => cl.CommentId)
             .OnDelete(DeleteBehavior.Cascade);
         
+        builder.HasIndex(c => c.PostId);
+        builder.HasIndex(c => c.AuthorId);
+        builder.HasIndex(c => c.CreatedAt);
+        
         builder.ToTable("Comments");
     }
 }

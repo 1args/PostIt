@@ -44,6 +44,8 @@ namespace PostIt.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments", (string)null);
@@ -62,6 +64,28 @@ namespace PostIt.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("CommentLikes", (string)null);
+                });
+
+            modelBuilder.Entity("PostIt.Domain.Entities.EmailVerificationToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EmailVerificationTokens");
                 });
 
             modelBuilder.Entity("PostIt.Domain.Entities.Post", b =>
@@ -92,6 +116,8 @@ namespace PostIt.Infrastructure.Migrations
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("CreatedAt");
+
                     b.ToTable("Posts", (string)null);
                 });
 
@@ -121,6 +147,9 @@ namespace PostIt.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("PostsCount")
                         .HasColumnType("integer");
@@ -192,6 +221,17 @@ namespace PostIt.Infrastructure.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("Comment");
+                });
+
+            modelBuilder.Entity("PostIt.Domain.Entities.EmailVerificationToken", b =>
+                {
+                    b.HasOne("PostIt.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PostIt.Domain.Entities.Post", b =>
@@ -301,6 +341,9 @@ namespace PostIt.Infrastructure.Migrations
                                 .HasColumnName("Email");
 
                             b1.HasKey("UserId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
 
                             b1.ToTable("Users");
 

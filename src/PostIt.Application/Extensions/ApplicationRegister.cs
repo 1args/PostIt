@@ -15,7 +15,8 @@ public static class ApplicationRegister
         services
             .AddScoped<IUserService, UserService>()
             .AddScoped<IPostService, PostService>()
-            .AddScoped<ICommentService, CommentService>();
+            .AddScoped<ICommentService, CommentService>()
+            .AddScoped<IEmailVerificationService, EmailVerificationService>();
         
         services
             .AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();

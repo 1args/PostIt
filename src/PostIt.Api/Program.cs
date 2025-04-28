@@ -18,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
-builder.Services.AddOpenApi();
+services.AddOpenApi();
+services.AddHttpContextAccessor();
 
 services
     .AddExceptionHandlers()
@@ -35,6 +36,7 @@ services.AddScoped<IAuthenticationService, AuthenticationService>();
 services.AddScoped<IEmailService, EmailService>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<IJwtProvider, JwtProvider>();
+services.AddScoped<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
 
 var app = builder.Build();
 

@@ -1,5 +1,3 @@
-using System.Linq.Expressions;
-using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth;
@@ -18,7 +16,7 @@ public class UserService(
     IRepository<User> userRepository,
     IPasswordHasher passwordHasher,
     IAuthenticationService authenticationService,
-    IBackgroundJobClient backgroundJobClient,
+    IEmailVerificationService emailVerificationService,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<Guid> RegisterAsync(
@@ -44,13 +42,38 @@ public class UserService(
         
         await userRepository.AddAsync(user, cancellationToken);
 
-        // Test version
-        backgroundJobClient.Enqueue<IEmailService>(emailService => 
-            emailService.SendEmailAsync(user.Email.Value, "Welcome", $"User {user.Name} Created!"));
+        await emailVerificationService.SendVerificationEmailAsync(user, cancellationToken);
         
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         
         return user.Id;
+    }
+
+    public async Task<bool> VerifyEmailAsync(
+        Guid userId,
+        Guid token,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Verifying email for user with ID `{UserId}` and token `{Token}`...", userId, token);
+
+        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
+
+        if (user.IsConfirmed)
+        {
+            logger.LogInformation("Email already confirmed for user {UserId}", userId);
+            return true;
+        }
+
+        var isVerified = await emailVerificationService.VerifyEmailAsync(user, token, cancellationToken);
+
+        if (isVerified)
+        {
+            user.ConfirmEmail();
+            await userRepository.UpdateAsync(user, cancellationToken);
+            logger.LogInformation("Email verified successfully for user with ID `{UserId}`.", userId);
+        }
+ 
+        return isVerified;
     }
 
     public async Task<LoginResponse> LoginAsync(
@@ -62,16 +85,16 @@ public class UserService(
         var user = await userRepository
             .SingleOrDefaultAsync(u => u.Email.Value == request.Email, cancellationToken, tracking: false);
 
-        if (user is null)
-        {
-            throw new UnauthorizedException($"User with email {request.Email} does not exist.");
-        }
+        var verifiedPasswordHash = passwordHasher.VerifyHashedPassword(request.Password, user!.Password.Value);
 
-        var verifiedPasswordHash = passwordHasher.VerifyHashedPassword(request.Password, user.Password.Value);
-
-        if (!verifiedPasswordHash)
+        if (user is null || !verifiedPasswordHash)
         {
             throw new UnauthorizedException("Invalid email or password.");
+        }
+
+        if (!user.IsConfirmed)
+        {
+            throw new UnauthorizedException("Please confirm your email to log in to your account.");
         }
         
         var (accessToken, refreshToken) = await authenticationService
@@ -90,8 +113,8 @@ public class UserService(
 
     public async Task RefreshToken(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
     {
-        var refreshToken = authenticationService.GetRefreshTokenFromHeader(request)
-                          ?? throw new UnauthorizedException("Refresh token is missing.");
+        var refreshToken = authenticationService.GetRefreshTokenFromHeader(request) 
+                           ?? throw new UnauthorizedException("Refresh token is missing.");
 
         var (userId, _) = authenticationService.GetUserDataFromToken(refreshToken);
         
@@ -145,10 +168,11 @@ public class UserService(
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        bool tracking = true)
     {
         var user = await userRepository
-            .GetByIdAsync(u => u.Id == userId, cancellationToken);
+            .GetByIdAsync(u => u.Id == userId, cancellationToken, tracking);
 
         if (user is null)
         {

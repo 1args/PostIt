@@ -20,6 +20,8 @@ public class User : Entity<Guid>
 
     public Role Role { get; private set; }
 
+    public bool IsConfirmed { get; set; }
+
     public DateTime CreatedAt { get; private set; }
     
     private User() { }
@@ -47,6 +49,15 @@ public class User : Entity<Guid>
         Role role,
         DateTime createdAt) =>
         new(name, bio, email, password, role, createdAt);
+
+    public void ConfirmEmail()
+    {
+        if (IsConfirmed)
+        {
+            throw new DomainException("Email already confirmed.", nameof(Email));
+        }
+        IsConfirmed = true;
+    }
 
     public void UpdateBio(Bio bio)
     {

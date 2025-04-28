@@ -35,6 +35,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnName("Email")
                 .HasMaxLength(100)
                 .IsRequired();
+            
+            email.HasIndex(e => e.Value)
+                .IsUnique();
         });
         
         builder.OwnsOne(u => u.Password, password =>

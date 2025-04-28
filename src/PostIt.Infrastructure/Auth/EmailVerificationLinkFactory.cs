@@ -1,0 +1,28 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
+using PostIt.Application.Abstractions.Auth;
+using PostIt.Domain.Entities;
+
+namespace PostIt.Infrastructure.Auth;
+
+public class EmailVerificationLinkFactory(
+    IHttpContextAccessor httpContextAccessor,
+    LinkGenerator linkGenerator) : IEmailVerificationLinkFactory
+{
+    public string Create(EmailVerificationToken emailVerificationToken)
+    {
+        var httpContext = httpContextAccessor.HttpContext 
+                          ?? throw new InvalidOperationException("HTTP context is not available.");
+        
+        var verificationLink = linkGenerator.GetUriByName(
+            httpContext,
+            "VerifyEmail",
+            new
+            {
+                userId = emailVerificationToken.UserId, 
+                token = emailVerificationToken.Id
+            });
+
+        return verificationLink ?? throw new InvalidOperationException("Verification link could not be generated.");
+    }
+} 

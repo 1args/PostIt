@@ -65,15 +65,15 @@ public class AuthenticationService(
             : null;
     }
 
-    public string? GetAccessTokenFromHeader(HttpRequest request)
+    public ValueTask<string?> GetAccessTokenFromHeader(HttpRequest request)
     {
         if (!request.Headers.TryGetValue(AuthorizationHeader, out var authorizationHeaderValue))
         {
-            return null;
+            return ValueTask.FromResult<string?>(null);
         }
 
         var token = authorizationHeaderValue.ToString();
-        return token.StartsWith(BearerPrefix) ? token[BearerPrefix.Length..] : null;
+        return ValueTask.FromResult(token.StartsWith(BearerPrefix) ? token[BearerPrefix.Length..] : null);
     }
     
     public string? GetRefreshTokenFromHeader(HttpRequest request)
@@ -101,7 +101,7 @@ public class AuthenticationService(
         var oldRefresh = GetRefreshTokenFromHeader(request) 
                          ?? throw new SecurityException("Refresh token is missing.");
         
-        var oldAccess = GetAccessTokenFromHeader(request)
+        var oldAccess = await GetAccessTokenFromHeader(request)
                         ?? throw new SecurityException("Access token is missing.");
         
         var claimsPrincipal = ValidateToken(oldRefresh);
