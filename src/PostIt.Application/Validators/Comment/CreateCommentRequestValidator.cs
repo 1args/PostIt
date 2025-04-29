@@ -9,6 +9,7 @@ public class CreateCommentRequestValidator : AbstractValidator<CreateCommentRequ
     public CreateCommentRequestValidator()
     {
         RuleFor(c => c.Text)
+            .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Text cannot be empty.")
             .MinimumLength(Text.MinLength)
             .WithMessage($"Text must be at least {Text.MinLength} characters long.")

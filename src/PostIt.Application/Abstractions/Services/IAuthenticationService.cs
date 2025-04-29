@@ -12,19 +12,16 @@ public interface IAuthenticationService
 
     Task<(string accessToken, string refreshToken)> GenerateAccessAndRefreshTokensAsync(User user,
         CancellationToken cancellationToken);
-    
-    ClaimsPrincipal? ValidateToken(string token);
 
-    ValueTask<string?> GetAccessTokenFromHeader(HttpRequest request);
+    Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(CancellationToken cancellationToken);
 
-    string? GetRefreshTokenFromHeader(HttpRequest request);
+    Task RevokeRefreshTokenAsync(CancellationToken cancellationToken);
 
-    void SetTokensToResponse(HttpResponse response, string accessToken, string refreshToken);
+    string? GetAccessTokenFromHeader();
 
-    Task RefreshAccessTokenAsync(HttpRequest request, HttpResponse response, User user, 
-        CancellationToken cancellationToken);
-    
-    Task RevokeRefreshTokenAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken);
+    string? GetRefreshTokenFromHeader();
 
-    (Guid userId, string role) GetUserDataFromToken(string token);
+    Guid GetUserIdFromAccessToken();
+
+    string GetUserRoleFromAccessToken();
 }

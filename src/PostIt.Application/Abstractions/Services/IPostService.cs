@@ -11,15 +11,15 @@ public interface IPostService
 
     Task DeletePostAsync(Guid postId, CancellationToken cancellationToken);
 
-    Task LikePostAsync(Guid postId, Guid authorId, CancellationToken cancellationToken);
+    Task LikePostAsync(Guid postId, CancellationToken cancellationToken);
 
-    Task UnlikePostAsync(Guid postId, Guid authorId, CancellationToken cancellationToken);
+    Task UnlikePostAsync(Guid postId, CancellationToken cancellationToken);
 
     Task ViewPostAsync(Guid postId, CancellationToken cancellationToken);
 
     Task ChangeVisibilityAsync(Guid postId, ChangePostVisibilityRequest request, CancellationToken cancellationToken);
 
-    Task<List<PostResponse>> GetPostsSortedByLikesAsync(Guid currentUserId, CancellationToken cancellationToken);
+    Task<List<PostResponse>> GetPostsSortedByLikesAsync(CancellationToken cancellationToken);
 
-    Task<List<PostResponse>> GetPostsSortedByViewsAsync(Guid currentUserId, CancellationToken cancellationToken);
+    Task<List<PostResponse>> GetPostsSortedByViewsAsync(CancellationToken cancellationToken);
 }

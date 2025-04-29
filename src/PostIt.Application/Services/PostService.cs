@@ -14,13 +14,16 @@ namespace PostIt.Application.Services;
 public class PostService(
     IRepository<Post> postRepository,
     IRepository<User> userRepository,
+    IAuthenticationService authenticationService,
     ILogger<PostService> logger) : IPostService
 {
     public async Task<Guid> CreatePostAsync(
         CreatePostRequest request,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Creating post by author ID `{AuthorId}`.", request.AuthorId);
+        var authorId = GetCurrentUserId();
+        
+        logger.LogInformation("Creating post by author ID `{AuthorId}`.", authorId);
         
         var title = Title.Create(request.Title);
         var content = Content.Create(request.Content);
@@ -28,19 +31,13 @@ public class PostService(
         var post = Post.Create(
             title, 
             content,
-            request.AuthorId,
+            authorId,
             DateTime.UtcNow,
             request.Visibility);
 
         await postRepository.AddAsync(post, cancellationToken);
-        
-        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == post.AuthorId, cancellationToken);
-        
-        if (user is not null)
-        {
-            user.IncrementPostsCount();
-            await userRepository.UpdateAsync(user, cancellationToken);
-        }
+
+        await UpdateUserPostCountAsync(authorId, increase: true, cancellationToken);
 
         logger.LogInformation("Post with ID `{PostId}` created successfully.", post.Id);
         
@@ -54,6 +51,9 @@ public class PostService(
         logger.LogInformation("Updating post with ID `{PostId}`.", postId);
         
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        
+        var authorId = GetCurrentUserId();
+        EnsureUserIsAuthorOrThrow(post, authorId);
         
         var newTitle = Title.Create(request.Title);
         var newContent = Content.Create(request.Content);
@@ -71,25 +71,23 @@ public class PostService(
         logger.LogInformation("Deleting post with ID `{PostId}`.", postId);
         
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
-
+     
+        var authorId = GetCurrentUserId();
+        EnsureUserIsAuthorOrThrow(post, authorId);
+        
         await postRepository.DeleteAsync([post], cancellationToken);
         
-        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == post.AuthorId, cancellationToken);
-
-        if (user is not null)
-        {
-            user.DecrementPostsCount();
-            await userRepository.UpdateAsync(user, cancellationToken);
-        }
+        await UpdateUserPostCountAsync(authorId, increase: false, cancellationToken);
         
         logger.LogInformation("Post with ID `{PostId}` deleted successfully.", postId);
     }
     
     public async Task LikePostAsync(
         Guid postId,
-        Guid authorId,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation("Liking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
         
         var post = await GetPostOrThrowAsync(postId, cancellationToken); 
@@ -102,9 +100,10 @@ public class PostService(
 
     public async Task UnlikePostAsync(
         Guid postId,
-        Guid authorId,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation("Unliking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
         
         var post = await GetPostOrThrowAsync(postId, cancellationToken, includes: [p => p.Likes]);
@@ -141,6 +140,9 @@ public class PostService(
 
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
+        var authorId = GetCurrentUserId();
+        EnsureUserIsAuthorOrThrow(post, authorId);
+        
         post.SetVisibility(request.Visibility);
         await postRepository.UpdateAsync(post, cancellationToken);
         
@@ -151,10 +153,11 @@ public class PostService(
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
-        Guid currentUserId,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching posts sorted by likes.");
+        
+        var currentUserId = GetCurrentUserId();
 
         var posts = await postRepository
             .ToListAsync(cancellationToken: cancellationToken, tracking: false);
@@ -171,10 +174,11 @@ public class PostService(
     }
 
     public async Task<List<PostResponse>> GetPostsSortedByViewsAsync(
-        Guid currentUserId,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching posts sorted by views.");
+        
+        var currentUserId = GetCurrentUserId();
         
         var posts = await postRepository
             .ToListAsync(cancellationToken: cancellationToken, tracking: false);
@@ -188,6 +192,42 @@ public class PostService(
         return sortedPosts
             .Select(p => p.MapToPublic(currentUserId))
             .ToList();
+    }
+    
+    private async Task UpdateUserPostCountAsync(Guid userId, bool increase, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        
+        if (user is null)
+        {
+            logger.LogWarning("User with ID `{UserId}` not found while updating post count.", userId);
+            return;
+        }
+        if (increase)
+        {
+            user.IncrementPostsCount();
+        }
+        else
+        {
+            user.DecrementPostsCount();
+        }
+
+        await userRepository.UpdateAsync(user, cancellationToken);
+    }
+    
+    private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
+
+    private void EnsureUserIsAuthorOrThrow(Post post, Guid currentUserId)
+    {
+        if (post.AuthorId != currentUserId)
+        {
+            logger.LogWarning(
+                "User `{UserId}` attempted to perform an unauthorized action on post `{PostId}`.",
+                currentUserId,
+                post.Id);
+            
+            throw new UnauthorizedException("Only the author is allowed to perform this action on the post.");
+        }
     }
     
     private async Task<Post> GetPostOrThrowAsync(

@@ -6,7 +6,7 @@ public interface IJwtProvider
 {
     string GenerateAccessToken(IEnumerable<Claim> claims);
 
-    (string token, TimeSpan expiresIn) GenerateRefreshToken();
+    string GenerateRefreshToken();
     
     IEnumerable<Claim> ValidateToken(string token);
 }

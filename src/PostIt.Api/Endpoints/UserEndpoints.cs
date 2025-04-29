@@ -18,10 +18,18 @@ public static class UserEndpoints
             .WithRequestValidation<CreateUserRequest>();
 
         group.MapGet("/verify-email/{userId:guid}/{token:guid}", VerifyEmailAsync)
-            .WithName("VerifyEmail");
-        
+            .WithName(nameof(VerifyEmailAsync));
+
         group.MapPost("/login", LoginAsync)
             .WithRequestValidation<LoginRequest>();
+
+        group.MapPost("/logout", LogoutAsync)
+            .WithName(nameof(LogoutAsync))
+            .RequireAuthorization();
+
+        group.MapPost("/refresh-token", RefreshTokenAsync)
+            .WithName(nameof(RefreshTokenAsync))
+            .RequireAuthorization();
         
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
             .WithName(nameof(UpdateUserBioAsync))
@@ -69,7 +77,25 @@ public static class UserEndpoints
 
         return Results.Ok(data);
     }
-    
+
+    private static async Task<IResult> LogoutAsync(
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.LogoutAsync(cancellationToken);
+        
+        return Results.NoContent();
+    }
+
+    private static async Task<IResult> RefreshTokenAsync(
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var data = await userService.RefreshToken(cancellationToken);
+        
+        return Results.Ok(data);
+    }
+
     private static async Task<IResult> UpdateUserBioAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateUserBioRequest request,

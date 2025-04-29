@@ -16,7 +16,7 @@ public class EmailVerificationLinkFactory(
         
         var verificationLink = linkGenerator.GetUriByName(
             httpContext,
-            "VerifyEmail",
+            "VerifyEmailAsync",
             new
             {
                 userId = emailVerificationToken.UserId, 

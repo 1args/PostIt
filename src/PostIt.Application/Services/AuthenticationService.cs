@@ -5,15 +5,15 @@ using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
 using PostIt.Domain.Entities;
-using PostIt.Domain.Enums;
 
 namespace PostIt.Application.Services;
 
 public class AuthenticationService(
+    IRepository<User> userRepository,
     IJwtProvider jwtProvider,
-    ICacheService cacheService) : IAuthenticationService
+    ITokenStorage tokenStorage,
+    IHttpContextAccessor httpContextAccessor) : IAuthenticationService
 {
-    private const string RefreshPrefix = "refresh";
     private const string AuthorizationHeader = "Authorization";
     private const string RefreshTokenHeader = "Refresh-Token";
     private const string BearerPrefix = "Bearer";
@@ -23,7 +23,6 @@ public class AuthenticationService(
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Email, user.Email.ToString()),
             new(ClaimTypes.Role, user.Role.ToString())
         }; 
 
@@ -37,13 +36,8 @@ public class AuthenticationService(
 
     public async Task<string> GenerateAndStoreRefreshTokenAsync(User user, CancellationToken cancellationToken)
     {
-        var (refreshToken, expiresIn) = jwtProvider.GenerateRefreshToken();
-        
-        var expiration = DateTime.UtcNow.Add(expiresIn);
-        
-        var key = GetRefreshKey(user.Id, refreshToken);
-        
-        await cacheService.SetAsync(key, refreshToken, cancellationToken);
+        var refreshToken = jwtProvider.GenerateRefreshToken();
+        await tokenStorage.SetTokenAsync(refreshToken, user.Id, cancellationToken);
         
         return refreshToken;
     }
@@ -57,100 +51,103 @@ public class AuthenticationService(
         
         return (accessToken, refreshToken);
     }
-
-    public ClaimsPrincipal? ValidateToken(string token)
+    
+    public async Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(CancellationToken cancellationToken)
     {
-        return jwtProvider.ValidateToken(token) is IEnumerable<Claim> claims 
-            ? new ClaimsPrincipal(new ClaimsIdentity(claims, "jwt"))
-            : null;
-    }
+        var refreshToken = GetRefreshTokenFromHeader();
 
-    public ValueTask<string?> GetAccessTokenFromHeader(HttpRequest request)
-    {
-        if (!request.Headers.TryGetValue(AuthorizationHeader, out var authorizationHeaderValue))
+        if (refreshToken is null)
         {
-            return ValueTask.FromResult<string?>(null);
+            throw new UnauthorizedException("Refresh token is missing.");
+        }
+        
+        var (_, userId) = await tokenStorage.GetTokenAsync(refreshToken, cancellationToken);
+        
+        var user = await userRepository.GetByIdAsync(u => u.Id == userId, cancellationToken, tracking: false);
+
+        if (user is null)
+        {
+            throw new NotFoundException("User not found.");
         }
 
-        var token = authorizationHeaderValue.ToString();
-        return ValueTask.FromResult(token.StartsWith(BearerPrefix) ? token[BearerPrefix.Length..] : null);
+        var accessToken = GenerateAccessToken(user);
+        return (accessToken, refreshToken);
+    }
+    public async Task RevokeRefreshTokenAsync(CancellationToken cancellationToken)
+    {
+        var request = httpContextAccessor.HttpContext?.Request;
+        var response = httpContextAccessor.HttpContext?.Response;
+
+        response?.Headers.Remove(AuthorizationHeader);
+        
+        if (request.Headers.TryGetValue(RefreshTokenHeader, out var refreshToken)
+            && !string.IsNullOrWhiteSpace(refreshToken))
+        {
+            response?.Headers.Remove(RefreshTokenHeader);
+            
+            await tokenStorage.RemoveTokenAsync(refreshToken, cancellationToken);
+        }
     }
     
-    public string? GetRefreshTokenFromHeader(HttpRequest request)
+    public string? GetAccessTokenFromHeader() 
     {
-        if (!request.Headers.TryGetValue(RefreshTokenHeader, out var refreshTokenHeaderValue))
+        var header = httpContextAccessor.HttpContext?.Request.Headers[AuthorizationHeader];
+
+        if (header.HasValue && !string.IsNullOrWhiteSpace(header.Value))
         {
-            return null;
+            var token = header.Value.ToString();
+        
+            if (token.StartsWith(BearerPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return token[BearerPrefix.Length..].Trim();
+            }
         }
 
-        return refreshTokenHeaderValue.ToString();
-    }
-
-    public void SetTokensToResponse(HttpResponse response, string accessToken, string refreshToken)
-    {
-        response.Headers.Append(AuthorizationHeader, $"{BearerPrefix}{accessToken}");
-        response.Headers.Append(RefreshTokenHeader, refreshToken);
+        return null;
     }
     
-    public async Task RefreshAccessTokenAsync(
-        HttpRequest request, 
-        HttpResponse response, 
-        User user,
-        CancellationToken cancellationToken)
+    public string? GetRefreshTokenFromHeader()
     {
-        var oldRefresh = GetRefreshTokenFromHeader(request) 
-                         ?? throw new SecurityException("Refresh token is missing.");
-        
-        var oldAccess = await GetAccessTokenFromHeader(request)
-                        ?? throw new SecurityException("Access token is missing.");
-        
-        var claimsPrincipal = ValidateToken(oldRefresh);
-        
-        if (claimsPrincipal is null)
-        {
-            throw new SecurityException("Invalid refresh token");
-        }
-
-        var (userId, _) = GetUserDataFromToken(oldRefresh);
-        var key = GetRefreshKey(userId, oldRefresh);
-        
-        var cachedToken = await cacheService.GetAsync<string>(key, cancellationToken);
-
-        if (cachedToken != oldRefresh)
-        {
-            throw new SecurityException("Refresh token not found or expired.");
-        }
-        
-        await cacheService.RemoveAsync(key, cancellationToken);
-        
-        var newAccess  = GenerateAccessToken(user);
-        var newRefresh = await GenerateAndStoreRefreshTokenAsync(user, cancellationToken);
-
-        SetTokensToResponse(response, newAccess, newRefresh);
-    }
-
-    public async Task RevokeRefreshTokenAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
-    {
-        response.Headers.Remove(AuthorizationHeader);
-        
-        var refreshToken = GetRefreshTokenFromHeader(request) ??
-                           throw new SecurityException("Refresh token is missing.");;
-        
-        var (userId, _) = GetUserDataFromToken(refreshToken);
-        var key = GetRefreshKey(userId, refreshToken);
-        
-        await cacheService.RemoveAsync(key, cancellationToken);
+        var header = httpContextAccessor.HttpContext?.Request.Headers[RefreshTokenHeader];
+        return header.ToString();
     }
     
-    public (Guid userId, string role) GetUserDataFromToken(string token)
+    public Guid GetUserIdFromAccessToken()
     {
-        var claims = jwtProvider.ValidateToken(token).ToArray();
+        var accessToken = GetAccessTokenFromHeader();
+
+        if (accessToken is null)
+        {
+            throw new UnauthorizedException("Access token is missing.");
+        };
         
-        var userIdClaims = claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var roleClaims = claims.First(c => c.Type == ClaimTypes.Role).Value;
-        
-        return (Guid.Parse(userIdClaims), roleClaims);
+        var claims = jwtProvider.ValidateToken(accessToken).ToArray();
+        return GetUserIdFromClaims(claims);
     }
 
-    private string GetRefreshKey(Guid userId, string refreshToken) => $"{RefreshPrefix}:{userId}:{refreshToken}";
+    public string GetUserRoleFromAccessToken()
+    {
+        var accessToken = GetAccessTokenFromHeader();
+
+        if (accessToken is null)
+        {
+            throw new UnauthorizedException("Access token is missing.");
+        };
+        
+        var claims = jwtProvider.ValidateToken(accessToken).ToArray();
+        return claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
+    }
+    
+    private Guid GetUserIdFromClaims(Claim[] claims)
+    {
+        var userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
+        {
+            throw new SecurityException("Invalid user identifier in token.");
+        }
+        return userId;
+    }
+    
+    private static string GetRefreshTokenKey(Guid userId, string refreshToken) 
+        => $"refresh:{userId}:{refreshToken}";
 }

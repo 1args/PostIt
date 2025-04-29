@@ -2,9 +2,7 @@ namespace PostIt.Infrastructure.Options;
 
 public class JwtOptions
 {
-    public required string AccessTokenSecret { get; set; }
-
-    public required string RefreshTokenSecret { get; set; }
+    public required string Secret { get; set; }
     
     public int AccessTokenExpirationInHours { get; set; } = 24;
 

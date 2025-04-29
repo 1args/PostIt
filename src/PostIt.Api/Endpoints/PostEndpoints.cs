@@ -9,7 +9,8 @@ public static class PostEndpoints
 {
     public static IEndpointRouteBuilder MapPostEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/posts").WithTags("Posts");
+        var group = endpoints.MapGroup("/posts").WithTags("Posts")
+            .RequireAuthorization();
 
         group.MapPost("/", CreatePostAsync)
             .WithRequestValidation<CreatePostRequest>();
@@ -70,22 +71,20 @@ public static class PostEndpoints
 
     private static async Task<IResult> LikePostAsync(
         [FromRoute] Guid id,
-        [FromRoute] Guid authorId,
         [FromServices] IPostService postService,
         CancellationToken cancellationToken)
     {
-        await postService.LikePostAsync(id, authorId, cancellationToken);
+        await postService.LikePostAsync(id, cancellationToken);
         
         return Results.NoContent();
     }
     
     private static async Task<IResult> UnlikePostAsync(
         [FromRoute] Guid id,
-        [FromRoute] Guid authorId,
         [FromServices] IPostService postService,
         CancellationToken cancellationToken)
     {
-        await postService.UnlikePostAsync(id, authorId, cancellationToken);
+        await postService.UnlikePostAsync(id, cancellationToken);
         
         return Results.NoContent();
     }

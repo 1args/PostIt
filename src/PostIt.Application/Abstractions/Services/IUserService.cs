@@ -12,9 +12,9 @@ public interface IUserService
 
     Task<bool> VerifyEmailAsync(Guid userId, Guid token, CancellationToken cancellationToken);
 
-    Task LogoutAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken);
+    Task LogoutAsync(CancellationToken cancellationToken);
 
-    Task RefreshToken(HttpRequest request, HttpResponse response, CancellationToken cancellationToken);
+    Task<LoginResponse> RefreshToken(CancellationToken cancellationToken);
 
     Task<UserResponse> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     

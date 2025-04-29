@@ -23,9 +23,6 @@ public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
             .WithMessage($"Content must be at least {Content.MinLength} characters long.")
             .MaximumLength(Content.MaxLength)
             .WithMessage($"Content must be no longer than {Content.MaxLength} characters long.");
-
-        RuleFor(p => p.AuthorId)
-            .NotEmpty().WithMessage("Author ID cannot be empty.");
         
         RuleFor(u => u.Visibility)
             .IsInEnum()

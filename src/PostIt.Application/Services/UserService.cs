@@ -101,26 +101,33 @@ public class UserService(
             .GenerateAccessAndRefreshTokensAsync(user, cancellationToken);
         
         return new LoginResponse(
-            user.Id,
             accessToken,
             refreshToken);
     }
 
-    public async Task LogoutAsync(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
+    public async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        await authenticationService.RevokeRefreshTokenAsync(request, response, cancellationToken);
+        var accessToken = authenticationService.GetAccessTokenFromHeader();
+        var refreshToken = authenticationService.GetRefreshTokenFromHeader();
+
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            throw new UnauthorizedException("Access token is missing.");
+        }
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            throw new UnauthorizedException("Refresh token is missing.");
+        }
+        
+        await authenticationService.RevokeRefreshTokenAsync(cancellationToken);
     }
 
-    public async Task RefreshToken(HttpRequest request, HttpResponse response, CancellationToken cancellationToken)
+    public async Task<LoginResponse> RefreshToken(CancellationToken cancellationToken)
     {
-        var refreshToken = authenticationService.GetRefreshTokenFromHeader(request) 
-                           ?? throw new UnauthorizedException("Refresh token is missing.");
-
-        var (userId, _) = authenticationService.GetUserDataFromToken(refreshToken);
-        
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
-        
-        await authenticationService.RefreshAccessTokenAsync(request, response, user, cancellationToken);
+        var (accessToken, refreshToken) = await authenticationService.RefreshAccessTokenAsync(cancellationToken);
+        return new LoginResponse(
+            accessToken,
+            refreshToken);
     }
     
     public async Task<UserResponse> GetUserByIdAsync(
