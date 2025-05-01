@@ -15,6 +15,19 @@
           }
         }
       },
+      "CommunityToolkit.HighPerformance/8.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/CommunityToolkit.HighPerformance.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/CommunityToolkit.HighPerformance.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "FluentEmail.Core/3.0.2": {
         "type": "package",
         "dependencies": {
@@ -1221,6 +1234,26 @@
           }
         }
       },
+      "Minio/6.0.4": {
+        "type": "package",
+        "dependencies": {
+          "CommunityToolkit.HighPerformance": "8.3.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.1",
+          "Microsoft.Extensions.Logging": "8.0.0",
+          "System.IO.Hashing": "8.0.0",
+          "System.Reactive": "6.0.1"
+        },
+        "compile": {
+          "lib/net8.0/Minio.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Minio.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Mono.TextTemplating/3.0.0": {
         "type": "package",
         "dependencies": {
@@ -1752,6 +1785,22 @@
           }
         }
       },
+      "System.IO.Hashing/8.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
       "System.IO.Pipelines/7.0.0": {
         "type": "package",
         "compile": {
@@ -1761,6 +1810,22 @@
         },
         "runtime": {
           "lib/net7.0/System.IO.Pipelines.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "System.Reactive/6.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/System.Reactive.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/System.Reactive.dll": {
             "related": ".xml"
           }
         },
@@ -1911,6 +1976,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.4",
           "Microsoft.EntityFrameworkCore": "9.0.4",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "9.0.2",
+          "Minio": "6.0.4",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "PostIt.Application": "1.0.0",
           "PostIt.Domain": "1.0.0",
@@ -1955,6 +2021,35 @@
         "lib/netstandard2.1/BCrypt.Net-Next.dll",
         "lib/netstandard2.1/BCrypt.Net-Next.xml",
         "readme.md"
+      ]
+    },
+    "CommunityToolkit.HighPerformance/8.3.0": {
+      "sha512": "2zc0Wfr9OtEbLqm6J1Jycim/nKmYv+v12CytJ3tZGNzw7n3yjh1vNCMX0kIBaFBk3sw8g0pMR86QJGXGlArC+A==",
+      "type": "package",
+      "path": "communitytoolkit.highperformance/8.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "License.md",
+        "ThirdPartyNotices.txt",
+        "communitytoolkit.highperformance.8.3.0.nupkg.sha512",
+        "communitytoolkit.highperformance.nuspec",
+        "lib/net6.0/CommunityToolkit.HighPerformance.dll",
+        "lib/net6.0/CommunityToolkit.HighPerformance.pdb",
+        "lib/net6.0/CommunityToolkit.HighPerformance.xml",
+        "lib/net7.0/CommunityToolkit.HighPerformance.dll",
+        "lib/net7.0/CommunityToolkit.HighPerformance.pdb",
+        "lib/net7.0/CommunityToolkit.HighPerformance.xml",
+        "lib/net8.0/CommunityToolkit.HighPerformance.dll",
+        "lib/net8.0/CommunityToolkit.HighPerformance.pdb",
+        "lib/net8.0/CommunityToolkit.HighPerformance.xml",
+        "lib/netstandard2.0/CommunityToolkit.HighPerformance.dll",
+        "lib/netstandard2.0/CommunityToolkit.HighPerformance.pdb",
+        "lib/netstandard2.0/CommunityToolkit.HighPerformance.xml",
+        "lib/netstandard2.1/CommunityToolkit.HighPerformance.dll",
+        "lib/netstandard2.1/CommunityToolkit.HighPerformance.pdb",
+        "lib/netstandard2.1/CommunityToolkit.HighPerformance.xml"
       ]
     },
     "FluentEmail.Core/3.0.2": {
@@ -4161,6 +4256,29 @@
         "microsoft.openapi.nuspec"
       ]
     },
+    "Minio/6.0.4": {
+      "sha512": "JckRL95hQ/eDHTQZ/BB7jeR0JyF+bOctMW6uriXHY5YPjCX61hiJGsswGjuDSEViKJEPxtPi3e4IwD/1TJ7PIw==",
+      "type": "package",
+      "path": "minio/6.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "icon.png",
+        "lib/net6.0/Minio.dll",
+        "lib/net6.0/Minio.pdb",
+        "lib/net6.0/Minio.xml",
+        "lib/net8.0/Minio.dll",
+        "lib/net8.0/Minio.pdb",
+        "lib/net8.0/Minio.xml",
+        "lib/netstandard2.0/Minio.dll",
+        "lib/netstandard2.0/Minio.pdb",
+        "lib/netstandard2.0/Minio.xml",
+        "minio.6.0.4.nupkg.sha512",
+        "minio.nuspec",
+        "readme.md"
+      ]
+    },
     "Mono.TextTemplating/3.0.0": {
       "sha512": "YqueG52R/Xej4VVbKuRIodjiAhV0HR/XVbLbNrJhCZnzjnSjgMJ/dCdV0akQQxavX6hp/LC6rqLGLcXeQYU7XA==",
       "type": "package",
@@ -4874,6 +4992,36 @@
         "system.identitymodel.tokens.jwt.nuspec"
       ]
     },
+    "System.IO.Hashing/8.0.0": {
+      "sha512": "ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA==",
+      "type": "package",
+      "path": "system.io.hashing/8.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.IO.Hashing.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.IO.Hashing.targets",
+        "lib/net462/System.IO.Hashing.dll",
+        "lib/net462/System.IO.Hashing.xml",
+        "lib/net6.0/System.IO.Hashing.dll",
+        "lib/net6.0/System.IO.Hashing.xml",
+        "lib/net7.0/System.IO.Hashing.dll",
+        "lib/net7.0/System.IO.Hashing.xml",
+        "lib/net8.0/System.IO.Hashing.dll",
+        "lib/net8.0/System.IO.Hashing.xml",
+        "lib/netstandard2.0/System.IO.Hashing.dll",
+        "lib/netstandard2.0/System.IO.Hashing.xml",
+        "system.io.hashing.8.0.0.nupkg.sha512",
+        "system.io.hashing.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "System.IO.Pipelines/7.0.0": {
       "sha512": "jRn6JYnNPW6xgQazROBLSfpdoczRw694vO5kKvMcNnpXuolEixUyw6IBuBs2Y2mlSX/LdLvyyWmfXhaI3ND1Yg==",
       "type": "package",
@@ -4899,6 +5047,34 @@
         "system.io.pipelines.7.0.0.nupkg.sha512",
         "system.io.pipelines.nuspec",
         "useSharedDesignerContext.txt"
+      ]
+    },
+    "System.Reactive/6.0.1": {
+      "sha512": "rHaWtKDwCi9qJ3ObKo8LHPMuuwv33YbmQi7TcUK1C264V3MFnOr5Im7QgCTdLniztP3GJyeiSg5x8NqYJFqRmg==",
+      "type": "package",
+      "path": "system.reactive/6.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "build/net6.0-windows10.0.19041/_._",
+        "build/net6.0/_._",
+        "buildTransitive/net6.0-windows10.0.19041/_._",
+        "buildTransitive/net6.0/_._",
+        "icon.png",
+        "lib/net472/System.Reactive.dll",
+        "lib/net472/System.Reactive.xml",
+        "lib/net6.0-windows10.0.19041/System.Reactive.dll",
+        "lib/net6.0-windows10.0.19041/System.Reactive.xml",
+        "lib/net6.0/System.Reactive.dll",
+        "lib/net6.0/System.Reactive.xml",
+        "lib/netstandard2.0/System.Reactive.dll",
+        "lib/netstandard2.0/System.Reactive.xml",
+        "lib/uap10.0.18362/System.Reactive.dll",
+        "lib/uap10.0.18362/System.Reactive.pri",
+        "lib/uap10.0.18362/System.Reactive.xml",
+        "readme.md",
+        "system.reactive.6.0.1.nupkg.sha512",
+        "system.reactive.nuspec"
       ]
     },
     "System.Reflection.Metadata/7.0.0": {

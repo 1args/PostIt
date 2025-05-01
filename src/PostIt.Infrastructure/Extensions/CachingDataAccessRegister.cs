@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Application.Abstractions.Data;
-using PostIt.Infrastructure.Caching;
+using PostIt.Infrastructure.Data.Caching;
 
 namespace PostIt.Infrastructure.Extensions;
 

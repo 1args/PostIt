@@ -53,22 +53,20 @@ public static class CommentEndpoints
     
     private static async Task<IResult> LikeCommentAsync(
         [FromRoute] Guid id,
-        [FromRoute] Guid authorId,
         [FromServices] ICommentService commentService,
         CancellationToken cancellationToken)
     {
-        await commentService.LikeCommentAsync(id, authorId, cancellationToken);
+        await commentService.LikeCommentAsync(id, cancellationToken);
         
         return Results.NoContent();
     }
     
     private static async Task<IResult> UnlikeCommentAsync(
         [FromRoute] Guid id,
-        [FromRoute] Guid authorId,
         [FromServices] ICommentService commentService,
         CancellationToken cancellationToken)
     {
-        await commentService.UnlikeCommentAsync(id, authorId, cancellationToken);
+        await commentService.UnlikeCommentAsync(id, cancellationToken);
         
         return Results.NoContent();
     }

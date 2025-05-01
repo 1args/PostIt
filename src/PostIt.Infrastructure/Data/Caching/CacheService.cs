@@ -3,7 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using PostIt.Application.Abstractions.Data;
 
-namespace PostIt.Infrastructure.Caching;
+namespace PostIt.Infrastructure.Data.Caching;
 
 public class CacheService(IDistributedCache redisCache) : ICacheService
 {

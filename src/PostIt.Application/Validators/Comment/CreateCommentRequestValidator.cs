@@ -16,9 +16,6 @@ public class CreateCommentRequestValidator : AbstractValidator<CreateCommentRequ
             .MaximumLength(Text.MaxLength)
             .WithMessage($"Text must be no longer than {Text.MaxLength} characters long.");
 
-        RuleFor(c => c.AuthorId)
-            .NotEmpty().WithMessage("Author ID cannot be empty.");
-
         RuleFor(c => c.PostId)
             .NotEmpty().WithMessage("Post ID cannot be empty.");
     }

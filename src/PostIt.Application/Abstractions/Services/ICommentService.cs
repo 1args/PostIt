@@ -9,9 +9,9 @@ public interface ICommentService
 
     Task DeleteCommentAsync(Guid commentId, CancellationToken cancellationToken);
 
-    Task LikeCommentAsync(Guid commentId, Guid authorId, CancellationToken cancellationToken);
+    Task LikeCommentAsync(Guid commentId, CancellationToken cancellationToken);
 
-    Task UnlikeCommentAsync(Guid commentId, Guid authorId, CancellationToken cancellationToken);
+    Task UnlikeCommentAsync(Guid commentId, CancellationToken cancellationToken);
 
     Task<List<CommentResponse>> GetCommentsByPostAsync(Guid postId, CancellationToken cancellationToken);
 }

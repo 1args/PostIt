@@ -15,17 +15,20 @@ public class CommentService(
     IRepository<Comment> commentRepository,
     IRepository<Post> postRepository,
     IRepository<User> userRepository,
+    IAuthenticationService authenticationService,
     ILogger<CommentService> logger) : ICommentService
 {
     public async Task<Guid> CreateCommentAsync(
         CreateCommentRequest request,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation(
             "Creating comment from author with ID `{AuthorId}` to post with ID `{PostId}`.",
-            request.AuthorId,
+            authorId,
             request.PostId);
-        
+
         var text = Text.Create(request.Text);
 
         var state = await postRepository.AnyAsync(p => p.Id == request.PostId, cancellationToken);
@@ -36,11 +39,11 @@ public class CommentService(
             throw new NotFoundException($"Post with ID '{request.PostId}' not found.");
         }
         
-        var comment = Comment.Create(text, request.AuthorId, request.PostId, DateTime.UtcNow);
+        var comment = Comment.Create(text, authorId, request.PostId, DateTime.UtcNow);
         
         await commentRepository.AddAsync(comment, cancellationToken);
 
-        var user = await GetUserOrThrowAsync(request.AuthorId,cancellationToken);
+        var user = await GetUserOrThrowAsync(authorId,cancellationToken);
         user.IncrementCommentsCount();
         
         await userRepository.UpdateAsync(user, cancellationToken);
@@ -57,9 +60,13 @@ public class CommentService(
         Guid commentId,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation("Deleting comment with ID `{CommentId}`.", commentId);
         
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        
+        EnsureUserIsAuthorOrThrow(comment, authorId);
 
         await commentRepository.DeleteAsync([comment], cancellationToken);
         logger.LogInformation("Comment with ID `{CommentId}` deleted successfully.", commentId);
@@ -67,15 +74,18 @@ public class CommentService(
 
     public async Task LikeCommentAsync(
         Guid commentId,
-        Guid authorId,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation(
             "Liking comment with ID `{CommentId}` by user `{AuthorId}`.",
             commentId,
             authorId);
         
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        
+        EnsureUserIsAuthorOrThrow(comment, authorId);
         
         comment.Like(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
@@ -88,15 +98,18 @@ public class CommentService(
     
     public async Task UnlikeCommentAsync(
         Guid commentId,
-        Guid authorId,
         CancellationToken cancellationToken)
     {
+        var authorId = GetCurrentUserId();
+        
         logger.LogInformation(
             "Unliking comment with ID `{CommentId}` by user `{AuthorId}`.", 
             commentId,
             authorId);
         
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken, includes: [p => p.Likes]);
+        
+        EnsureUserIsAuthorOrThrow(comment, authorId);
         
         comment.Unlike(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
@@ -152,6 +165,21 @@ public class CommentService(
         return comment;
     }
 
+    private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
+
+    private void EnsureUserIsAuthorOrThrow(Comment comment, Guid currentUserId)
+    {
+        if (comment.AuthorId != currentUserId)
+        {
+            logger.LogWarning(
+                "User `{UserId}` attempted to perform an unauthorized action on comment `{PostId}`.",
+                currentUserId,
+                comment.Id);
+            
+            throw new UnauthorizedException("Only the author is allowed to perform this action on the cp,,emt.");
+        }
+    }
+    
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
         CancellationToken cancellationToken)
