@@ -30,6 +30,10 @@ public static class UserEndpoints
         group.MapPost("/refresh-token", RefreshTokenAsync)
             .WithName(nameof(RefreshTokenAsync))
             .RequireAuthorization();
+
+        group.MapPatch("{id:guid}/avatar", UploadAvatarAsync)
+            .WithName(nameof(UploadAvatarAsync))
+            .RequireAuthorization();
         
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
             .WithName(nameof(UpdateUserBioAsync))
@@ -94,6 +98,18 @@ public static class UserEndpoints
         var data = await userService.RefreshToken(cancellationToken);
         
         return Results.Ok(data);
+    }
+    
+    private static async Task UploadAvatarAsync(
+        [FromRoute] Guid id,
+        [FromForm] IFormFile avatar,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await using var stream = new MemoryStream();
+        await avatar.CopyToAsync(stream, cancellationToken);
+
+        await userService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
     }
 
     private static async Task<IResult> UpdateUserBioAsync(

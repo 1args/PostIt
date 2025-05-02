@@ -20,7 +20,9 @@ public class User : Entity<Guid>
 
     public Role Role { get; private set; }
 
-    public bool IsConfirmed { get; set; }
+    public bool IsConfirmed { get; private set; }
+
+    public string? Avatar { get; private set; }
 
     public DateTime CreatedAt { get; private set; }
     
@@ -82,5 +84,14 @@ public class User : Entity<Guid>
     {
         if (CommentsCount <= 0) throw new DomainException("Comment count cannot be negative.");
         CommentsCount--;
+    }
+
+    public void UpdateAvatar(string avatar)
+    {
+        if (string.IsNullOrWhiteSpace(avatar))
+        {
+            throw new DomainException("Avatar cannot be empty.", nameof(avatar));
+        }
+        Avatar = avatar;
     }
 }

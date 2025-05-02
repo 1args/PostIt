@@ -16,6 +16,8 @@ public interface IUserService
 
     Task<LoginResponse> RefreshToken(CancellationToken cancellationToken);
 
+    Task UploadAvatarAsync(ReadOnlyMemory<byte> avatar, CancellationToken cancellationToken);
+
     Task<UserResponse> GetUserByIdAsync(Guid userId, CancellationToken cancellationToken);
     
     Task DeleteUserAsync(Guid userId, CancellationToken cancellationToken);

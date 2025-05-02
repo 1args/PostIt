@@ -17,6 +17,7 @@ public class UserService(
     IPasswordHasher passwordHasher,
     IAuthenticationService authenticationService,
     IEmailVerificationService emailVerificationService,
+    IAvatarService avatarService,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<Guid> RegisterAsync(
@@ -64,7 +65,7 @@ public class UserService(
             return false;
         }
 
-        var isVerified = await emailVerificationService.VerifyEmailAsync(user, token, cancellationToken);
+        var isVerified = await emailVerificationService.VerifyEmailAsync(user: user, token, cancellationToken);
 
         if (isVerified)
         {
@@ -107,18 +108,6 @@ public class UserService(
 
     public async Task LogoutAsync(CancellationToken cancellationToken)
     {
-        var accessToken = authenticationService.GetAccessTokenFromHeader();
-        var refreshToken = authenticationService.GetRefreshTokenFromHeader();
-
-        if (string.IsNullOrEmpty(accessToken))
-        {
-            throw new UnauthorizedException("Access token is missing.");
-        }
-        if (string.IsNullOrEmpty(refreshToken))
-        {
-            throw new UnauthorizedException("Refresh token is missing.");
-        }
-        
         await authenticationService.RevokeRefreshTokenAsync(cancellationToken);
     }
 
@@ -128,6 +117,20 @@ public class UserService(
         return new LoginResponse(
             accessToken,
             refreshToken);
+    }
+
+    public async Task UploadAvatarAsync(
+        ReadOnlyMemory<byte> avatar,
+        CancellationToken cancellationToken)
+    {
+        var userId = GetCurrentUserId();
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        var avatarPath = await avatarService.UploadAvatarAsync(userId, avatar, cancellationToken);
+        
+        user.UpdateAvatar(avatarPath);
+        await userRepository.UpdateAsync(user, cancellationToken);
     }
     
     public async Task<UserResponse> GetUserByIdAsync(
@@ -172,6 +175,8 @@ public class UserService(
         logger.LogInformation("Bio updated successfully for user with ID `{UserId}`.",
             userId);
     }
+    
+    private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
