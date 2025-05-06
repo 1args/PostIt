@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
@@ -29,10 +29,13 @@ public class UserService(
         var name = Name.Create(request.Name);
         var bio = Bio.Create(request.Bio);
         var email = Email.Create(request.Email);
-        
-        var isExistingUser = await userRepository.AnyAsync(u => u.Email.Value == email.Value, cancellationToken);
 
-        if (isExistingUser)
+        var userExists = await userRepository
+            .AsQueryable()
+            .AsNoTracking()
+            .AnyAsync(u => u.Email.Value == email.Value, cancellationToken);
+
+        if (userExists)
         {
             throw new ConflictException($"User with email {request.Email} already exists.");
         }
@@ -57,7 +60,7 @@ public class UserService(
     {
         logger.LogInformation("Verifying email for user with ID `{UserId}` and token `{Token}`...", userId, token);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken, tracking: false);
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
 
         if (user.IsConfirmed)
         {
@@ -84,7 +87,9 @@ public class UserService(
         logger.LogInformation("Login attempt for `{Email}`...", request.Email);
 
         var user = await userRepository
-            .SingleOrDefaultAsync(u => u.Email.Value == request.Email, cancellationToken, tracking: false);
+            .AsQueryable()
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Email.Value == request.Email, cancellationToken);
 
         var verifiedPasswordHash = passwordHasher.VerifyHashedPassword(request.Password, user!.Password.Value);
 
@@ -180,11 +185,11 @@ public class UserService(
 
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
-        CancellationToken cancellationToken,
-        bool tracking = true)
+        CancellationToken cancellationToken)
     {
         var user = await userRepository
-            .GetByIdAsync(u => u.Id == userId, cancellationToken, tracking);
+            .AsQueryable()
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)
         {

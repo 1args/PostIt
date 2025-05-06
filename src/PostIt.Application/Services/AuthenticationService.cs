@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -63,7 +64,10 @@ public class AuthenticationService(
         
         var (_, userId) = await tokenStorage.GetTokenAsync(refreshToken, cancellationToken);
         
-        var user = await userRepository.GetByIdAsync(u => u.Id == userId, cancellationToken, tracking: false);
+        var user = await userRepository
+            .AsQueryable()
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)
         {

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -31,9 +32,12 @@ public class CommentService(
 
         var text = Text.Create(request.Text);
 
-        var state = await postRepository.AnyAsync(p => p.Id == request.PostId, cancellationToken);
+        var postExists = await postRepository
+            .AsQueryable()
+            .AsNoTracking()
+            .AnyAsync(post => post.Id == request.PostId, cancellationToken);
 
-        if (!state)
+        if (!postExists)
         {
             logger.LogWarning("Post with ID '{PostId}' not found.", request.PostId);
             throw new NotFoundException($"Post with ID '{request.PostId}' not found.");
@@ -83,7 +87,16 @@ public class CommentService(
             commentId,
             authorId);
         
-        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        var comment = await commentRepository
+            .AsQueryable()
+            .Include(p => p.Likes)
+            .FirstOrDefaultAsync(p => p.Id == commentId, cancellationToken);
+
+        if (comment is null)
+        {
+            logger.LogWarning("Comment with ID `{CommentId}` not found.", commentId);
+            throw new NotFoundException($"Comment with ID '{commentId}' not found.");
+        }
         
         EnsureUserIsAuthorOrThrow(comment, authorId);
         
@@ -106,8 +119,17 @@ public class CommentService(
             "Unliking comment with ID `{CommentId}` by user `{AuthorId}`.", 
             commentId,
             authorId);
-        
-        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken, includes: [p => p.Likes]);
+
+        var comment = await commentRepository
+            .AsQueryable()
+            .Include(p => p.Likes)
+            .FirstOrDefaultAsync(p => p.Id == commentId, cancellationToken);
+
+        if (comment is null)
+        {
+            logger.LogWarning("Comment with ID `{CommentId}` not found.", commentId);
+            throw new NotFoundException($"Comment with ID '{commentId}' not found.");
+        }
         
         EnsureUserIsAuthorOrThrow(comment, authorId);
         
@@ -126,10 +148,11 @@ public class CommentService(
     {
         logger.LogInformation("Fetching comments for post with ID `{PostId}`.", postId);
 
-        var comments = await commentRepository.ToListAsync(
-            expression:c => c.PostId == postId,
-            cancellationToken: cancellationToken,
-            tracking: false);
+        var comments = await commentRepository
+            .AsQueryable()
+            .AsNoTracking()
+            .Where(c => c.PostId == postId)
+            .ToListAsync(cancellationToken);
 
         var sortedComment = comments
             .OrderByDescending(c => c.Likes.Count)
@@ -148,11 +171,11 @@ public class CommentService(
 
     private async Task<Comment> GetCommentOrThrowAsync(
         Guid commentId,
-        CancellationToken cancellationToken,
-        params Expression<Func<Comment, object>>[] includes)
+        CancellationToken cancellationToken)
     {
         var comment = await commentRepository
-            .SingleOrDefaultAsync(c => c.Id == commentId, cancellationToken, includes: includes);
+            .AsQueryable()
+            .SingleOrDefaultAsync(c => c.Id == commentId, cancellationToken);
         
         if (comment is null)
         {
@@ -184,7 +207,9 @@ public class CommentService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByIdAsync(u => u.Id == userId, cancellationToken);
+        var user = await userRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)
         {

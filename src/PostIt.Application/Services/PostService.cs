@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -90,7 +91,16 @@ public class PostService(
         
         logger.LogInformation("Liking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
         
-        var post = await GetPostOrThrowAsync(postId, cancellationToken); 
+        var post = await postRepository
+            .AsQueryable()
+            .Include(p => p.Likes)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (post is null)
+        {
+            logger.LogInformation("Post with ID `{PostId}` was not found.", postId);
+            throw new NotFoundException("Post with ID '{PostId}' was not found.");
+        }
 
         post.Like(authorId);
         await postRepository.UpdateAsync(post, cancellationToken);
@@ -105,9 +115,18 @@ public class PostService(
         var authorId = GetCurrentUserId();
         
         logger.LogInformation("Unliking post `{PostId}` by user `{AuthorId}`.", postId, authorId);
-        
-        var post = await GetPostOrThrowAsync(postId, cancellationToken, includes: [p => p.Likes]);
-        
+
+        var post = await postRepository
+            .AsQueryable()
+            .Include(p => p.Likes)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        if (post is null)
+        {
+            logger.LogInformation("Post with ID `{PostId}` was not found.", postId);
+            throw new NotFoundException("Post with ID '{PostId}' was not found.");
+        }
+
         post.Unlike(authorId);
         await postRepository.UpdateAsync(post, cancellationToken);
         
@@ -160,7 +179,9 @@ public class PostService(
         var currentUserId = GetCurrentUserId();
 
         var posts = await postRepository
-            .ToListAsync(cancellationToken: cancellationToken, tracking: false);
+            .AsQueryable()
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
         
         var sortedPosts = posts
             .OrderByDescending(p => p.Likes.Count)
@@ -181,7 +202,9 @@ public class PostService(
         var currentUserId = GetCurrentUserId();
         
         var posts = await postRepository
-            .ToListAsync(cancellationToken: cancellationToken, tracking: false);
+            .AsQueryable()
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
         
         var sortedPosts = posts
             .OrderByDescending(p => p.ViewCount)
@@ -196,11 +219,13 @@ public class PostService(
     
     private async Task UpdateUserPostCountAsync(Guid userId, bool increase, CancellationToken cancellationToken)
     {
-        var user = await userRepository.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        var user = await userRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
         
         if (user is null)
         {
-            logger.LogWarning("User with ID `{UserId}` not found while updating post count.", userId);
+            logger.LogWarning("User with ID `{UserId}` no found while updating post count.", userId);
             return;
         }
         if (increase)
@@ -232,11 +257,11 @@ public class PostService(
     
     private async Task<Post> GetPostOrThrowAsync(
         Guid postId, 
-        CancellationToken cancellationToken,
-        params Expression<Func<Post, object>>[] includes)
+        CancellationToken cancellationToken)
     {
         var post =await postRepository
-            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken, tracking: true, includes);
+            .AsQueryable()
+            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken);
         
         if (post is null)
         {

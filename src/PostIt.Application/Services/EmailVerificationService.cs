@@ -1,4 +1,5 @@
 using Hangfire;
+using Microsoft.EntityFrameworkCore;
 using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
@@ -31,8 +32,9 @@ public class EmailVerificationService(
 
     public async Task<bool> VerifyEmailAsync(User user, Guid token, CancellationToken cancellationToken)
     {
-        var emailVerificationToken = await emailVerificationTokenRepository.GetByIdAsync(
-            t => t.Id == token, cancellationToken);
+        var emailVerificationToken = await emailVerificationTokenRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(e => e.Id == token,cancellationToken);
 
         if (emailVerificationToken is null || emailVerificationToken.IsExpired())
         {

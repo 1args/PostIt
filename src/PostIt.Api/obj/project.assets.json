@@ -1947,6 +1947,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "Hangfire": "1.8.18",
           "Microsoft.AspNetCore.Http": "2.3.0",
+          "Microsoft.EntityFrameworkCore": "9.0.4",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
           "PostIt.Contracts": "1.0.0"

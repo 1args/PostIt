@@ -4,6 +4,7 @@ volumes:
   postit-postgres: 
   postit-redis:
   postit-logs:
+  postit-minio:
     
 services:
   
@@ -42,7 +43,7 @@ services:
     environment:
       discovery.type: single-node
       plugins.security.disabled: true
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: SAFjfhHA$252SFS421152
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: opensearchpassword
     volumes:
       - postit-logs:/usr/share/opensearch/data
         
@@ -67,3 +68,19 @@ services:
     ports:
       - '25:25'
       - '8080:80'
+  
+  # Minio
+  minio:
+    container_name: postit-minio
+    image: minio/minio:latest
+    restart: on-failure
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: minioadmin,
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - postit-minio:/data
+    command: server /data --console-address ":9001"
+      
