@@ -17,6 +17,11 @@ public class Repository<TEntity> : IRepository<TEntity>
         DbSet = DbContext.Set<TEntity>();
     }
     
+    public IQueryable<TEntity> AsQueryable()
+    {
+        return DbSet.AsQueryable();
+    }
+    
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -52,24 +57,6 @@ public class Repository<TEntity> : IRepository<TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<TEntity?> GetByIdAsync(
-        Expression<Func<TEntity, bool>> expression,
-        CancellationToken cancellationToken,
-        bool tracking = true)
-    {
-        var query = AsQueryable(tracking);
-        
-        return await query
-            .SingleOrDefaultAsync(expression, cancellationToken);
-    }
-    
-    public IQueryable<TEntity> AsQueryable(bool tracking = true)
-    {
-        return tracking 
-            ? DbSet.AsQueryable<TEntity>()
-            : DbSet.AsQueryable<TEntity>().AsNoTracking();
-    }
-
     public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
     {
         ArgumentNullException.ThrowIfNull(expression);
@@ -79,36 +66,6 @@ public class Repository<TEntity> : IRepository<TEntity>
     public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
     {
         return await DbSet.AnyAsync(expression, cancellationToken);
-    }
-
-
-    public async Task<TEntity?> SingleOrDefaultAsync(
-        Expression<Func<TEntity, bool>> expression,
-        CancellationToken cancellationToken,
-        bool tracking = true,
-        params Expression<Func<TEntity, object>>[] includes)
-    {
-        var query = AsQueryable(tracking);
-
-        query = includes
-            .Aggregate(query, (current, include) => current.Include(include));
-
-        return await query.SingleOrDefaultAsync(expression, cancellationToken);
-    }
-    
-    public async Task<List<TEntity>> ToListAsync(
-        CancellationToken cancellationToken,
-        Expression<Func<TEntity, bool>>? expression = null,
-        bool tracking = true)
-    {
-        var query = AsQueryable(tracking);
-        
-        if (expression is not null)
-        {
-            query = query.Where(expression);
-        }
-
-        return await query.ToListAsync(cancellationToken);
     }
     
     private Task<int> SaveChangesAsync(CancellationToken cancellationToken)

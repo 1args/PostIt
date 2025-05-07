@@ -142,7 +142,7 @@ public class AuthenticationService(
         return claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
     }
     
-    private Guid GetUserIdFromClaims(Claim[] claims)
+    private static Guid GetUserIdFromClaims(Claim[] claims)
     {
         var userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
         if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
