@@ -1,17 +1,18 @@
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
-namespace PostIt.Domain.ValueObjects.User;
+namespace PostIt.Domain.ValueObjects;
 
-public class Name : ValueObject
+public class UserName : ValueObject
 {
     public const int MinLength = 3;
     public const int MaxLength = 30;
     
     public string Value { get; }
     
-    private Name() { }
+    private UserName() { }
     
-    private Name(string name)
+    private UserName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -28,7 +29,7 @@ public class Name : ValueObject
         };
     }
     
-    public static Name Create(string name) => new(name);
+    public static UserName Create(string name) => new(name);
 
     public override string ToString() => Value;
     

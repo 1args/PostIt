@@ -1,67 +1,104 @@
 using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
+using PostIt.Domain.ValueObjects;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Entities;
 
+/// <summary>
+/// Represents a user entity.
+/// </summary>
 public class User : Entity<Guid>
 {
-    public Name Name { get; private set; }
+    /// <summary>User's display name.</summary>
+    public UserName Name { get; private set; }
 
-    public Bio Bio { get; private set; }
+    /// <summary>User's biography.</summary>
+    public UserBio Bio { get; private set; }
 
+    /// <summary>Number of posts created by the user.</summary>
     public int PostsCount { get; private set; }
     
+    /// <summary>Number of comments created by the user.</summary>
     public int CommentsCount { get; private set; }
     
-    public Email Email { get; private set; }
+    /// <summary>User's email address.</summary>
+    public UserEmail Email { get; private set; }
     
-    public Password Password { get; private set; }
+    /// <summary>User's password hash.</summary>
+    public UserPassword Password { get; private set; }
 
+    /// <summary>Role of the user.</summary>
     public Role Role { get; private set; }
 
-    public bool IsConfirmed { get; private set; }
+    /// <summary>Indicates whether the user's email has been verified.</summary>
+    public bool IsEmailConfirmed  { get; private set; }
 
+    /// <summary>Path to the user's avatar image. Can be null if not set.</summary>
     public string? Avatar { get; private set; }
 
+    /// <summary>Date when the user was created.</summary>
     public DateTime CreatedAt { get; private set; }
-    
-    private User() { }
 
-    private User(Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt)
+    /// <summary>
+    /// Private constructor used by the factory Create method.
+    /// </summary>
+    private User(
+        UserName name,
+        UserBio bio,
+        UserEmail email, 
+        UserPassword password, 
+        Role role, 
+        DateTime createdAt)
     {
-        if (createdAt > DateTime.UtcNow)
-        {
-            throw new DomainException("Creation date cannot be in the future.", nameof(createdAt));
-        }
-        
         Name = name;
-        Bio = bio.IsEmpty() ? Bio.Create("Empty") : bio;
+        Bio = bio.IsEmpty() ? UserBio.Create("Empty") : bio;
         Email = email;
         Password = password;
         Role = role;
         CreatedAt = createdAt;
     }
     
+    /// <summary>
+    /// Factory method to create a new user instance.
+    /// </summary>
+    /// <param name="name">The display name.</param>
+    /// <param name="bio">The biography.</param>
+    /// <param name="email">The email address.</param>
+    /// <param name="password">The hashed password.</param>
+    /// <param name="role">The user role.</param>
+    /// <param name="createdAt">The creation timestamp.</param>
+    /// <returns>A new instance of the <see cref="User"/> class.</returns>
     public static User Create(
-        Name name,
-        Bio bio, 
-        Email email, 
-        Password password,
+        UserName name,
+        UserBio bio, 
+        UserEmail email, 
+        UserPassword password,
         Role role,
         DateTime createdAt) =>
         new(name, bio, email, password, role, createdAt);
 
+    /// <summary>
+    /// Marks the user's email as verified.
+    /// </summary>
+    /// <exception cref="DomainException">
+    /// Thrown if the user has already confirmed the email.
+    /// </exception>
     public void ConfirmEmail()
     {
-        if (IsConfirmed)
+        if (IsEmailConfirmed)
         {
-            throw new DomainException("Email already confirmed.", nameof(Email));
+            throw new DomainException("Email already confirmed.");
         }
-        IsConfirmed = true;
+        IsEmailConfirmed = true;
     }
 
-    public void UpdateBio(Bio bio)
+    /// <summary>
+    /// Updates the user's biography.
+    /// </summary>
+    /// <param name="bio">The new biography.</param>
+    public void UpdateBio(UserBio bio)
     {
         if (Bio.Equals(bio))
         {
@@ -86,11 +123,18 @@ public class User : Entity<Guid>
         CommentsCount--;
     }
 
+    /// <summary>
+    /// Updates the user's avatar.
+    /// </summary>
+    /// <param name="avatar">The new avatar path.</param>
+    /// <exception cref="DomainException">
+    /// Thrown when the provided value is null, empty, or consists only of white-space characters.
+    /// </exception>
     public void UpdateAvatar(string avatar)
     {
         if (string.IsNullOrWhiteSpace(avatar))
         {
-            throw new DomainException("Avatar cannot be empty.", nameof(avatar));
+            throw new DomainException("Avatar cannot be empty.");
         }
         Avatar = avatar;
     }

@@ -1,5 +1,6 @@
 using FluentValidation;
 using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Domain.ValueObjects;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Application.Validators.User;
@@ -11,14 +12,14 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
         RuleFor(u => u.Email)
             .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Email cannot be empty.")
-            .Must(Email.IsEmailValid).WithMessage("Invalid email format.");
+            .Must(UserEmail.IsEmailValid).WithMessage("Invalid email format.");
 
         RuleFor(u => u.Password)
             .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Password cannot be empty.")
-            .MinimumLength(Password.MinLength)
-            .WithMessage($"Password must be at least {Password.MinLength} characters long.")
-            .MaximumLength(Password.MaxLength)
-            .WithMessage($"Password must be no longer than {Password.MaxLength} characters long.");
+            .MinimumLength(UserPassword.MinLength)
+            .WithMessage($"Password must be at least {UserPassword.MinLength} characters long.")
+            .MaximumLength(UserPassword.MaxLength)
+            .WithMessage($"Password must be no longer than {UserPassword.MaxLength} characters long.");
     }
 }

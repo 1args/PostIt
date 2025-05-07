@@ -1,17 +1,18 @@
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
-namespace PostIt.Domain.ValueObjects.Post;
+namespace PostIt.Domain.ValueObjects;
 
-public class Content : ValueObject
+public class PostContent : ValueObject
 {
     public const int MinLength = 5;
     public const int MaxLength = 4800;
     
     public string Value { get; }
     
-    private Content() { }
+    private PostContent() { }
     
-    private Content(string content)
+    private PostContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
         {
@@ -28,7 +29,7 @@ public class Content : ValueObject
         };
     }
     
-    public static Content Create(string content) => new(content);
+    public static PostContent Create(string content) => new(content);
 
     public override string ToString() => Value;
     

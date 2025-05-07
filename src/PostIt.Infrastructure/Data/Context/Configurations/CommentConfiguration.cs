@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
-using PostIt.Domain.ValueObjects.Comment;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
@@ -18,7 +18,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         {
             text.Property(t => t.Value)
                 .HasColumnName("Text")
-                .HasMaxLength(Text.MaxLength)
+                .HasMaxLength(CommentText.MaxLength)
                 .IsRequired();
         });
 

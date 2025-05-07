@@ -2,19 +2,20 @@ using FluentAssertions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.ValueObjects;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Tests.Entities;
 
 public class UserTests
 {
-    private static (Name name, Bio bio, Email email, Password password, Role role, DateTime createdAt) 
+    private static (UserName name, UserBio bio, UserEmail email, UserPassword password, Role role, DateTime createdAt) 
         BuildValidUserData() =>
     (
-        Name.Create("John Doe"),
-        Bio.Create("Bio"),
-        Email.Create("john.doe@gmail.com"),
-        Password.Create("password123"),
+        UserName.Create("John Doe"),
+        UserBio.Create("Bio"),
+        UserEmail.Create("john.doe@gmail.com"),
+        UserPassword.Create("password123"),
         Role.User,
         DateTime.UtcNow
     );
@@ -68,7 +69,7 @@ public class UserTests
     public void CreateUser_InvalidEmail_ShouldThrowDomainException(string invalidEmail, string expectedMessage)
     {
         // Act
-        Action act = () => Email.Create(invalidEmail);
+        Action act = () => UserEmail.Create(invalidEmail);
 
         // Assert
         act.Should().Throw<DomainException>()

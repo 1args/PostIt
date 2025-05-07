@@ -1,15 +1,16 @@
 using System.Text.RegularExpressions;
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
 namespace PostIt.Domain.ValueObjects.User;
 
-public class Email : ValueObject
+public class UserEmail : ValueObject
 {
     public string Value { get; }
 
-    private Email() { }
+    private UserEmail() { }
     
-    private Email(string email) 
+    private UserEmail(string email) 
     {
         if (!IsEmailValid(email))
         {
@@ -19,7 +20,7 @@ public class Email : ValueObject
         Value = email;
     }
 
-    public static Email Create(string email) => new(email);
+    public static UserEmail Create(string email) => new(email);
 
     public static bool IsEmailValid(string email)
     {

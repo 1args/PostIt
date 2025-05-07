@@ -1,6 +1,6 @@
 using FluentValidation;
 using PostIt.Contracts.ApiContracts.Requests.Post;
-using PostIt.Domain.ValueObjects.Post;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Validators.Post;
 
@@ -11,18 +11,18 @@ public class CreatePostRequestValidator : AbstractValidator<CreatePostRequest>
         RuleFor(p => p.Title)
             .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Post title cannot be empty")
-            .MinimumLength(Title.MinLength)
-            .WithMessage($"Title must be at least {Title.MinLength} characters long.")
-            .MaximumLength(Title.MaxLength)
-            .WithMessage($"Title must be no longer than {Title.MaxLength} characters long.");
+            .MinimumLength(PostTitle.MinLength)
+            .WithMessage($"Title must be at least {PostTitle.MinLength} characters long.")
+            .MaximumLength(PostTitle.MaxLength)
+            .WithMessage($"Title must be no longer than {PostTitle.MaxLength} characters long.");
 
         RuleFor(p => p.Content)
             .Cascade(CascadeMode.Stop)
             .NotEmpty().WithMessage("Content cannot be empty")
-            .MinimumLength(Content.MinLength)
-            .WithMessage($"Content must be at least {Content.MinLength} characters long.")
-            .MaximumLength(Content.MaxLength)
-            .WithMessage($"Content must be no longer than {Content.MaxLength} characters long.");
+            .MinimumLength(PostContent.MinLength)
+            .WithMessage($"Content must be at least {PostContent.MinLength} characters long.")
+            .MaximumLength(PostContent.MaxLength)
+            .WithMessage($"Content must be no longer than {PostContent.MaxLength} characters long.");
         
         RuleFor(u => u.Visibility)
             .IsInEnum()

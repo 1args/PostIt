@@ -1,16 +1,16 @@
 using FluentAssertions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.Exceptions;
-using PostIt.Domain.ValueObjects.Comment;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Domain.Tests.Entities;
 
 public class CommentTests
 {
-    private static (Text text, Guid authorId, Guid postId, DateTime createdAt) 
+    private static (CommentText text, Guid authorId, Guid postId, DateTime createdAt) 
         BuildValidCommentData() => 
     (
-        Text.Create("This is a test comment."),
+        CommentText.Create("This is a test comment."),
         Guid.NewGuid(),
         Guid.NewGuid(),
         DateTime.UtcNow

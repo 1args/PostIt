@@ -1,16 +1,17 @@
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
 namespace PostIt.Domain.ValueObjects.User;
 
-public class Bio : ValueObject
+public class UserBio : ValueObject
 {
     public const int MaxLength = 150;
     
     public string Value { get; }
 
-    private Bio() { }
+    private UserBio() { }
     
-    private Bio(string bio)
+    private UserBio(string bio)
     {
         if(string.IsNullOrWhiteSpace(bio))
         {
@@ -26,7 +27,7 @@ public class Bio : ValueObject
         Value = bio;
     }
 
-    public static Bio Create(string bio) => new(bio);
+    public static UserBio Create(string bio) => new(bio);
     
     public bool IsEmpty() => string.IsNullOrWhiteSpace(Value);
 

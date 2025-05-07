@@ -8,7 +8,7 @@ using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
-using PostIt.Domain.ValueObjects.Comment;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Services;
 
@@ -30,7 +30,7 @@ public class CommentService(
             authorId,
             request.PostId);
 
-        var text = Text.Create(request.Text);
+        var text = CommentText.Create(request.Text);
 
         var postExists = await postRepository
             .AsQueryable()

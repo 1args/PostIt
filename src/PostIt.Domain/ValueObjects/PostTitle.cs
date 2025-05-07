@@ -1,17 +1,18 @@
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
-namespace PostIt.Domain.ValueObjects.Post;
+namespace PostIt.Domain.ValueObjects;
 
-public class Title : ValueObject
+public class PostTitle : ValueObject
 {
     public const int MinLength = 1;
     public const int MaxLength = 100;
     
     public string Value { get; set; }
     
-    private Title() { }
+    private PostTitle() { }
 
-    private Title(string title)
+    private PostTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -30,7 +31,7 @@ public class Title : ValueObject
         Value = title;
     }
 
-    public static Title Create(string title) => new(title);
+    public static PostTitle Create(string title) => new(title);
 
     public override string ToString() => Value;
     

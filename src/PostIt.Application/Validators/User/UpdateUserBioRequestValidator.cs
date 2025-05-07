@@ -10,7 +10,7 @@ public class UpdateUserBioRequestValidator : AbstractValidator<UpdateUserBioRequ
     {
         RuleFor(u => u.Bio)
             .NotEmpty().WithMessage("Bio cannot be empty.")
-            .MaximumLength(Bio.MaxLength)
-            .WithMessage($"User bio must be no longer than {Bio.MaxLength} characters long.");
+            .MaximumLength(UserBio.MaxLength)
+            .WithMessage($"User bio must be no longer than {UserBio.MaxLength} characters long.");
     }
 }

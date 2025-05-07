@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
-using PostIt.Domain.ValueObjects.Post;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
@@ -21,7 +21,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         {
             title.Property(t => t.Value)
                 .HasColumnName("Title")
-                .HasMaxLength(Title.MaxLength)
+                .HasMaxLength(PostTitle.MaxLength)
                 .IsRequired();
         });
 
@@ -29,7 +29,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
         {
             content.Property(p => p.Value)
                 .HasColumnName("Content")
-                .HasMaxLength(Content.MaxLength)
+                .HasMaxLength(PostContent.MaxLength)
                 .IsRequired();
         });
         

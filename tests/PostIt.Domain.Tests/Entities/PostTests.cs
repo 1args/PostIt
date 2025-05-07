@@ -2,18 +2,17 @@ using FluentAssertions;
 using PostIt.Domain.Entities;
 using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
-using PostIt.Domain.ValueObjects.Comment;
-using PostIt.Domain.ValueObjects.Post;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Domain.Tests.Entities;
 
 public class PostTests
 {
-    private static (Title title, Content content, Guid authorId, DateTime createdAt)
+    private static (PostTitle title, PostContent content, Guid authorId, DateTime createdAt)
         BuildValidPostData() => 
     (
-        Title.Create("Test Title"),
-        Content.Create("Test Content"),
+        PostTitle.Create("Test Title"),
+        PostContent.Create("Test Content"),
         Guid.NewGuid(),
         DateTime.UtcNow
     );
@@ -26,7 +25,7 @@ public class PostTests
 
     private static Comment CreateComment(Post post)
     {
-        var text = Text.Create("Comment text");
+        var text = CommentText.Create("Comment text");
         return Comment.Create(text, Guid.NewGuid(), post.Id, DateTime.UtcNow);
     }
 
@@ -174,8 +173,8 @@ public class PostTests
     {
         // Arrange
         var post = CreatePost();
-        var newTitle = Title.Create("New title");
-        var newContent = Content.Create("New content");
+        var newTitle = PostTitle.Create("New title");
+        var newContent = PostContent.Create("New content");
         
         // Act
         post.UpdateContent(newTitle, newContent);
@@ -192,8 +191,8 @@ public class PostTests
     {
         // Arrange
         var (_, _, authorId, createdAt) = BuildValidPostData();
-        var title = Title.Create("Same title");
-        var content = Content.Create("Same content");
+        var title = PostTitle.Create("Same title");
+        var content = PostContent.Create("Same content");
         var post = Post.Create(title, content, authorId, createdAt);
         
         // Act

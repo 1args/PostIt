@@ -8,6 +8,7 @@ using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
+using PostIt.Domain.ValueObjects;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Application.Services;
@@ -26,9 +27,9 @@ public class UserService(
     {
         logger.LogInformation("Creating user with email `{Email}`.", request.Email);
         
-        var name = Name.Create(request.Name);
-        var bio = Bio.Create(request.Bio);
-        var email = Email.Create(request.Email);
+        var name = UserName.Create(request.Name);
+        var bio = UserBio.Create(request.Bio);
+        var email = UserEmail.Create(request.Email);
 
         var userExists = await userRepository
             .AsQueryable()
@@ -41,7 +42,7 @@ public class UserService(
         }
         
         var passwordHash = passwordHasher.HashPassword(request.Password);
-        var password = Password.Create(passwordHash);
+        var password = UserPassword.Create(passwordHash);
         var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
@@ -172,7 +173,7 @@ public class UserService(
         
         var user = await GetUserOrThrowAsync(userId, cancellationToken);
 
-        var newBio = Bio.Create(request.Bio);
+        var newBio = UserBio.Create(request.Bio);
         user.UpdateBio(newBio);
         
         await userRepository.UpdateAsync(user, cancellationToken);

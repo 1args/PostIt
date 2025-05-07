@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
+using PostIt.Domain.ValueObjects;
 using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
@@ -17,7 +18,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             name.Property(n => n.Value)
                 .HasColumnName("Name")
-                .HasMaxLength(Name.MaxLength)
+                .HasMaxLength(UserName.MaxLength)
                 .IsRequired();
         });
 
@@ -25,7 +26,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             bio.Property(b => b.Value)
                 .HasColumnName("Bio")
-                .HasMaxLength(Bio.MaxLength)
+                .HasMaxLength(UserBio.MaxLength)
                 .IsRequired();
         });
         

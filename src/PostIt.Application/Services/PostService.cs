@@ -7,7 +7,7 @@ using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
-using PostIt.Domain.ValueObjects.Post;
+using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Services;
 
@@ -25,8 +25,8 @@ public class PostService(
         
         logger.LogInformation("Creating post by author ID `{AuthorId}`.", authorId);
         
-        var title = Title.Create(request.Title);
-        var content = Content.Create(request.Content);
+        var title = PostTitle.Create(request.Title);
+        var content = PostContent.Create(request.Content);
 
         var post = Post.Create(
             title, 
@@ -55,8 +55,8 @@ public class PostService(
         var authorId = GetCurrentUserId();
         EnsureUserIsAuthorOrThrow(post, authorId);
         
-        var newTitle = Title.Create(request.Title);
-        var newContent = Content.Create(request.Content);
+        var newTitle = PostTitle.Create(request.Title);
+        var newContent = PostContent.Create(request.Content);
         
         post.UpdateContent(newTitle, newContent);
         await postRepository.UpdateAsync(post, cancellationToken);

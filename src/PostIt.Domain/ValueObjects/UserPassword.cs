@@ -1,27 +1,26 @@
 using PostIt.Domain.Exceptions;
+using PostIt.Domain.Primitives;
 
-namespace PostIt.Domain.ValueObjects.User;
+namespace PostIt.Domain.ValueObjects;
 
-public class Password : ValueObject
+public class UserPassword : ValueObject
 {
     public const int MinLength = 8;
     public const int MaxLength = 100;
     
     public string Value { get; private set; }
     
-    private Password() { }
-    
-    private Password(string password)
+    private UserPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
         {
-            throw new DomainException("Password cannot be empty.", nameof(password));
+            throw new DomainException("Password cannot be empty.");
         }
         
         Value = password;
     }
     
-    public static Password Create(string password) => new(password);
+    public static UserPassword Create(string password) => new(password);
 
     public static bool IsPasswordStrong(string password)
     {

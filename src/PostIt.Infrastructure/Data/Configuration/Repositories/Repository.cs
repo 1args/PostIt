@@ -62,11 +62,6 @@ public class Repository<TEntity> : IRepository<TEntity>
         ArgumentNullException.ThrowIfNull(expression);
         return DbSet.Where(expression);
     }
-
-    public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken)
-    {
-        return await DbSet.AnyAsync(expression, cancellationToken);
-    }
     
     private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
