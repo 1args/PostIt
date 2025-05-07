@@ -5,11 +5,9 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 
-public static class AuthenticationRegister
+public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddAuthenticationRules(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddAuthenticationRules(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()
             ?? throw new InvalidOperationException("JWTOptions is missing.");

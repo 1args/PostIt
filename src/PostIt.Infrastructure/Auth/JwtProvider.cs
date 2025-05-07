@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PostIt.Application.Abstractions.Auth;
-using PostIt.Infrastructure.Exceptions;
+using PostIt.Application.Exceptions;
 using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Auth;

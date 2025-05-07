@@ -8,11 +8,9 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class MinioRegister
+internal static class MinioExtensions
 {
-    public static IServiceCollection AddMinio(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddMinio(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<MinioOptions>(configuration.GetSection(nameof(MinioOptions)));
 

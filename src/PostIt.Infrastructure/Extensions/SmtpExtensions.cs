@@ -4,11 +4,9 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class SmtpRegister
+internal static class SmtpExtensions
 {
-    public static IServiceCollection AddSmtpConfiguration(
-        this IServiceCollection services, 
-        IConfiguration configuration)
+    public static IServiceCollection AddSmtpConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         var smtpOptions = configuration.GetSection(nameof(SmtpOptions)).Get<SmtpOptions>();
     

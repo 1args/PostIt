@@ -5,11 +5,9 @@ using PostIt.Infrastructure.Data.Caching;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class CachingDataAccessRegister
+internal static class CacheExtensions
 {
-    public static IServiceCollection AddCachingDataAccess(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddStackExchangeRedisCache(options =>
         {

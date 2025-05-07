@@ -8,7 +8,7 @@ using PostIt.Application.Validators.User;
 
 namespace PostIt.Application.Extensions;
 
-public static class ApplicationRegister
+public static class ApplicationExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {

@@ -5,12 +5,17 @@ using PostIt.Infrastructure.Data.Context;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class InfrastructureRegister
+public static class InfrastructureExtensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>();
-        services.AddAuthenticationData(configuration);
+        services
+            .AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>()
+            .AddCaching(configuration)
+            .AddAuthRegister(configuration)
+            .AddHangfireConfiguration(configuration)
+            .AddMinio(configuration)
+            .AddSmtpConfiguration(configuration);
         
         return services;
     }

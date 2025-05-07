@@ -3,9 +3,9 @@ using PostIt.Api.ErrorHandling;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 
-public static class ExceptionHandlerRegister
+public static class ExceptionHandlerExtensions
 {
-    public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
+    public static IServiceCollection AddGlobalExceptionHandler(this IServiceCollection services)
     {
         services.AddProblemDetails(options =>
         {

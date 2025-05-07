@@ -1,4 +1,4 @@
-namespace PostIt.Infrastructure.Exceptions;
+namespace PostIt.Application.Exceptions;
 
 public class InvalidTokenException : Exception
 {

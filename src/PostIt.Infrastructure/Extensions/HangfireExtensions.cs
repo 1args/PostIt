@@ -5,11 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class HangfireRegister
+internal static class HangfireExtensions
 {
-    public static IServiceCollection AddHangfireConfiguration(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddHangfireConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         // Not a good idea use redis
         var connectionString = configuration.GetConnectionString("RedisConnection");

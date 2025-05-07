@@ -6,7 +6,7 @@ using PostIt.Infrastructure.Data.Configuration.Repositories;
 
 namespace PostIt.Infrastructure.Extensions;
 
-public static class DataAccessRegister
+internal static class DataAccessExtensions
 {
     public static IServiceCollection AddDataAccess<TDbContext, TDbContextOptionsConfigurator>(
         this IServiceCollection services) 
