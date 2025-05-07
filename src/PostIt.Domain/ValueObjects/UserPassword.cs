@@ -3,13 +3,23 @@ using PostIt.Domain.Primitives;
 
 namespace PostIt.Domain.ValueObjects;
 
+/// <summary>
+/// Represents the value object for a user's password.
+/// </summary>
 public class UserPassword : ValueObject
 {
+    /// <summary>Minimum required length for password.</summary>
     public const int MinLength = 8;
+    
+    /// <summary>Maximum allowed length for password.</summary>
     public const int MaxLength = 100;
     
-    public string Value { get; private set; }
+    /// <summary>The actual value.</summary>
+    public string Value { get; }
     
+    /// <summary>
+    /// Private constructor used by the factory Create method.
+    /// </summary>
     private UserPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -20,8 +30,19 @@ public class UserPassword : ValueObject
         Value = password;
     }
     
+    /// <summary>
+    /// Factory method to create a new user instance.
+    /// </summary>
+    /// <param name="password">Password value.</param>
+    /// <returns>A new instance of the <see cref="UserPassword"/> class.</returns>
+    /// <exception cref="DomainException">If password is empty or whitespace.</exception>
     public static UserPassword Create(string password) => new(password);
 
+    /// <summary>
+    /// Determines whether the given password is strong.
+    /// </summary>
+    /// <param name="password">Password to check.</param>
+    /// <returns><c>true</c> if the password is considered strong; otherwise, <c>false</c>.</returns>
     public static bool IsPasswordStrong(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
@@ -41,8 +62,10 @@ public class UserPassword : ValueObject
         return hasUpper && hasLower && hasDigit && hasSymbol;
     }
     
+    /// <inheritdoc/>
     public override string ToString() => Value;
     
+    /// <inheritdoc/>
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Value;

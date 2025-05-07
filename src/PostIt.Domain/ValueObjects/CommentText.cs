@@ -14,7 +14,7 @@ public class CommentText : ValueObject
     /// <summary>Maximum allowed length for a comment.</summary>
     public const int MaxLength = 2400;
     
-    /// <summary>The actual text of the comment.</summary>
+    /// <summary>The actual value.</summary>
     public string Value { get; }
     
     /// <summary>
@@ -38,10 +38,10 @@ public class CommentText : ValueObject
     }
     
     /// <summary>
-    /// Creates a new <see cref="CommentText"/> instance after validating length constraints.
+    /// Factory method to create a new user instance.
     /// </summary>
     /// <param name="text">Comment text to validate and assign.</param>
-    /// <returns>New instance of <see cref="CommentText"/>.</returns>
+    /// <returns>A new instance of the <see cref="CommentText"/> class.</returns>
     /// <exception cref="DomainException">Thrown if text is null, empty, too short, or too long.</exception>
     public static CommentText Create(string text) => new CommentText(text);
 

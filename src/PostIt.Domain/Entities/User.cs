@@ -2,7 +2,6 @@ using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
 using PostIt.Domain.Primitives;
 using PostIt.Domain.ValueObjects;
-using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Entities;
 

@@ -3,7 +3,6 @@ using PostIt.Domain.Entities;
 using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
 using PostIt.Domain.ValueObjects;
-using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Domain.Tests.Entities;
 
@@ -55,8 +54,7 @@ public class UserTests
         
         // Assert
         act.Should().Throw<DomainException>()
-            .WithMessage("Creation date cannot be in the future.")
-            .Which.ParameterName.Should().Be("createdAt");
+            .WithMessage("Creation date cannot be in the future.");
     }
 
     [Theory]

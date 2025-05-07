@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
-using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 

@@ -108,8 +108,8 @@ public class Post : Entity<Guid>
     /// </summary>
     /// <param name="userId">The ID of the user unliking the post.</param>
     /// <exception cref="DomainException">
-    /// Thrown if the user has not liked the post
-    /// .</exception>
+    /// Thrown if the user has not liked the post.
+    /// </exception>
     public void Unlike(Guid userId)
     {
         var like = _likes.FirstOrDefault(l => l.AuthorId == userId);

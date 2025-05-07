@@ -9,7 +9,6 @@ using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
-using PostIt.Domain.ValueObjects.User;
 
 namespace PostIt.Application.Services;
 
@@ -63,7 +62,7 @@ public class UserService(
 
         var user = await GetUserOrThrowAsync(userId, cancellationToken);
 
-        if (user.IsConfirmed)
+        if (user.IsEmailConfirmed)
         {
             logger.LogInformation("Email already confirmed for user {UserId}", userId);
             return false;
@@ -99,7 +98,7 @@ public class UserService(
             throw new UnauthorizedException("Invalid email or password.");
         }
 
-        if (!user.IsConfirmed)
+        if (!user.IsEmailConfirmed)
         {
             throw new UnauthorizedException("Please confirm your email to log in to your account.");
         }
