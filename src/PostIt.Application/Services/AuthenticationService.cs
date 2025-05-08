@@ -9,6 +9,7 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class AuthenticationService(
     IRepository<User> userRepository,
     IJwtProvider jwtProvider,
@@ -19,12 +20,12 @@ public class AuthenticationService(
     private const string RefreshTokenHeader = "Refresh-Token";
     private const string BearerPrefix = "Bearer";
     
+    /// <inheritdoc/>
     public string GenerateAccessToken(User user, IEnumerable<Claim>? additionalClaims = null)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Role, user.Role.ToString())
+            new(ClaimTypes.NameIdentifier, user.Id.ToString())
         }; 
 
         if (additionalClaims is not null)
@@ -35,6 +36,7 @@ public class AuthenticationService(
         return jwtProvider.GenerateAccessToken(claims);
     }
 
+    /// <inheritdoc/>
     public async Task<string> GenerateAndStoreRefreshTokenAsync(User user, CancellationToken cancellationToken)
     {
         var refreshToken = jwtProvider.GenerateRefreshToken();
@@ -43,6 +45,7 @@ public class AuthenticationService(
         return refreshToken;
     }
 
+    /// <inheritdoc/>
     public async Task<(string accessToken, string refreshToken)> GenerateAccessAndRefreshTokensAsync(
         User user, 
         CancellationToken cancellationToken)
@@ -53,6 +56,7 @@ public class AuthenticationService(
         return (accessToken, refreshToken);
     }
     
+    /// <inheritdoc/>
     public async Task<(string accessToken, string refreshToken)> RefreshAccessTokenAsync(CancellationToken cancellationToken)
     {
         var refreshToken = GetRefreshTokenFromHeader();
@@ -77,6 +81,8 @@ public class AuthenticationService(
         var accessToken = GenerateAccessToken(user);
         return (accessToken, refreshToken);
     }
+    
+    /// <inheritdoc/>
     public async Task RevokeRefreshTokenAsync(CancellationToken cancellationToken)
     {
         var request = httpContextAccessor.HttpContext?.Request;
@@ -93,6 +99,7 @@ public class AuthenticationService(
         }
     }
     
+    /// <inheritdoc/>
     public string? GetAccessTokenFromHeader() 
     {
         var header = httpContextAccessor.HttpContext?.Request.Headers[AuthorizationHeader];
@@ -110,12 +117,14 @@ public class AuthenticationService(
         return null;
     }
     
+    /// <inheritdoc/>
     public string? GetRefreshTokenFromHeader()
     {
         var header = httpContextAccessor.HttpContext?.Request.Headers[RefreshTokenHeader];
         return header.ToString();
     }
     
+    /// <inheritdoc/>
     public Guid GetUserIdFromAccessToken()
     {
         var accessToken = GetAccessTokenFromHeader();
@@ -127,19 +136,6 @@ public class AuthenticationService(
         
         var claims = jwtProvider.ValidateToken(accessToken).ToArray();
         return GetUserIdFromClaims(claims);
-    }
-
-    public string GetUserRoleFromAccessToken()
-    {
-        var accessToken = GetAccessTokenFromHeader();
-
-        if (accessToken is null)
-        {
-            throw new UnauthorizedException("Access token is missing.");
-        };
-        
-        var claims = jwtProvider.ValidateToken(accessToken).ToArray();
-        return claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value ?? string.Empty;
     }
     
     private static Guid GetUserIdFromClaims(Claim[] claims)

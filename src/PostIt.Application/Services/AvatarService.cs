@@ -4,11 +4,13 @@ using PostIt.Application.Abstractions.Services;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class AvatarService(
     IMinioFileStorage fileStorage, 
     IImageProcessor imageProcessor,
     ILogger<AvatarService> logger) : IAvatarService
 {
+    /// <inheritdoc/>
     public async Task<string> UploadAvatarAsync(
         Guid userId,
         ReadOnlyMemory<byte> avatar, 

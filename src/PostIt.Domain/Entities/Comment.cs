@@ -35,6 +35,11 @@ public class Comment : Entity<Guid>
     /// <summary>Post navigation property.</summary>
     public Post Post { get; private set; } = null!;
 
+    public Comment()
+    {
+        
+    }
+
     /// <summary>
     /// Private constructor used by the factory Create method.
     /// </summary>

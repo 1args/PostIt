@@ -17,6 +17,11 @@ public class PostLike
     /// <summary>Author navigation property.</summary>
     public User Author { get; private set; } = null!;
 
+    public PostLike()
+    {
+        
+    }
+    
     /// <summary>
     /// Private constructor used by the factory Create method.
     /// </summary>

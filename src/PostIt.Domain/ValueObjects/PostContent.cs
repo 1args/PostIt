@@ -16,6 +16,11 @@ public class PostContent : ValueObject
     
     /// <summary>The actual value.</summary>
     public string Value { get; }
+
+    public PostContent()
+    {
+        
+    }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

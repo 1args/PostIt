@@ -189,3 +189,8 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\s
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\tr-TR\Hangfire.Core.resources.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\zh-TW\Hangfire.Core.resources.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\zh\Hangfire.Core.resources.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\CommunityToolkit.HighPerformance.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Minio.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\SixLabors.ImageSharp.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.IO.Hashing.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.Reactive.dll

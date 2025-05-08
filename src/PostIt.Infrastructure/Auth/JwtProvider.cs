@@ -9,10 +9,12 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Auth;
 
+/// <inheritdoc/>
 public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
 {
     private readonly JwtOptions _options = options.Value;
     
+    /// <inheritdoc/>
     public string GenerateAccessToken(IEnumerable<Claim> claims)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -27,6 +29,7 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         return tokenHandler.WriteToken(accessToken);
     }
 
+    /// <inheritdoc/>
     public string GenerateRefreshToken()
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -40,6 +43,7 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         return tokenHandler.WriteToken(refreshToken);
     }
     
+    /// <inheritdoc/>
     public IEnumerable<Claim> ValidateToken(string token)
     {
         if (string.IsNullOrWhiteSpace(token))
@@ -50,7 +54,7 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenValidationOptions = _options.TokenValidationOptions;
 
-        var tokenValidationParameters = new TokenValidationParameters()
+        var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = tokenValidationOptions.ValidateIssuerSigningKey,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Secret)),

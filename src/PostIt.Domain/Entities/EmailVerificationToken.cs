@@ -18,6 +18,11 @@ public sealed class EmailVerificationToken : Entity<Guid>
 
     /// <summary>User navigation property.</summary>
     public User User { get; private set; } = null!;
+
+    public EmailVerificationToken()
+    {
+        
+    }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

@@ -1,5 +1,5 @@
 namespace PostIt.Contracts.ApiContracts.Responses;
 
-public record LoginResponse(
+public record AuthResponse(
     string AccessToken,
     string RefreshToken);

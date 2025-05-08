@@ -7,11 +7,13 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class EmailVerificationService(
     IRepository<EmailVerificationToken> emailVerificationTokenRepository,
     IEmailVerificationLinkFactory emailVerificationLinkFactory,
     IBackgroundJobClient backgroundJobClient) : IEmailVerificationService
 {
+    /// <inheritdoc/>
     public async Task SendVerificationEmailAsync(User user, CancellationToken cancellationToken)
     {
         var emailVerificationToken = EmailVerificationToken.Create(user.Id, DateTime.UtcNow);
@@ -30,6 +32,7 @@ public class EmailVerificationService(
                 true));
     }
 
+    /// <inheritdoc/>
     public async Task<bool> VerifyEmailAsync(User user, Guid token, CancellationToken cancellationToken)
     {
         var emailVerificationToken = await emailVerificationTokenRepository

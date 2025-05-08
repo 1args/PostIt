@@ -50,6 +50,11 @@ public class Post : Entity<Guid>
     /// <summary>Author navigation property.</summary>
     public User Author { get; private set; } = null!;
 
+    public Post()
+    {
+        
+    }
+    
     /// <summary>
     /// Private constructor used by the factory Create method.
     /// </summary>

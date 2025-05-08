@@ -40,6 +40,11 @@ public class User : Entity<Guid>
     /// <summary>Date when the user was created.</summary>
     public DateTime CreatedAt { get; private set; }
 
+    public User()
+    {
+        
+    }
+
     /// <summary>
     /// Private constructor used by the factory Create method.
     /// </summary>

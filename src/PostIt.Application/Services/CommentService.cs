@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
@@ -12,6 +11,7 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class CommentService(
     IRepository<Comment> commentRepository,
     IRepository<Post> postRepository,
@@ -19,6 +19,7 @@ public class CommentService(
     IAuthenticationService authenticationService,
     ILogger<CommentService> logger) : ICommentService
 {
+    /// <inheritdoc/>
     public async Task<Guid> CreateCommentAsync(
         CreateCommentRequest request,
         CancellationToken cancellationToken)
@@ -60,6 +61,7 @@ public class CommentService(
         return comment.Id;
     }
 
+    /// <inheritdoc/>
     public async Task DeleteCommentAsync(
         Guid commentId,
         CancellationToken cancellationToken)
@@ -76,6 +78,7 @@ public class CommentService(
         logger.LogInformation("Comment with ID `{CommentId}` deleted successfully.", commentId);
     }
 
+    /// <inheritdoc/>
     public async Task LikeCommentAsync(
         Guid commentId,
         CancellationToken cancellationToken)
@@ -109,6 +112,7 @@ public class CommentService(
             authorId);
     }
     
+    /// <inheritdoc/>
     public async Task UnlikeCommentAsync(
         Guid commentId,
         CancellationToken cancellationToken)
@@ -142,6 +146,7 @@ public class CommentService(
             authorId);
     }
 
+    /// <inheritdoc/>
     public async Task<List<CommentResponse>> GetCommentsByPostAsync(
         Guid postId,
         CancellationToken cancellationToken)
@@ -168,7 +173,7 @@ public class CommentService(
             .Select(c => c.MapToPublic())
             .ToList();
     }
-
+    
     private async Task<Comment> GetCommentOrThrowAsync(
         Guid commentId,
         CancellationToken cancellationToken)

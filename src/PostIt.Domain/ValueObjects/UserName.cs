@@ -16,6 +16,11 @@ public class UserName : ValueObject
     
     /// <summary>The actual value.</summary>
     public string Value { get; }
+
+    public UserName()
+    {
+        
+    }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

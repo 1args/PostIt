@@ -16,7 +16,8 @@ public static class ApplicationExtensions
             .AddScoped<IUserService, UserService>()
             .AddScoped<IPostService, PostService>()
             .AddScoped<ICommentService, CommentService>()
-            .AddScoped<IEmailVerificationService, EmailVerificationService>();
+            .AddScoped<IEmailVerificationService, EmailVerificationService>()
+            .AddScoped<IAvatarService, AvatarService>();
         
         services
             .AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();

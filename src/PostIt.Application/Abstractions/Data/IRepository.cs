@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 namespace PostIt.Application.Abstractions.Data;
 
 /// <summary>
-/// Generic repository interface for data access operations.
+/// Generic repository for data access operations.
 /// </summary>
 /// <typeparam name="TEntity">The type of the entity being managed.</typeparam>
 public interface IRepository<TEntity> where TEntity : class

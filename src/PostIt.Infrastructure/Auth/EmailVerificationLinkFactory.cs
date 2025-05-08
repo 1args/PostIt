@@ -5,10 +5,12 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Infrastructure.Auth;
 
+/// <inheritdoc/>
 public class EmailVerificationLinkFactory(
     IHttpContextAccessor httpContextAccessor,
     LinkGenerator linkGenerator) : IEmailVerificationLinkFactory
 {
+    /// <inheritdoc/>
     public string Create(EmailVerificationToken emailVerificationToken)
     {
         var httpContext = httpContextAccessor.HttpContext 

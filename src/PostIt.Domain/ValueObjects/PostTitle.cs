@@ -16,6 +16,11 @@ public class PostTitle : ValueObject
     
     /// <summary>The actual value.</summary>
     public string Value { get; }
+
+    public PostTitle()
+    {
+        
+    }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

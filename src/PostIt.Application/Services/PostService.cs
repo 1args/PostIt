@@ -11,12 +11,14 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class PostService(
     IRepository<Post> postRepository,
     IRepository<User> userRepository,
     IAuthenticationService authenticationService,
     ILogger<PostService> logger) : IPostService
 {
+    /// <inheritdoc/>
     public async Task<Guid> CreatePostAsync(
         CreatePostRequest request,
         CancellationToken cancellationToken)
@@ -43,6 +45,8 @@ public class PostService(
         
         return post.Id;
     }
+    
+    /// <inheritdoc/>
     public async Task UpdatePostAsync(
         Guid postId,
         UpdatePostRequest request,
@@ -64,6 +68,7 @@ public class PostService(
         logger.LogInformation("Post with ID `{PostId}` updated successfully.", postId);
     }
 
+    /// <inheritdoc/>
     public async Task DeletePostAsync(
         Guid postId, 
         CancellationToken cancellationToken)
@@ -82,6 +87,7 @@ public class PostService(
         logger.LogInformation("Post with ID `{PostId}` deleted successfully.", postId);
     }
     
+    /// <inheritdoc/>
     public async Task LikePostAsync(
         Guid postId,
         CancellationToken cancellationToken)
@@ -107,6 +113,7 @@ public class PostService(
         logger.LogInformation("Post `{PostId}` liked by user `{AuthorId}`.", postId, authorId);
     }
 
+    /// <inheritdoc/>
     public async Task UnlikePostAsync(
         Guid postId,
         CancellationToken cancellationToken)
@@ -132,6 +139,7 @@ public class PostService(
         logger.LogInformation("Post `{PostId}` unliked by `{AuthorId}`.", postId, authorId);
     }
 
+    /// <inheritdoc/>
     public async Task ViewPostAsync(
         Guid postId,
         CancellationToken cancellationToken)
@@ -146,6 +154,7 @@ public class PostService(
         logger.LogInformation("Post with ID `{PostId}` viewed.", postId);
     }
 
+    /// <inheritdoc/>
     public async Task ChangeVisibilityAsync(
         Guid postId,
         ChangePostVisibilityRequest request,
@@ -170,8 +179,8 @@ public class PostService(
             request.Visibility);
     }
 
-    public async Task<List<PostResponse>> GetPostsSortedByLikesAsync(
-        CancellationToken cancellationToken)
+    /// <inheritdoc/>
+    public async Task<List<PostResponse>> GetAllPosts(CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching posts sorted by likes.");
         
@@ -187,29 +196,6 @@ public class PostService(
             .ToList();
 
         logger.LogInformation("Fetched `{Count}` posts sorted by likes.", posts.Count);
-        
-        return sortedPosts
-            .Select(p => p.MapToPublic(currentUserId))
-            .ToList();
-    }
-
-    public async Task<List<PostResponse>> GetPostsSortedByViewsAsync(
-        CancellationToken cancellationToken)
-    {
-        logger.LogInformation("Fetching posts sorted by views.");
-        
-        var currentUserId = GetCurrentUserId();
-        
-        var posts = await postRepository
-            .AsQueryable()
-            .AsNoTracking()
-            .ToListAsync(cancellationToken);
-        
-        var sortedPosts = posts
-            .OrderByDescending(p => p.ViewCount)
-            .ToList();
-        
-        logger.LogInformation("Fetched `{Count}` posts sorted by views.", posts.Count);
         
         return sortedPosts
             .Select(p => p.MapToPublic(currentUserId))

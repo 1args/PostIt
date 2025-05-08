@@ -26,6 +26,7 @@ internal static class MinioExtensions
         });
 
         services.AddScoped<IMinioFileStorage, MinioFileStorage>();
+        services.AddScoped<IImageProcessor, ImageProcessor>();
         
         return services;
     }

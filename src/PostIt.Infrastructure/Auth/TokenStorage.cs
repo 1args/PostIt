@@ -6,6 +6,7 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Auth; 
 
+/// <inheritdoc/>
 public class TokenStorage(
     IDistributedCache redisCache,
     IOptions<JwtOptions> jwtOptions) : ITokenStorage
@@ -14,6 +15,7 @@ public class TokenStorage(
 
     private readonly TimeSpan _tokenLifetime = TimeSpan.FromHours(jwtOptions.Value.RefreshTokenExpirationInHours);
     
+    /// <inheritdoc/>
     public async Task<(string token, Guid userId)> GetTokenAsync(string token, CancellationToken cancellationToken)
     {
         var tokenKey = string.Format(TokenFormat, token);
@@ -31,6 +33,7 @@ public class TokenStorage(
         return (token, userId);
     }
 
+    /// <inheritdoc/>
     public async Task SetTokenAsync(string token, Guid userId, CancellationToken cancellationToken)
     {
         var tokenKey = string.Format(TokenFormat, token);
@@ -41,6 +44,7 @@ public class TokenStorage(
         }, cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task RemoveTokenAsync(string token, CancellationToken cancellationToken)
     {
         var tokenKey = string.Format(TokenFormat, token);

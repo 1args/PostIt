@@ -12,6 +12,7 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Services;
 
+/// <inheritdoc/>
 public class UserService(
     IRepository<User> userRepository,
     IPasswordHasher passwordHasher,
@@ -20,6 +21,7 @@ public class UserService(
     IAvatarService avatarService,
     ILogger<UserService> logger) : IUserService
 {
+    /// <inheritdoc/>
     public async Task<Guid> RegisterAsync(
         CreateUserRequest request,
         CancellationToken cancellationToken)
@@ -53,6 +55,7 @@ public class UserService(
         return user.Id;
     }
 
+    /// <inheritdoc/>
     public async Task<bool> VerifyEmailAsync(
         Guid userId,
         Guid token,
@@ -80,7 +83,8 @@ public class UserService(
         return isVerified;
     }
 
-    public async Task<LoginResponse> LoginAsync(
+    /// <inheritdoc/>
+    public async Task<AuthResponse> LoginAsync(
         LoginRequest request,
         CancellationToken cancellationToken)
     {
@@ -106,24 +110,27 @@ public class UserService(
         var (accessToken, refreshToken) = await authenticationService
             .GenerateAccessAndRefreshTokensAsync(user, cancellationToken);
         
-        return new LoginResponse(
+        return new AuthResponse(
             accessToken,
             refreshToken);
     }
 
+    /// <inheritdoc/>
     public async Task LogoutAsync(CancellationToken cancellationToken)
     {
         await authenticationService.RevokeRefreshTokenAsync(cancellationToken);
     }
 
-    public async Task<LoginResponse> RefreshToken(CancellationToken cancellationToken)
+    /// <inheritdoc/>
+    public async Task<AuthResponse> RefreshToken(CancellationToken cancellationToken)
     {
         var (accessToken, refreshToken) = await authenticationService.RefreshAccessTokenAsync(cancellationToken);
-        return new LoginResponse(
+        return new AuthResponse(
             accessToken,
             refreshToken);
     }
 
+    /// <inheritdoc/>
     public async Task UploadAvatarAsync(
         ReadOnlyMemory<byte> avatar,
         CancellationToken cancellationToken)
@@ -138,6 +145,7 @@ public class UserService(
         await userRepository.UpdateAsync(user, cancellationToken);
     }
     
+    /// <inheritdoc/>
     public async Task<UserResponse> GetUserByIdAsync(
         Guid userId,
         CancellationToken cancellationToken)
@@ -151,6 +159,7 @@ public class UserService(
         return user.MapToPublic();
     }
 
+    /// <inheritdoc/>
     public async Task DeleteUserAsync(
         Guid userId, 
         CancellationToken cancellationToken)
@@ -163,6 +172,7 @@ public class UserService(
         logger.LogInformation("User with ID `{UserId}` deleted successfully.", userId);
     }
 
+    /// <inheritdoc/>
     public async Task UpdateUserBioAsync(
         Guid userId,
         UpdateUserBioRequest request,

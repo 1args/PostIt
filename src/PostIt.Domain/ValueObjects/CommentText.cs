@@ -16,6 +16,11 @@ public class CommentText : ValueObject
     
     /// <summary>The actual value.</summary>
     public string Value { get; }
+
+    public CommentText()
+    {
+        
+    }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

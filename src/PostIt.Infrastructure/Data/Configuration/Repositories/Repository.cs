@@ -4,11 +4,18 @@ using PostIt.Application.Abstractions.Data;
 
 namespace PostIt.Infrastructure.Data.Configuration.Repositories;
 
+/// <inheritdoc/>
 public class Repository<TEntity> : IRepository<TEntity> 
     where TEntity : class
 {
+    /// <summary>
+    /// Database context.
+    /// </summary>
     protected DbContext DbContext { get; }
 
+    /// <summary>
+    /// Storage of entities./>
+    /// </summary>
     protected DbSet<TEntity> DbSet { get; }
 
     public Repository(DbContext context)
@@ -17,19 +24,22 @@ public class Repository<TEntity> : IRepository<TEntity>
         DbSet = DbContext.Set<TEntity>();
     }
     
+    /// <inheritdoc/>
     public IQueryable<TEntity> AsQueryable()
     {
         return DbSet.AsQueryable();
     }
     
+    /// <inheritdoc/>
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entity);
         
         await DbContext.AddAsync(entity, cancellationToken);
-        await DbContext.SaveChangesAsync(cancellationToken);
+        await SaveChangesAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entity);
@@ -45,6 +55,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         return SaveChangesAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public async Task DeleteAsync(TEntity[] entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
@@ -57,6 +68,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         await SaveChangesAsync(cancellationToken);
     }
 
+    /// <inheritdoc/>
     public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
     {
         ArgumentNullException.ThrowIfNull(expression);

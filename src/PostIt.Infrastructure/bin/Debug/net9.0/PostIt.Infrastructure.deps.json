@@ -15,9 +15,11 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.4",
           "Microsoft.EntityFrameworkCore": "9.0.4",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "9.0.2",
+          "Minio": "6.0.4",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "PostIt.Application": "1.0.0",
           "PostIt.Domain": "1.0.0",
+          "SixLabors.ImageSharp": "3.1.8",
           "StackExchange.Redis": "2.8.31"
         },
         "runtime": {
@@ -29,6 +31,14 @@
           "lib/net6.0/BCrypt.Net-Next.dll": {
             "assemblyVersion": "4.0.3.0",
             "fileVersion": "4.0.3.0"
+          }
+        }
+      },
+      "CommunityToolkit.HighPerformance/8.3.0": {
+        "runtime": {
+          "lib/net8.0/CommunityToolkit.HighPerformance.dll": {
+            "assemblyVersion": "8.3.0.0",
+            "fileVersion": "8.3.0.1"
           }
         }
       },
@@ -469,6 +479,21 @@
           "System.Buffers": "4.6.0"
         }
       },
+      "Minio/6.0.4": {
+        "dependencies": {
+          "CommunityToolkit.HighPerformance": "8.3.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
+          "Microsoft.Extensions.Logging": "9.0.4",
+          "System.IO.Hashing": "8.0.0",
+          "System.Reactive": "6.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/Minio.dll": {
+            "assemblyVersion": "6.0.4.0",
+            "fileVersion": "6.0.4.0"
+          }
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "runtime": {
           "lib/net6.0/Newtonsoft.Json.dll": {
@@ -512,6 +537,14 @@
           }
         }
       },
+      "SixLabors.ImageSharp/3.1.8": {
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.1.8.0"
+          }
+        }
+      },
       "StackExchange.Redis/2.8.31": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
@@ -537,7 +570,23 @@
           }
         }
       },
+      "System.IO.Hashing/8.0.0": {
+        "runtime": {
+          "lib/net8.0/System.IO.Hashing.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
       "System.IO.Pipelines/5.0.1": {},
+      "System.Reactive/6.0.1": {
+        "runtime": {
+          "lib/net6.0/System.Reactive.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.1.7420"
+          }
+        }
+      },
       "System.Text.Encodings.Web/8.0.0": {},
       "PostIt.Application/1.0.0": {
         "dependencies": {
@@ -546,6 +595,7 @@
           "FluentValidation.AspNetCore": "11.3.0",
           "Hangfire": "1.8.18",
           "Microsoft.AspNetCore.Http": "2.3.0",
+          "Microsoft.EntityFrameworkCore": "9.0.4",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
           "PostIt.Contracts": "1.0.0"
@@ -590,6 +640,13 @@
       "sha512": "sha512-W+U9WvmZQgi5cX6FS5GDtDoPzUCV4LkBLkywq/kRZhuDwcbavOzcDAr3LXJFqHUi952Yj3LEYoWW0jbEUQChsA==",
       "path": "bcrypt.net-next/4.0.3",
       "hashPath": "bcrypt.net-next.4.0.3.nupkg.sha512"
+    },
+    "CommunityToolkit.HighPerformance/8.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2zc0Wfr9OtEbLqm6J1Jycim/nKmYv+v12CytJ3tZGNzw7n3yjh1vNCMX0kIBaFBk3sw8g0pMR86QJGXGlArC+A==",
+      "path": "communitytoolkit.highperformance/8.3.0",
+      "hashPath": "communitytoolkit.highperformance.8.3.0.nupkg.sha512"
     },
     "FluentEmail.Core/3.0.2": {
       "type": "package",
@@ -871,6 +928,13 @@
       "path": "microsoft.net.http.headers/2.3.0",
       "hashPath": "microsoft.net.http.headers.2.3.0.nupkg.sha512"
     },
+    "Minio/6.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JckRL95hQ/eDHTQZ/BB7jeR0JyF+bOctMW6uriXHY5YPjCX61hiJGsswGjuDSEViKJEPxtPi3e4IwD/1TJ7PIw==",
+      "path": "minio/6.0.4",
+      "hashPath": "minio.6.0.4.nupkg.sha512"
+    },
     "Newtonsoft.Json/13.0.3": {
       "type": "package",
       "serviceable": true,
@@ -899,6 +963,13 @@
       "path": "pipelines.sockets.unofficial/2.2.8",
       "hashPath": "pipelines.sockets.unofficial.2.2.8.nupkg.sha512"
     },
+    "SixLabors.ImageSharp/3.1.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8eJkROLGh6DBQLR666q2aOpAaean2puZaZ6Ur9YxoyGzjaZhv8OJSxtnDou54+OXMkXtLUdyQC0so47sOsqZjg==",
+      "path": "sixlabors.imagesharp/3.1.8",
+      "hashPath": "sixlabors.imagesharp.3.1.8.nupkg.sha512"
+    },
     "StackExchange.Redis/2.8.31": {
       "type": "package",
       "serviceable": true,
@@ -920,12 +991,26 @@
       "path": "system.identitymodel.tokens.jwt/8.0.1",
       "hashPath": "system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512"
     },
+    "System.IO.Hashing/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ne1843evDugl0md7Fjzy6QjJrzsjh46ZKbhf8GwBXb5f/gw97J4bxMs0NQKifDuThh/f0bZ0e62NPl1jzTuRqA==",
+      "path": "system.io.hashing/8.0.0",
+      "hashPath": "system.io.hashing.8.0.0.nupkg.sha512"
+    },
     "System.IO.Pipelines/5.0.1": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-qEePWsaq9LoEEIqhbGe6D5J8c9IqQOUuTzzV6wn1POlfdLkJliZY3OlB0j0f17uMWlqZYjH7txj+2YbyrIA8Yg==",
       "path": "system.io.pipelines/5.0.1",
       "hashPath": "system.io.pipelines.5.0.1.nupkg.sha512"
+    },
+    "System.Reactive/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rHaWtKDwCi9qJ3ObKo8LHPMuuwv33YbmQi7TcUK1C264V3MFnOr5Im7QgCTdLniztP3GJyeiSg5x8NqYJFqRmg==",
+      "path": "system.reactive/6.0.1",
+      "hashPath": "system.reactive.6.0.1.nupkg.sha512"
     },
     "System.Text.Encodings.Web/8.0.0": {
       "type": "package",

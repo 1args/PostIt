@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using PostIt.Application.Abstractions.Data;
+using PostIt.Application.Abstractions.Services;
 
 namespace PostIt.Infrastructure.Data.Caching;
 
