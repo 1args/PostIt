@@ -1,7 +1,5 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using PostIt.Application.Abstractions.Auth;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Services;
 using PostIt.Application.Validators.User;
