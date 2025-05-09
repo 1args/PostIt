@@ -1,0 +1,86 @@
+version: '3.9'
+
+volumes:
+  postit-postgres: 
+  postit-redis:
+  postit-logs:
+  postit-minio:
+    
+services:
+  
+  # PostgreSQL
+  postgres:
+    container_name: postit-postgres
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    restart: on-failure
+    environment:
+      POSTGRES_DB: postit-general
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: bvytnfr,jkmyj
+    volumes:
+      - postit-postgres:/var/lib/postgresql/data
+  
+  # Redis
+  redis:
+    container_name: postit-redis
+    image: redis:7.2-alpine
+    restart: on-failure
+    ports:
+      - '6379:6379'
+    volumes:
+      - postit-redis:/data
+  
+  # OpenSearch
+  opensearch:
+    container_name: postit-opensearch
+    image: opensearchproject/opensearch:2.19.0
+    restart: on-failure
+    ports:
+      - '9200:9200'
+      - '9600:9600'
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: true
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: opensearchpassword
+    volumes:
+      - postit-logs:/usr/share/opensearch/data
+        
+  # OpenSearch Dashboard
+  opensearch-dashboard:
+    container_name: postit-opensearch-dashboard
+    image: opensearchproject/opensearch-dashboards:2.19.0
+    restart: on-failure
+    ports:
+      - '5601:5601'
+    environment:
+      OPENSEARCH_HOSTS: '["http://postit-opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
+    depends_on:
+      - opensearch  
+  
+  # CalConnect Papercut
+  calconnect-papercut:
+    container_name: postit-calconnect-papercut
+    image: changemakerstudiosus/papercut-smtp:latest
+    restart: on-failure
+    ports:
+      - '25:25'
+      - '8080:80'
+  
+  # Minio
+  minio:
+    container_name: postit-minio
+    image: minio/minio:latest
+    restart: on-failure
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: minioadmin,
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - postit-minio:/data
+    command: server /data --console-address ":9001"
+      

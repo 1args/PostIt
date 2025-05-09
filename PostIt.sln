@@ -1,0 +1,64 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5657BD7B-2969-4E56-8B1A-6F63AB256A28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Domain", "src\PostIt.Domain\PostIt.Domain.csproj", "{188790AB-9958-41E0-AB2E-B5B39645D960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Infrastructure", "src\PostIt.Infrastructure\PostIt.Infrastructure.csproj", "{46F544ED-072E-478D-A343-0A1BDB88CFFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Application", "src\PostIt.Application\PostIt.Application.csproj", "{6915A58B-0870-4355-B0FF-4A08C7AE4571}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5FA614DC-2A7B-42C7-B335-AEC673ACD523}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Domain.Tests", "tests\PostIt.Domain.Tests\PostIt.Domain.Tests.csproj", "{6A208DFF-EAF2-4A09-B040-22E47A62554F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Api", "src\PostIt.Api\PostIt.Api.csproj", "{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "localhost", "localhost", "{C6079579-4B84-457C-AF48-3A1865C6DBF2}"
+	ProjectSection(SolutionItems) = preProject
+		localhost\docker-compose.yml = localhost\docker-compose.yml
+		localhost\Dockerfile = localhost\Dockerfile
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostIt.Contracts", "src\PostIt.Contracts\PostIt.Contracts.csproj", "{0CFA6768-20B0-48EC-AFEC-A6B014180C40}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{188790AB-9958-41E0-AB2E-B5B39645D960} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
+		{46F544ED-072E-478D-A343-0A1BDB88CFFF} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
+		{6915A58B-0870-4355-B0FF-4A08C7AE4571} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
+		{6A208DFF-EAF2-4A09-B040-22E47A62554F} = {5FA614DC-2A7B-42C7-B335-AEC673ACD523}
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
+		{0CFA6768-20B0-48EC-AFEC-A6B014180C40} = {5657BD7B-2969-4E56-8B1A-6F63AB256A28}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{188790AB-9958-41E0-AB2E-B5B39645D960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{188790AB-9958-41E0-AB2E-B5B39645D960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{188790AB-9958-41E0-AB2E-B5B39645D960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{188790AB-9958-41E0-AB2E-B5B39645D960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46F544ED-072E-478D-A343-0A1BDB88CFFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F544ED-072E-478D-A343-0A1BDB88CFFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F544ED-072E-478D-A343-0A1BDB88CFFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46F544ED-072E-478D-A343-0A1BDB88CFFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6915A58B-0870-4355-B0FF-4A08C7AE4571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6915A58B-0870-4355-B0FF-4A08C7AE4571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6915A58B-0870-4355-B0FF-4A08C7AE4571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6915A58B-0870-4355-B0FF-4A08C7AE4571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A208DFF-EAF2-4A09-B040-22E47A62554F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C3F3BAF-1F0C-4B13-BA78-65C6207835C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CFA6768-20B0-48EC-AFEC-A6B014180C40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CFA6768-20B0-48EC-AFEC-A6B014180C40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CFA6768-20B0-48EC-AFEC-A6B014180C40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CFA6768-20B0-48EC-AFEC-A6B014180C40}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
