@@ -17,10 +17,10 @@ public class CommentLike
     /// <summary>Author navigation property.</summary>
     public User Author { get; private set; } = null!;
 
-    public CommentLike()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private CommentLike() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

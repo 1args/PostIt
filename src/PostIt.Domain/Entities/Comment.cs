@@ -35,10 +35,10 @@ public class Comment : Entity<Guid>
     /// <summary>Post navigation property.</summary>
     public Post Post { get; private set; } = null!;
 
-    public Comment()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private Comment() { }
 
     /// <summary>
     /// Private constructor used by the factory Create method.

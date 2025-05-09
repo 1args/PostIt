@@ -2,6 +2,9 @@ using PostIt.Domain.Enums;
 
 namespace PostIt.Contracts.ApiContracts.Responses;
 
+/// <summary>
+/// Represents a response containing detailed information about a post.
+/// </summary>
 public record PostResponse(
     Guid Id,
     string Title,

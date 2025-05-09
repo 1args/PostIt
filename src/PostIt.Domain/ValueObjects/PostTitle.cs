@@ -17,10 +17,10 @@ public class PostTitle : ValueObject
     /// <summary>The actual value.</summary>
     public string Value { get; }
 
-    public PostTitle()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private PostTitle() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

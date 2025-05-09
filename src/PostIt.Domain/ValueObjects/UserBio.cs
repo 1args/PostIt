@@ -14,10 +14,10 @@ public class UserBio : ValueObject
     /// <summary>The actual value.</summary>
     public string Value { get; }
 
-    public UserBio()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private UserBio() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

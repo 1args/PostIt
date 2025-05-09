@@ -6,8 +6,15 @@ using PostIt.Application.Validators.User;
 
 namespace PostIt.Application.Extensions;
 
+/// <summary>
+/// Extensions for adding application level classes.
+/// </summary>
 public static class ApplicationExtensions
 {
+    /// <summary>
+    /// Registers Application level classes.
+    /// </summary>
+    /// <returns>Collection of services.</returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services

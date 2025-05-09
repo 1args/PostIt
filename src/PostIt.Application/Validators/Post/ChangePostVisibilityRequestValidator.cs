@@ -3,6 +3,9 @@ using PostIt.Contracts.ApiContracts.Requests.Post;
 
 namespace PostIt.Application.Validators.Post;
 
+/// <summary>
+/// Data validator to change post visibility request.
+/// </summary>
 public class ChangePostVisibilityRequestValidator : AbstractValidator<ChangePostVisibilityRequest>
 {
     public ChangePostVisibilityRequestValidator()

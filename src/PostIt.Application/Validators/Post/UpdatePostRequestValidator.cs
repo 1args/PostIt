@@ -4,6 +4,9 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Validators.Post;
 
+/// <summary>
+/// Data validator for post update request.
+/// </summary>
 public class UpdatePostRequestValidator : AbstractValidator<UpdatePostRequest>
 {
     public UpdatePostRequestValidator()

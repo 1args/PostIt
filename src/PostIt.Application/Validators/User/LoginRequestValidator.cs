@@ -4,6 +4,9 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Validators.User;
 
+/// <summary>
+/// Data validator for user log in request.
+/// </summary>
 public class LoginRequestValidator : AbstractValidator<LoginRequest>
 {
     public LoginRequestValidator()

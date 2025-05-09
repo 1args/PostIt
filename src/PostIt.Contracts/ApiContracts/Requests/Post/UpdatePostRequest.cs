@@ -1,7 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace PostIt.Contracts.ApiContracts.Requests.Post;
 
+/// <summary>
+/// Represents a request to update an existing post.
+/// </summary>
 public record UpdatePostRequest(
-    [Required] string Title,
-    [Required] string Content);
+    string Title,
+    string Content);

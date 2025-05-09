@@ -11,11 +11,11 @@ public class UserEmail : ValueObject
 {
     /// <summary>The actual value.</summary>
     public string Value { get; }
-
-    public UserEmail()
-    {
-        
-    }
+    
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private UserEmail() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

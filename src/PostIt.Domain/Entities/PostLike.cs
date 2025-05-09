@@ -17,10 +17,10 @@ public class PostLike
     /// <summary>Author navigation property.</summary>
     public User Author { get; private set; } = null!;
 
-    public PostLike()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private PostLike() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

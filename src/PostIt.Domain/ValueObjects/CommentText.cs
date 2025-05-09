@@ -17,10 +17,10 @@ public class CommentText : ValueObject
     /// <summary>The actual value.</summary>
     public string Value { get; }
 
-    public CommentText()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private CommentText() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

@@ -17,10 +17,10 @@ public class PostContent : ValueObject
     /// <summary>The actual value.</summary>
     public string Value { get; }
 
-    public PostContent()
-    {
-        
-    }
+    /// <summary>
+    /// Constructor for EF Core
+    /// </summary>
+    private PostContent() { }
     
     /// <summary>
     /// Private constructor used by the factory Create method.

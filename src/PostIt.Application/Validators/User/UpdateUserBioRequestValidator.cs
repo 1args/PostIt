@@ -4,6 +4,9 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Validators.User;
 
+/// <summary>
+/// Data validator to update user's biography request.
+/// </summary>
 public class UpdateUserBioRequestValidator : AbstractValidator<UpdateUserBioRequest>
 {
     public UpdateUserBioRequestValidator()

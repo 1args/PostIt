@@ -1,5 +1,8 @@
 namespace PostIt.Contracts.ApiContracts.Requests.Comment;
 
-public record CreateCommentRequest(
+/// <summary>
+/// Represents a request to create a new comment.
+/// </summary>
+public sealed record CreateCommentRequest(
     string Text,
     Guid PostId);

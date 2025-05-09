@@ -1,5 +1,8 @@
 namespace PostIt.Contracts.ApiContracts.Requests.User;
 
-public record LoginRequest(
+/// <summary>
+/// Represents a request to log in a user.
+/// </summary>
+public sealed record LoginRequest(
     string Email,
     string Password);
