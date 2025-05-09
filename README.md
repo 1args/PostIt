@@ -2,7 +2,7 @@
 
 *(description and project in progress)*
 
-The project uses the default layered architecture, divided into the following parts: 
+The project uses the default layered architecture, divided into the following levels: 
 
 - **Api** is responsible for interacting with external sources.
 - **Application** implements the system's use cases and coordinates the work between **Domain** and **Infrastructure**.
