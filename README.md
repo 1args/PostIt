@@ -17,3 +17,5 @@ The project uses the default layered architecture, divided into the following le
 - **Infrastcuture** contains the technical implementation of interfaces with the **Application**, access to the database, email, file systems.
 
 ### Technical implementation
+
+**PostgresSQ**L is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed.
