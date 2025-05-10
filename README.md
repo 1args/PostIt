@@ -18,4 +18,4 @@ The project uses the default layered architecture, divided into the following le
 
 ### Technical implementation
 
-[>] **PostgresSQL** is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is performed via **BCrypt**. The **MinIO** file system is also used to store user avatars. **Hangfire** is used for background services.
+[>] **PostgresSQL** is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is performed via **BCrypt**. The **MinIO** file system is also used to store user avatars. **Hangfire** is used for background services. Logging is performed via **Serilog** and **OpenSearch**. And **Papercut** is used to simulate the postal service.
