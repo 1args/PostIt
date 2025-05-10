@@ -2,6 +2,12 @@
 
 *(description and project in progress)*
 
+### Description
+
+The project is a blogging platform. Each user can share their impressions, ideas, etc. by creating posts and writing comments. 
+
+### Architecture
+
 The project uses the default layered architecture, divided into the following levels: 
 
 - **Api** is responsible for interacting with external sources.
