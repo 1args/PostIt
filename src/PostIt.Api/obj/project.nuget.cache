@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "inkhUs8kYCs=",
+  "dgSpecHash": "YZ08ygxlJlY=",
   "success": true,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Api\\PostIt.Api.csproj",
   "expectedPackageFiles": [
@@ -99,6 +99,7 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.0.1\\system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.io.hashing\\8.0.0\\system.io.hashing.8.0.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.io.pipelines\\7.0.0\\system.io.pipelines.7.0.0.nupkg.sha512",
+    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.linq.dynamic.core\\1.6.3\\system.linq.dynamic.core.1.6.3.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.reactive\\6.0.1\\system.reactive.6.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.reflection.metadata\\7.0.0\\system.reflection.metadata.7.0.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",

@@ -9,11 +9,11 @@ public record PostResponse(
     Guid Id,
     string Title,
     string Content,
-    int LikesCount,
-    int CommentsCount,
+    int Views,
+    int Likes,
+    int Comments,
     DateTime CreatedAt,
     DateTime? UpdatedAt,
     bool WasUpdated,
     Visibility Visibility,
-    Guid AuthorId,
-    bool IsLiked);
+    Guid AuthorId);

@@ -3,9 +3,12 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
+using PostIt.Application.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
+using PostIt.Contracts.Models.Pagination;
+using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
 
@@ -180,26 +183,34 @@ public class PostService(
     }
 
     /// <inheritdoc/>
-    public async Task<List<PostResponse>> GetAllPosts(CancellationToken cancellationToken)
+    public async Task<Paginated<PostResponse>> GetAllPosts(
+        SortParams? sortParams,
+        PaginationParams paginationParams, 
+        CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching posts sorted by likes.");
-        
-        var currentUserId = GetCurrentUserId();
 
-        var posts = await postRepository
+        var paginatedPosts = await postRepository
             .AsQueryable()
             .AsNoTracking()
-            .ToListAsync(cancellationToken);
+            .SortedBy(sortParams)
+            .AsPaginatedAsync(paginationParams, cancellationToken);
         
-        var sortedPosts = posts
-            .OrderByDescending(p => p.Likes.Count)
-            .ToList();
-
-        logger.LogInformation("Fetched `{Count}` posts sorted by likes.", posts.Count);
+        var postsResponses = paginatedPosts.Items
+            .Select(p => p.MapToPublic())
+            .ToList()
+            .AsReadOnly();
         
-        return sortedPosts
-            .Select(p => p.MapToPublic(currentUserId))
-            .ToList();
+        logger.LogInformation("Fetched `{Count}` posts sorted by likes.", postsResponses.Count);
+        
+        return new Paginated<PostResponse>
+        {
+            Items = postsResponses,
+            PaginationParams = paginationParams,
+            TotalPages = paginatedPosts.TotalPages,
+            HasPreviousPage = paginatedPosts.HasPreviousPage,
+            HasNextPage = paginatedPosts.HasNextPage
+        };
     }
     
     private async Task UpdateUserPostCountAsync(Guid userId, bool increase, CancellationToken cancellationToken)

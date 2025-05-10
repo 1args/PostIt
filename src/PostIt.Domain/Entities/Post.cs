@@ -8,7 +8,7 @@ namespace PostIt.Domain.Entities;
 /// <summary>
 /// Represents a post entity.
 /// </summary>
-public class Post : Entity<Guid>
+public class Post : Entity<Guid>, IAuditableEntity
 {
     /// <summary>Title of the post.</summary>
     public PostTitle Title { get; private set; } 

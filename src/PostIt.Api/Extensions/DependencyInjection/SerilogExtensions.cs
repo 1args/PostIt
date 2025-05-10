@@ -2,7 +2,7 @@ using Serilog;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 
-public static class SerilogExtensions
+internal static class SerilogExtensions
 {
     public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
     {

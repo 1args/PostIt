@@ -8,7 +8,7 @@ namespace PostIt.Domain.Entities;
 /// <summary>
 /// Represents a user entity.
 /// </summary>
-public class User : Entity<Guid>
+public class User : Entity<Guid>, IAuditableEntity
 {
     /// <summary>User's display name.</summary>
     public UserName Name { get; private set; }

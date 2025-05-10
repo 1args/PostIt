@@ -5,7 +5,7 @@ namespace PostIt.Domain.Entities;
 /// <summary>
 /// Represents an email verification token entity.
 /// </summary>
-public sealed class EmailVerificationToken : Entity<Guid>
+public sealed class EmailVerificationToken : Entity<Guid>, IAuditableEntity
 {
     /// <summary>ID of the user associated with the token.</summary>
     public Guid UserId { get; private set; }

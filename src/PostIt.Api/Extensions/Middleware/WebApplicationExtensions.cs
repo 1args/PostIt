@@ -17,9 +17,9 @@ public static class WebApplicationExtensions
         }
         
         app
+            .UseRouting()
             .UseHttpsRedirection()
             .UseExceptionHandler()
-            .UseRouting()
             .UseAuthentication()
             .UseAuthorization()
             .UseHangfireDashboard();

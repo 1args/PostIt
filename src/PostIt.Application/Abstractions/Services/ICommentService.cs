@@ -1,5 +1,7 @@
 using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Models.Pagination;
+using PostIt.Contracts.Models.Sorting;
 
 namespace PostIt.Application.Abstractions.Services;
 
@@ -41,7 +43,9 @@ public interface ICommentService
     /// Retrieves a list of comments associated with a specific post.
     /// </summary>
     /// <param name="postId">ID of the post for which to fetch comments.</param>
+    /// <param name="sortParams">ID of the post for which to fetch comments.</param>
+    /// <param name="paginationParams">Pagination parameters.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>List of comments for the post.</returns>
-    Task<List<CommentResponse>> GetCommentsByPostAsync(Guid postId, CancellationToken cancellationToken);
+    Task<Paginated<CommentResponse>> GetCommentsByPostAsync(Guid postId, SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
 }

@@ -5,7 +5,7 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 
-public static class AuthenticationExtensions
+internal static class AuthenticationExtensions
 {
     public static IServiceCollection AddAuthenticationRules(this IServiceCollection services, IConfiguration configuration)
     {

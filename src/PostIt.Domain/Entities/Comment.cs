@@ -7,7 +7,7 @@ namespace PostIt.Domain.Entities;
 /// <summary>
 /// Represents a comment entity.
 /// </summary>
-public class Comment : Entity<Guid>
+public class Comment : Entity<Guid>, IAuditableEntity
 {
     private readonly List<CommentLike> _likes = [];
     

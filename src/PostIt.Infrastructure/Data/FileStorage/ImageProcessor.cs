@@ -14,19 +14,20 @@ public class ImageProcessor(IOptions<ImageResizeOptions> options) : IImageProces
         ReadOnlyMemory<byte> imageStream,
         CancellationToken cancellationToken)
     {
-        var outputStream = new MemoryStream(imageStream.ToArray());
-        using var image = await Image.LoadAsync(outputStream, cancellationToken);
-
+        using var image = Image.Load(imageStream.Span); 
+    
         var resizeOptions = new ResizeOptions
         {
             Size = new Size(_options.Width, _options.Height),
             Mode = ResizeMode.Crop,
             Position = AnchorPositionMode.Center
         };
-        
+    
         image.Mutate(i => i.Resize(resizeOptions));
         
+        using var outputStream = new MemoryStream();
         await image.SaveAsWebpAsync(outputStream, cancellationToken);
-        return new ReadOnlyMemory<byte>(outputStream.ToArray());
+    
+        return outputStream.ToArray();
     }
 }

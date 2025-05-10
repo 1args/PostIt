@@ -16,7 +16,8 @@
           "Microsoft.EntityFrameworkCore": "9.0.4",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
-          "PostIt.Contracts": "1.0.0"
+          "PostIt.Contracts": "1.0.0",
+          "System.Linq.Dynamic.Core": "1.6.3"
         },
         "runtime": {
           "PostIt.Application.dll": {}
@@ -335,6 +336,14 @@
         }
       },
       "System.Buffers/4.6.0": {},
+      "System.Linq.Dynamic.Core/1.6.3": {
+        "runtime": {
+          "lib/net9.0/System.Linq.Dynamic.Core.dll": {
+            "assemblyVersion": "1.6.3.0",
+            "fileVersion": "1.6.3.0"
+          }
+        }
+      },
       "System.Text.Encodings.Web/8.0.0": {},
       "PostIt.Contracts/1.0.0": {
         "dependencies": {
@@ -579,6 +588,13 @@
       "sha512": "sha512-lN6tZi7Q46zFzAbRYXTIvfXcyvQQgxnY7Xm6C6xQ9784dEL1amjM6S6Iw4ZpsvesAKnRVsM4scrDQaDqSClkjA==",
       "path": "system.buffers/4.6.0",
       "hashPath": "system.buffers.4.6.0.nupkg.sha512"
+    },
+    "System.Linq.Dynamic.Core/1.6.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-y21D6o5aEwZkDetF8PopQJVn/p0sRU/pPc3RVH0KPUjskRzgep4nINtPHppFktrSjgde4+F6ZuajXU7aZW4k4Q==",
+      "path": "system.linq.dynamic.core/1.6.3",
+      "hashPath": "system.linq.dynamic.core.1.6.3.nupkg.sha512"
     },
     "System.Text.Encodings.Web/8.0.0": {
       "type": "package",

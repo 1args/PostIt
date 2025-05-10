@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
-using PostIt.Api.Filters;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Validators.User;
-using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Requests.User;
 
 namespace PostIt.Api.Endpoints;
 
+/// <summary>
+/// Provides API endpoints for user-related actions.
+/// </summary>
 public static class UserEndpoints 
 {
+    /// <summary>
+    /// Maps all user-related endpoints to the application's route builder.
+    /// </summary>
     public static IEndpointRouteBuilder MapUserEndpoints(this IEndpointRouteBuilder endpoints)
     {
         var group = endpoints.MapGroup("/users").WithTags("Users");
@@ -31,9 +34,10 @@ public static class UserEndpoints
             .WithName(nameof(RefreshTokenAsync))
             .RequireAuthorization();
 
-        group.MapPatch("{id:guid}/avatar", UploadAvatarAsync)
+        group.MapPatch("/avatar", UploadAvatarAsync)
             .WithName(nameof(UploadAvatarAsync))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .DisableAntiforgery();
         
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
             .WithName(nameof(UpdateUserBioAsync))
@@ -48,6 +52,9 @@ public static class UserEndpoints
         return endpoints;
     }
 
+    /// <summary>
+    /// Registers a new user with provided registration data.
+    /// </summary>
     private static async Task<IResult> RegisterAsync(
         [FromBody] CreateUserRequest request,
         [FromServices] IUserService userService,
@@ -58,6 +65,9 @@ public static class UserEndpoints
         return Results.Created();
     }
 
+    /// <summary>
+    /// Verifies user's email using provided user ID and verification token.
+    /// </summary>
     private static async Task<IResult> VerifyEmailAsync(
         [FromRoute] Guid userId,
         [FromRoute] Guid token,
@@ -71,6 +81,9 @@ public static class UserEndpoints
             : Results.BadRequest("Validation token is expired.");
     }
     
+    /// <summary>
+    /// Logs in a user with credentials and returns tokens.
+    /// </summary>
     private static async Task<IResult> LoginAsync(
         [FromBody] LoginRequest request,
         [FromServices] IUserService userService,
@@ -82,6 +95,9 @@ public static class UserEndpoints
         return Results.Ok(data);
     }
 
+    /// <summary>
+    /// Logs out the current authenticated user.
+    /// </summary>
     private static async Task<IResult> LogoutAsync(
         [FromServices] IUserService userService,
         CancellationToken cancellationToken)
@@ -91,6 +107,9 @@ public static class UserEndpoints
         return Results.NoContent();
     }
 
+    /// <summary>
+    /// Refreshes the access token for the authenticated user.
+    /// </summary>
     private static async Task<IResult> RefreshTokenAsync(
         [FromServices] IUserService userService,
         CancellationToken cancellationToken)
@@ -100,8 +119,10 @@ public static class UserEndpoints
         return Results.Ok(data);
     }
     
+    /// <summary>
+    /// Uploads a new avatar image for the authenticated user.
+    /// </summary>
     private static async Task UploadAvatarAsync(
-        [FromRoute] Guid id,
         [FromForm] IFormFile avatar,
         [FromServices] IUserService userService,
         CancellationToken cancellationToken)
@@ -112,6 +133,9 @@ public static class UserEndpoints
         await userService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
     }
 
+    /// <summary>
+    /// Updates the biography information for a specific user.
+    /// </summary>
     private static async Task<IResult> UpdateUserBioAsync(
         [FromRoute] Guid id,
         [FromBody] UpdateUserBioRequest request,
@@ -123,6 +147,9 @@ public static class UserEndpoints
         return Results.NoContent();
     }
     
+    /// <summary>
+    /// Retrieves user information by their ID.
+    /// </summary>
     private static async Task<IResult> GetUserByIdAsync(
         [FromRoute] Guid id,
         [FromServices] IUserService userService,
@@ -133,6 +160,9 @@ public static class UserEndpoints
         return Results.Ok(user);
     }
 
+    /// <summary>
+    /// Deletes a user account by their ID.
+    /// </summary>
     private static async Task<IResult> DeleteUserAsync(
         [FromRoute] Guid id,
         [FromServices] IUserService userService,
@@ -143,4 +173,3 @@ public static class UserEndpoints
         return Results.NoContent();
     }
 }
-

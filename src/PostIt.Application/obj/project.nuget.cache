@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wNF1daIsUqo=",
+  "dgSpecHash": "YPuMHhEyC90=",
   "success": true,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Application\\PostIt.Application.csproj",
   "expectedPackageFiles": [
@@ -35,6 +35,7 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.net.http.headers\\2.3.0\\microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\newtonsoft.json\\11.0.1\\newtonsoft.json.11.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.buffers\\4.6.0\\system.buffers.4.6.0.nupkg.sha512",
+    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.linq.dynamic.core\\1.6.3\\system.linq.dynamic.core.1.6.3.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],
   "logs": []

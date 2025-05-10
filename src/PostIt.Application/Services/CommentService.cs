@@ -3,9 +3,12 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;
+using PostIt.Application.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Mappers;
+using PostIt.Contracts.Models.Pagination;
+using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
 
@@ -147,31 +150,39 @@ public class CommentService(
     }
 
     /// <inheritdoc/>
-    public async Task<List<CommentResponse>> GetCommentsByPostAsync(
+    public async Task<Paginated<CommentResponse>> GetCommentsByPostAsync(
         Guid postId,
+        SortParams? sortParams,
+        PaginationParams paginationParams,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching comments for post with ID `{PostId}`.", postId);
 
-        var comments = await commentRepository
+        var paginatedComments = await commentRepository
             .AsQueryable()
             .AsNoTracking()
             .Where(c => c.PostId == postId)
-            .ToListAsync(cancellationToken);
+            .SortedBy(sortParams)
+            .AsPaginatedAsync(paginationParams, cancellationToken);
 
-        var sortedComment = comments
-            .OrderByDescending(c => c.Likes.Count)
-            .ThenByDescending(c => c.CreatedAt)
-            .ToList();
+        var commentResponses = paginatedComments.Items
+            .Select(c => c.MapToPublic())
+            .ToList()
+            .AsReadOnly();
         
         logger.LogInformation(
             "Fetched `{Count}` comments for post with ID `{PostId}`.",
-            comments.Count, 
+            commentResponses.Count, 
             postId);
         
-        return sortedComment
-            .Select(c => c.MapToPublic())
-            .ToList();
+        return new Paginated<CommentResponse>
+        {
+            Items = commentResponses,
+            PaginationParams = paginationParams,
+            TotalPages = paginatedComments.TotalPages,
+            HasPreviousPage = paginatedComments.HasPreviousPage,
+            HasNextPage = paginatedComments.HasNextPage
+        };
     }
     
     private async Task<Comment> GetCommentOrThrowAsync(

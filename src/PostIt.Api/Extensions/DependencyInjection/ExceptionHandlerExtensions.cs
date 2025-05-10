@@ -3,7 +3,7 @@ using PostIt.Api.ErrorHandling;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 
-public static class ExceptionHandlerExtensions
+internal static class ExceptionHandlerExtensions
 {
     public static IServiceCollection AddGlobalExceptionHandler(this IServiceCollection services)
     {

@@ -194,3 +194,4 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\M
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\SixLabors.ImageSharp.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.IO.Hashing.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.Reactive.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.Linq.Dynamic.Core.dll

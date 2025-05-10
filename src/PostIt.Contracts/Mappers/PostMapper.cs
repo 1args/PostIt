@@ -12,23 +12,20 @@ public static class PostMapper
     /// Maps a <see cref="Post"/> entity to a publicly exposed <see cref="PostResponse"/>.
     /// </summary>
     /// <param name="post">Post entity to map.</param>
-    /// <param name="currentUserId">ID of the current user, used to determine if the post is liked.</param>
     /// <returns><see cref="PostResponse"/> containing public data about the post.</returns>
-    public static PostResponse MapToPublic(this Post post, Guid currentUserId)
+    public static PostResponse MapToPublic(this Post post)
     {
-        var isLiked = post.Likes.Any(p => p.AuthorId == currentUserId);
-
         return new PostResponse(
             Id: post.Id,
             Title: post.Title.Value,
             Content: post.Content.Value,
-            LikesCount: post.LikesCount,
-            CommentsCount: post.Comments.Count,
+            Views: post.ViewCount,
+            Likes: post.Likes.Count,
+            Comments: post.Comments.Count,
             CreatedAt: post.CreatedAt,
             UpdatedAt: post.UpdatedAt,
             WasUpdated: post.WasUpdated,
             Visibility: post.Visibility,
-            AuthorId: post.AuthorId,
-            IsLiked: isLiked);
+            AuthorId: post.AuthorId);
     }
 }

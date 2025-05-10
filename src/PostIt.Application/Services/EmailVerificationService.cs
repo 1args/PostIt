@@ -17,17 +17,18 @@ public class EmailVerificationService(
     public async Task SendVerificationEmailAsync(User user, CancellationToken cancellationToken)
     {
         var emailVerificationToken = EmailVerificationToken.Create(user.Id, DateTime.UtcNow);
-        var verificationLink = emailVerificationLinkFactory.Create(emailVerificationToken);
         
         await emailVerificationTokenRepository.AddAsync(emailVerificationToken, cancellationToken);
+        
+        var verificationLink = emailVerificationLinkFactory.Create(emailVerificationToken);
         
         backgroundJobClient.Enqueue<IEmailService>(emailService => 
             emailService.SendEmailAsync(
                 user.Email.Value,
                 "Welcome to the world of notes and creativity - PostIt is waiting for you!",
-                $"Congratulations, {user.Name}, your account has been successfully created. " +
+                $"Congratulations, <b>{user.Name}</b>, your account has been successfully created. " +
                 $"Please <a href='{verificationLink}'>click here</a> to confirm your email. " +
-                $"The link will expire in 24 hours.",
+                $"The link will expire in <b>24 hours</b>.",
                 cancellationToken,
                 true));
     }

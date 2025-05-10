@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "e5ZHU/Zjoi8=",
+  "dgSpecHash": "+xIzuXVt98Y=",
   "success": true,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -57,6 +57,7 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.0.1\\system.identitymodel.tokens.jwt.8.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.io.hashing\\8.0.0\\system.io.hashing.8.0.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.io.pipelines\\5.0.1\\system.io.pipelines.5.0.1.nupkg.sha512",
+    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.linq.dynamic.core\\1.6.3\\system.linq.dynamic.core.1.6.3.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.reactive\\6.0.1\\system.reactive.6.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],

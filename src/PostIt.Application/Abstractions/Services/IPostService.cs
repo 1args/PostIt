@@ -1,5 +1,7 @@
 using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Models.Pagination;
+using PostIt.Contracts.Models.Sorting;
 
 namespace PostIt.Application.Abstractions.Services;
 
@@ -64,6 +66,8 @@ public interface IPostService
     /// Retrieves a list of all posts.
     /// </summary>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <param name="sortParams">ID of the post for which to fetch comments.</param>
+    /// <param name="paginationParams">Pagination parameters.</param>
     /// <returns>List of all posts.</returns>
-    Task<List<PostResponse>> GetAllPosts(CancellationToken cancellationToken);
+    Task<Paginated<PostResponse>> GetAllPosts(SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
 }
