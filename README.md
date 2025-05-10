@@ -4,7 +4,7 @@
 
 ### Description
 
-The project is a blogging platform. Each user can share their impressions, ideas, etc. by creating posts and writing comments. 
+[>] The project is a blogging platform. Each user can share their impressions, ideas, etc. by creating posts and writing comments. 
 
 ### Architecture
 
@@ -18,4 +18,4 @@ The project uses the default layered architecture, divided into the following le
 
 ### Technical implementation
 
-**PostgresSQ**L is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed.
+[>] **PostgresSQL** is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed.
