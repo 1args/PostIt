@@ -22,12 +22,10 @@ The project uses the default layered architecture, divided into the following le
 
 ### Setup
 
-git:
 ```
 git clone https://github.com/1args/PostIt
 cd PostIt
 ```
-docker:
 ```
 cd localhost
 docker compose up -d
