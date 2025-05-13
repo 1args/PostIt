@@ -14,8 +14,22 @@ The project uses the default layered architecture, divided into the following le
 - **Application** implements the system's use cases and coordinates the work between **Domain** and **Infrastructure**.
 - **Contracts** contains contracts for communication with external sources.
 - **Domain** describes business rules, entities and value object.
-- **Infrastcuture** contains the technical implementation of interfaces with the **Application**, access to the database, email, file systems.
+- **Infrastructure** contains the technical implementation of interfaces with the **Application**, access to the database, email, file systems.
 
 ### Technical implementation
 
-[>] **PostgreSQL** is used as the main database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is performed via **BCrypt**. The **MinIO** file system is also used to store user avatars. **Hangfire** is used for background services. Logging is performed via **Serilog** and **OpenSearch**. And **Papercut** is used to simulate the postal service.
+[>] **PostgreSQL** serves as the primary database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is implemented using **BCrypt**. The **MinIO** file system is utilized for storing user avatars. Background tasks are managed with **Hangfire**. Logging is handled via **Serilog** and **OpenSearch**. **Papercut** is used to simulate the email service.
+
+### Setup
+
+Clone this repository:
+```
+git clone https://github.com/1args/PostIt
+```
+For the necessary conditions, you need to have [Docker](https://www.docker.com/) installed:
+```
+cd localhost
+docker compose up -d
+```
+The API is then accessed via http://localhost:5217/. 
+
