@@ -5,10 +5,14 @@ using PostIt.Infrastructure.Data.Context;
 
 namespace PostIt.Infrastructure.Data.Configuration.Configurators;
 
-public class ApplicationDbContextConfigurator(
+/// <summary>
+/// Configurator of the main database context.
+/// </summary>
+public sealed class ApplicationDbContextConfigurator(
     IConfiguration configuration,
     ILoggerFactory loggerFactory)
     : DbContextOptionsConfigurator<ApplicationDbContext>(configuration, loggerFactory)
 {
-    public override string ConnectionStringName => "DefaultConnection";
+    /// <inheritdoc/>
+    protected override string ConnectionStringName => "DefaultConnection";
 }

@@ -1977,6 +1977,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.3.0",
           "PostIt.Domain": "1.0.0"
         },
         "compile": {

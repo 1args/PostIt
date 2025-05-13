@@ -3,6 +3,9 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Infrastructure.Data.Context;
 
+/// <summary>
+/// Basic database context
+/// </summary>
 public class ApplicationDbContext(
     DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
@@ -16,6 +19,7 @@ public class ApplicationDbContext(
     
     public DbSet<Comment> Comments { get; set; }
 
+    /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         CustomModelBuilder.OnModelCreating(modelBuilder);

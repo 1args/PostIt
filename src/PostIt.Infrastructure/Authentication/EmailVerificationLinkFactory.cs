@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using PostIt.Application.Abstractions.Auth;
+using PostIt.Application.Abstractions.Authentication;
 using PostIt.Domain.Entities;
 
-namespace PostIt.Infrastructure.Auth;
+namespace PostIt.Infrastructure.Authentication;
 
 /// <inheritdoc/>
 public class EmailVerificationLinkFactory(

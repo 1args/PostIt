@@ -10,4 +10,8 @@
       <ProjectReference Include="..\PostIt.Domain\PostIt.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    </ItemGroup>
+
 </Project>

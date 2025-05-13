@@ -6,10 +6,13 @@ using SixLabors.ImageSharp.Processing;
 
 namespace PostIt.Infrastructure.Data.FileStorage;
 
-public class ImageProcessor(IOptions<ImageResizeOptions> options) : IImageProcessor
+/// <inheritdoc/>
+public class ImageProcessor(
+    IOptions<ImageResizeOptions> options) : IImageProcessor
 {
     private readonly ImageResizeOptions _options = options.Value;
     
+    /// <inheritdoc/>
     public async Task<ReadOnlyMemory<byte>> ResizeImageAsync(
         ReadOnlyMemory<byte> imageStream,
         CancellationToken cancellationToken)

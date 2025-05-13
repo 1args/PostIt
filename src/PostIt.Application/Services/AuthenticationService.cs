@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using PostIt.Application.Abstractions.Auth;
+using PostIt.Application.Abstractions.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Exceptions;

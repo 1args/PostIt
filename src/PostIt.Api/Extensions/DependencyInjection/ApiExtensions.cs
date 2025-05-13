@@ -1,13 +1,14 @@
-using PostIt.Application.Abstractions.Auth;
-using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Services;
-using PostIt.Infrastructure.Auth;
-using PostIt.Infrastructure.Communication.Email;
-
 namespace PostIt.Api.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension for registering Api level services.
+/// </summary>
 public static class ApiExtensions
 {
+    /// <summary>
+    /// Registers Api level services.
+    /// </summary>
+    /// <returns>Collection of services.</returns>
     public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration configuration)
     {
         services

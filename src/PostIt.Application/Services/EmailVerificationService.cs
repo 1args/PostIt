@@ -1,6 +1,6 @@
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
-using PostIt.Application.Abstractions.Auth;
+using PostIt.Application.Abstractions.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Domain.Entities;

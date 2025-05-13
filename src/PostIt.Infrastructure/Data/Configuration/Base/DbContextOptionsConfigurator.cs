@@ -1,17 +1,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using PostIt.Infrastructure.Data.Configuration.Base.Abstractions;
 
 namespace PostIt.Infrastructure.Data.Configuration.Base;
 
+/// <inheritdoc/>
 public abstract class DbContextOptionsConfigurator<TDbContext>(
     IConfiguration configuration,
     ILoggerFactory loggerFactory)
     : IDbContextOptionsConfigurator<TDbContext>
     where TDbContext : DbContext
 {
-    public abstract string ConnectionStringName { get; }
+    /// <summary>
+    /// Connection string.
+    /// </summary>
+    protected abstract string ConnectionStringName { get; }
     
+    /// <inheritdoc/>
     public void Configure(DbContextOptionsBuilder<TDbContext> optionsBuilder)
     {
         var connectionString = configuration.GetConnectionString(ConnectionStringName);

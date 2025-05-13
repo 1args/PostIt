@@ -4,8 +4,15 @@ using Scalar.AspNetCore;
 
 namespace PostIt.Api.Extensions.Middleware;
 
+/// <summary>
+/// An extension for configuring middleware in WebApplication.
+/// </summary>
 public static class WebApplicationExtensions
 {
+    /// <summary>
+    /// Configures middleware APIs.
+    /// </summary>
+    /// <returns>WebApplication instance.</returns>
     public static WebApplication UseApiMiddlewares(this WebApplication app)
     {
         app.MapApiEndpoints();

@@ -4,8 +4,12 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
+/// <summary>
+/// Configuration of the post like model.
+/// </summary>
 public class PostLikeConfiguration : IEntityTypeConfiguration<PostLike>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<PostLike> builder)
     {
         builder.HasKey(pl => new { pl.PostId, pl.AuthorId });

@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PostIt.Application.Abstractions.Auth;
+using PostIt.Application.Abstractions.Authentication;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Services;
-using PostIt.Infrastructure.Auth;
+using PostIt.Infrastructure.Authentication;
 using PostIt.Infrastructure.Communication.Email;
 using PostIt.Infrastructure.Options;
 

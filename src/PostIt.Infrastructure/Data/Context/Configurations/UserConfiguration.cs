@@ -5,8 +5,12 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
+/// <summary>
+/// Configuration of the user model.
+/// </summary>
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(u => u.Id);

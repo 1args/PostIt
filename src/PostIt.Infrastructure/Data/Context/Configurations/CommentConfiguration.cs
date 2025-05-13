@@ -5,8 +5,12 @@ using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
+/// <summary>
+/// Configuration of the comment model.
+/// </summary>
 public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Comment> builder)
     {
         builder.HasKey(c => c.Id);

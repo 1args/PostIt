@@ -6,10 +6,13 @@ using PostIt.Application.Abstractions.Services;
 
 namespace PostIt.Infrastructure.Data.Caching;
 
-public class CacheService(IDistributedCache redisCache) : ICacheService
+/// <inheritdoc/>
+public class CacheService(
+    IDistributedCache redisCache) : ICacheService
 {
     private static readonly ConcurrentDictionary<string, bool> CacheKeys = [];
         
+    /// <inheritdoc/>
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken) 
         where T : class
     {
@@ -20,6 +23,7 @@ public class CacheService(IDistributedCache redisCache) : ICacheService
             : JsonSerializer.Deserialize<T>(cachedValue);
     }
     
+    /// <inheritdoc/>
     public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken) 
         where T : class
     {
@@ -36,12 +40,14 @@ public class CacheService(IDistributedCache redisCache) : ICacheService
         CacheKeys.TryAdd(key, false);
     }
     
+    /// <inheritdoc/>
     public async Task RemoveAsync(string key, CancellationToken cancellationToken)
     {
         await redisCache.RemoveAsync(key, cancellationToken);
         CacheKeys.TryRemove(key, out _);
     }
 
+    /// <inheritdoc/>
     public Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken)
     {
         var tasks = CacheKeys.Keys

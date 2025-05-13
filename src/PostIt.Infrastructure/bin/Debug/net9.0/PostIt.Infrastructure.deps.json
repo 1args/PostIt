@@ -607,6 +607,7 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
           "PostIt.Contracts": "1.0.0",
+          "SixLabors.ImageSharp": "3.1.8",
           "System.Linq.Dynamic.Core": "1.6.3"
         },
         "runtime": {
@@ -618,6 +619,7 @@
       },
       "PostIt.Contracts/1.0.0": {
         "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.3.0",
           "PostIt.Domain": "1.0.0"
         },
         "runtime": {

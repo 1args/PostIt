@@ -4,8 +4,12 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
+/// <summary>
+/// Configuration of the comment like model.
+/// </summary>
 public class CommentLikeConfiguration : IEntityTypeConfiguration<CommentLike>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<CommentLike> builder)
     {
         builder.HasKey(cl => new { cl.CommentId, cl.AuthorId });

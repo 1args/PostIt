@@ -7,6 +7,7 @@ using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Data.FileStorage;
 
+/// <inheritdoc/>
 public class MinioFileStorage(
     IMinioClient minioClient,
     IOptions<MinioOptions> options,
@@ -14,6 +15,7 @@ public class MinioFileStorage(
 {
     private readonly MinioOptions _options = options.Value;
 
+    /// <inheritdoc/>
     public async Task UploadFileAsync(
         string fileName,
         string format, 

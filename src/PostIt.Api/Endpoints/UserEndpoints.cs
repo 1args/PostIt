@@ -1,3 +1,5 @@
+using System.Net.Mime;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
@@ -36,6 +38,7 @@ public static class UserEndpoints
 
         group.MapPatch("/avatar", UploadAvatarAsync)
             .WithName(nameof(UploadAvatarAsync))
+            .WithRequestValidation<UploadAvatarRequest>()
             .RequireAuthorization()
             .DisableAntiforgery();
         
@@ -104,7 +107,7 @@ public static class UserEndpoints
     {
         await userService.LogoutAsync(cancellationToken);
         
-        return Results.NoContent();
+        return Results.SignOut();
     }
 
     /// <summary>
@@ -122,15 +125,19 @@ public static class UserEndpoints
     /// <summary>
     /// Uploads a new avatar image for the authenticated user.
     /// </summary>
-    private static async Task UploadAvatarAsync(
-        [FromForm] IFormFile avatar,
+    private static async Task<IResult> UploadAvatarAsync(
+        [FromForm] UploadAvatarRequest request,
         [FromServices] IUserService userService,
+        HttpContext httpContext,
+        IValidator<UploadAvatarRequest> validator,
         CancellationToken cancellationToken)
     {
         await using var stream = new MemoryStream();
-        await avatar.CopyToAsync(stream, cancellationToken);
+        await request.Avatar.CopyToAsync(stream, cancellationToken);
 
         await userService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
+
+        return Results.Created();
     }
 
     /// <summary>

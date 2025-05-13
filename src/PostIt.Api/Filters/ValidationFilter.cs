@@ -2,8 +2,13 @@ using FluentValidation;
 
 namespace PostIt.Api.Filters;
 
+/// <summary>
+/// Filter for validating requests to endpoints.
+/// </summary>
+/// <typeparam name="TRequest">Type of request to be validated.</typeparam>
 public class ValidationFilter<TRequest>(IValidator<TRequest> validator) : IEndpointFilter
 {
+    /// <inheritdoc/>
     public async ValueTask<object?> InvokeAsync(
         EndpointFilterInvocationContext context, 
         EndpointFilterDelegate next)
