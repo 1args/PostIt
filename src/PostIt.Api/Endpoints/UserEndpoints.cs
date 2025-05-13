@@ -41,6 +41,9 @@ public static class UserEndpoints
             .WithRequestValidation<UploadAvatarRequest>()
             .RequireAuthorization()
             .DisableAntiforgery();
+
+        group.MapGet("{id:guid}/avatar", GetAvatarAsync)
+            .WithName(nameof(GetAvatarAsync));
         
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
             .WithName(nameof(UpdateUserBioAsync))
@@ -138,6 +141,19 @@ public static class UserEndpoints
         await userService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
 
         return Results.Created();
+    }
+
+    /// <summary>
+    /// Downloads the avatar image for the authenticated user.
+    /// </summary>
+    private static async Task<IResult> GetAvatarAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var avatar = await userService.GetAvatarAsync(id, cancellationToken);
+
+        return Results.File(avatar.ToArray(), "image/webp");
     }
 
     /// <summary>

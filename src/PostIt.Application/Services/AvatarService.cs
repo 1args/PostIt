@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Contracts.Exceptions;
+using PostIt.Domain.Entities;
 
 namespace PostIt.Application.Services;
 
@@ -26,5 +28,23 @@ public class AvatarService(
         logger.LogInformation("Avatar uploaded successfully for user `{UserId}` to path `{FileName}`.", userId, fileName);
         
         return fileName;
+    }
+
+    public async Task<ReadOnlyMemory<byte>> DownloadAvatarAsync(
+        User user, 
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Starting avatar download for user `{UserId}`.", user.Id);
+
+        if (user.Avatar is null)
+        {
+            throw new NotFoundException($"User with ID {user.Id} has not yet uploaded an avatar.");
+        }
+        
+        var avatar = await fileStorage.DownloadFileAsync(user.Avatar, cancellationToken);
+        
+        logger.LogInformation("Avatar downloaded successfully for user `{UserId}`.", user.Id);
+        
+        return avatar;
     }
 }

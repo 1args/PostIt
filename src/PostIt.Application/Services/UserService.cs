@@ -3,9 +3,9 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Exceptions;
 using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Mappers;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
@@ -143,6 +143,16 @@ public class UserService(
         
         user.UpdateAvatar(avatarPath);
         await userRepository.UpdateAsync(user, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ReadOnlyMemory<byte>> GetAvatarAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+
+        return await avatarService.DownloadAvatarAsync(user, cancellationToken);
     }
     
     /// <inheritdoc/>

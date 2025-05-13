@@ -1,3 +1,5 @@
+using PostIt.Domain.Entities;
+
 namespace PostIt.Application.Abstractions.Services;
 
 /// <summary>
@@ -13,4 +15,6 @@ public interface IAvatarService
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Path of the uploaded avatar.</returns>
     Task<string> UploadAvatarAsync(Guid userId, ReadOnlyMemory<byte> avatar, CancellationToken cancellationToken);
+
+    Task<ReadOnlyMemory<byte>> DownloadAvatarAsync(User user, CancellationToken cancellationToken);
 }

@@ -1,5 +1,5 @@
 using System.Linq.Dynamic.Core;
-using PostIt.Application.Exceptions;
+using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Models.Sorting;
 
 namespace PostIt.Application.Extensions;

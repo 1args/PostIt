@@ -1,4 +1,4 @@
-namespace PostIt.Application.Exceptions;
+namespace PostIt.Contracts.Exceptions;
 
 /// <summary>
 /// Thrown when a token is invalid.

@@ -2,7 +2,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
+using Minio.Exceptions;
 using PostIt.Application.Abstractions.Data;
+using PostIt.Contracts.Exceptions;
 using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Data.FileStorage;
@@ -26,14 +28,16 @@ public class MinioFileStorage(
 
         try
         {
-            await EnsureBucketExitsAsync(cancellationToken);
+            await EnsureBucketExistsAsync(cancellationToken);
         
-            using var stream = new MemoryStream(payload.ToArray());
+            using var memoryStream = new MemoryStream(payload.ToArray());
+            
+            memoryStream.Seek(0, SeekOrigin.Begin);
 
             var uploadArgs = new PutObjectArgs()
                 .WithBucket(_options.BucketName)
                 .WithObject(fileName)
-                .WithStreamData(stream)
+                .WithStreamData(memoryStream)
                 .WithObjectSize(payload.Length)
                 .WithContentType(format);
 
@@ -51,11 +55,54 @@ public class MinioFileStorage(
                 "Failed to upload file `{FileName}` to bucket `{Bucket}`.",
                 fileName,
                 _options.BucketName);;
-            throw;
+            throw new ReadableException("Unknown error occurred while uploading a file.");
+        }
+    }
+    
+    /// <inheritdoc/>
+    public async Task<ReadOnlyMemory<byte>> DownloadFileAsync(
+        string fileName,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation(
+            "Starting retrieval of file `{FileName}` from bucket `{Bucket}`.",
+            fileName,
+            _options.BucketName);
+
+        try
+        {
+            await EnsureBucketExistsAsync(cancellationToken);
+
+            var memoryStream = new MemoryStream();
+
+            var getObjectArgs = new GetObjectArgs()
+                .WithBucket(_options.BucketName)
+                .WithObject(fileName)
+                .WithCallbackStream(async (stream, ct) =>
+                {
+                    await stream.CopyToAsync(memoryStream, ct);
+                });
+
+            await minioClient.GetObjectAsync(getObjectArgs, cancellationToken);
+            
+            return memoryStream.ToArray();
+        }
+        catch (ObjectNotFoundException exception)
+        {
+            throw new NotFoundException($"File '{fileName}' not found in bucket '{_options.BucketName}'.");
+        }
+        catch (Exception exception)
+        {
+            logger.LogError(
+                exception,
+                "Failed to retrieve file `{FileName}` from bucket `{Bucket}`.",
+                fileName,
+                _options.BucketName);
+            throw new ReadableException("Unknown error occurred while receiving a file.");
         }
     }
 
-    private async Task EnsureBucketExitsAsync(CancellationToken cancellationToken)
+    private async Task EnsureBucketExistsAsync(CancellationToken cancellationToken)
     {
         logger.LogDebug("Checking if bucket `{Bucket}` exists...", _options.BucketName);
 
@@ -84,8 +131,12 @@ public class MinioFileStorage(
         }
         catch (Exception exception)
         {
-            logger.LogError(exception, "Error while ensuring bucket `{Bucket}` exists.", _options.BucketName);
-            throw;
+            logger.LogError
+                (exception, 
+                    "Error while ensuring bucket `{Bucket}` exists.",
+                    _options.BucketName);
+            throw new InvalidOperationException(
+                $"Unknown error occurred while checking for the existence of the `{_options.BucketName}` bucket.");
         }
     }
 }

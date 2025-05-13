@@ -17,7 +17,6 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
           "PostIt.Contracts": "1.0.0",
-          "SixLabors.ImageSharp": "3.1.8",
           "System.Linq.Dynamic.Core": "1.6.3"
         },
         "runtime": {
@@ -336,14 +335,6 @@
           }
         }
       },
-      "SixLabors.ImageSharp/3.1.8": {
-        "runtime": {
-          "lib/net6.0/SixLabors.ImageSharp.dll": {
-            "assemblyVersion": "3.0.0.0",
-            "fileVersion": "3.1.8.0"
-          }
-        }
-      },
       "System.Buffers/4.6.0": {},
       "System.Linq.Dynamic.Core/1.6.3": {
         "runtime": {
@@ -591,13 +582,6 @@
       "sha512": "sha512-pNN4l+J6LlpIvHOeNdXlwxv39NPJ2B5klz+Rd2UQZIx30Squ5oND1Yy3wEAUoKn0GPUj6Yxt9lxlYWQqfZcvKg==",
       "path": "newtonsoft.json/11.0.1",
       "hashPath": "newtonsoft.json.11.0.1.nupkg.sha512"
-    },
-    "SixLabors.ImageSharp/3.1.8": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-8eJkROLGh6DBQLR666q2aOpAaean2puZaZ6Ur9YxoyGzjaZhv8OJSxtnDou54+OXMkXtLUdyQC0so47sOsqZjg==",
-      "path": "sixlabors.imagesharp/3.1.8",
-      "hashPath": "sixlabors.imagesharp.3.1.8.nupkg.sha512"
     },
     "System.Buffers/4.6.0": {
       "type": "package",

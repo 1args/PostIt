@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PostIt.Application.Abstractions.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Application.Exceptions;
+using PostIt.Contracts.Exceptions;
 using PostIt.Domain.Entities;
 
 namespace PostIt.Application.Services;
@@ -141,13 +141,12 @@ public class AuthenticationService(
     private static Guid GetUserIdFromClaims(Claim[] claims)
     {
         var userIdClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+        
         if (userIdClaim is null || !Guid.TryParse(userIdClaim.Value, out var userId))
         {
-            throw new SecurityException("Invalid user identifier in token.");
+            throw new ReadableException("Invalid user identifier in token.");
         }
+        
         return userId;
     }
-    
-    private static string GetRefreshTokenKey(Guid userId, string refreshToken) 
-        => $"refresh:{userId}:{refreshToken}";
 }

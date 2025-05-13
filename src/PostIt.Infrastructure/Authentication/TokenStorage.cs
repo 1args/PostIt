@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using PostIt.Application.Abstractions.Authentication;
-using PostIt.Application.Exceptions;
+using PostIt.Contracts.Exceptions;
 using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Authentication; 

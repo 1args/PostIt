@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PostIt.Application.Exceptions;
+using PostIt.Contracts.Exceptions;
 using PostIt.Domain.Exceptions;
 
 namespace PostIt.Api.ErrorHandling;
@@ -26,6 +26,7 @@ public class GlobalExceptionHandler(
             NotFoundException => (StatusCodes.Status404NotFound, "Not Found", exception.Message),
             ConflictException => (StatusCodes.Status409Conflict, "Conflict", exception.Message),
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message),
+            ReadableException => (StatusCodes.Status500InternalServerError, "Internal Server Error", exception.Message),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error",
                 "An unexpected error occurred. Please try again later.")
         };

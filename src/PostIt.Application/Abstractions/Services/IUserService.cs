@@ -54,6 +54,14 @@ public interface IUserService
     Task UploadAvatarAsync(ReadOnlyMemory<byte> avatar, CancellationToken cancellationToken);
 
     /// <summary>
+    /// Gets the avatar image for the currently authenticated user.
+    /// </summary>
+    /// <param name="userId">ID of the user whose avatar be retrieved.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Avatar in byte.</returns>
+    Task<ReadOnlyMemory<byte>> GetAvatarAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Retrieves the user details.
     /// </summary>
     /// <param name="userId">ID of the user whose details are to be retrieved.</param>
