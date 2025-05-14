@@ -50,8 +50,7 @@ public static class PostEndpoints
             .RequireAuthorization();
 
         group.MapGet("/", GetAllPostsAsync)
-            .WithName("GetAllPosts")
-            .WithRequestValidation<PaginationParams>();
+            .WithName("GetAllPosts");
         
         return endpoints;
     }

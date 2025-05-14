@@ -1,5 +1,3 @@
-using System.Net.Mime;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
@@ -49,6 +47,9 @@ public static class UserEndpoints
             .WithName(nameof(UpdateUserBioAsync))
             .WithRequestValidation<UpdateUserBioRequest>();
         
+        group.MapGet("/me", GetUserByIdAsync)
+            .WithName(nameof(GetUserByIdAsync));
+        
         group.MapGet("/{id:guid}", GetUserByIdAsync)
             .WithName(nameof(GetUserByIdAsync));
         
@@ -63,10 +64,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> RegisterAsync(
         [FromBody] CreateUserRequest request,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.RegisterAsync(request, cancellationToken);
+        await userAccountService.RegisterAsync(request, cancellationToken);
 
         return Results.Created();
     }
@@ -77,10 +78,10 @@ public static class UserEndpoints
     private static async Task<IResult> VerifyEmailAsync(
         [FromRoute] Guid userId,
         [FromRoute] Guid token,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        var success = await userService.VerifyEmailAsync(userId, token, cancellationToken);
+        var success = await userAccountService.VerifyEmailAsync(userId, token, cancellationToken);
         
         return success
             ? Results.Ok("Email verified. You can close this window.")
@@ -92,10 +93,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> LoginAsync(
         [FromBody] LoginRequest request,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        var data = await userService
+        var data = await userAccountService
             .LoginAsync(request, cancellationToken);
 
         return Results.Ok(data);
@@ -105,10 +106,10 @@ public static class UserEndpoints
     /// Logs out the current authenticated user.
     /// </summary>
     private static async Task<IResult> LogoutAsync(
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.LogoutAsync(cancellationToken);
+        await userAccountService.LogoutAsync(cancellationToken);
         
         return Results.SignOut();
     }
@@ -117,10 +118,10 @@ public static class UserEndpoints
     /// Refreshes the access token for the authenticated user.
     /// </summary>
     private static async Task<IResult> RefreshTokenAsync(
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        var data = await userService.RefreshToken(cancellationToken);
+        var data = await userAccountService.RefreshToken(cancellationToken);
         
         return Results.Ok(data);
     }
@@ -130,28 +131,38 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> UploadAvatarAsync(
         [FromForm] UploadAvatarRequest request,
-        [FromServices] IUserService userService,
-        HttpContext httpContext,
-        IValidator<UploadAvatarRequest> validator,
+        [FromServices] IAvatarManagementService avatarManagementService,
         CancellationToken cancellationToken)
     {
         await using var stream = new MemoryStream();
         await request.Avatar.CopyToAsync(stream, cancellationToken);
 
-        await userService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
+        await avatarManagementService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
 
         return Results.Created();
     }
-
+    
     /// <summary>
     /// Downloads the avatar image for the authenticated user.
     /// </summary>
-    private static async Task<IResult> GetAvatarAsync(
-        [FromRoute] Guid id,
-        [FromServices] IUserService userService,
+    private static async Task<IResult> GetCurrentUserAvatarAsync(
+        [FromServices] IAvatarManagementService avatarManagementService,
         CancellationToken cancellationToken)
     {
-        var avatar = await userService.GetAvatarAsync(id, cancellationToken);
+        var avatar = await avatarManagementService.GetCurrentUserAvatarAsync(cancellationToken);
+
+        return Results.File(avatar.ToArray(), "image/webp");
+    }
+
+    /// <summary>
+    /// Downloads the avatar image for the user by their ID.
+    /// </summary>
+    private static async Task<IResult> GetAvatarAsync(
+        [FromRoute] Guid id,
+        [FromServices] IAvatarManagementService avatarManagementService,
+        CancellationToken cancellationToken)
+    {
+        var avatar = await avatarManagementService.GetAvatarAsync(id, cancellationToken);
 
         return Results.File(avatar.ToArray(), "image/webp");
     }
@@ -168,6 +179,18 @@ public static class UserEndpoints
         await userService.UpdateUserBioAsync(id, request, cancellationToken);
         
         return Results.NoContent();
+    }
+    
+    /// <summary>
+    /// Retrieves user information by their ID.
+    /// </summary>
+    private static async Task<IResult> GetCurrentUserAsync(
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        var user = await userService.GetCurrentUserAsync(cancellationToken);
+
+        return Results.Ok(user);
     }
     
     /// <summary>
