@@ -22,7 +22,7 @@ public static class CommentEndpoints
         var group = endpoints.MapGroup("/comments").WithTags("Comments");
 
         group.MapPost("/", CreateCommentAsync)
-            .WithRequestValidation<CreatePostRequest>()
+            .WithRequestValidation<CreateCommentRequest>()
             .RequireAuthorization()
             .RequirePermissions(Permission.CreateComment);
         
@@ -30,11 +30,11 @@ public static class CommentEndpoints
             .RequireAuthorization()
             .RequirePermissions(Permission.DeleteOwnComment, Permission.DeleteAnyComment);
         
-        group.MapPost("{id:guid}/like", LikeCommentAsync)
+        group.MapPost("{id:guid}/likes", LikeCommentAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         
-        group.MapDelete("{id:guid}/like", UnlikeCommentAsync)
+        group.MapDelete("{id:guid}/likes", UnlikeCommentAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         

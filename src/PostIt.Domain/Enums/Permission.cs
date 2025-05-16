@@ -8,36 +8,39 @@ public enum Permission
     /// <summary>No permission.</summary>
     None = 1,
 
+    /// <summary>Permission to edit own profile.</summary>
+    EditOwnProfile = 2,
+    
     /// <summary>Permission to create a post.</summary>
-    CreatePost = 2,
+    CreatePost = 3,
 
     /// <summary>Permission to edit own post.</summary>
-    EditOwnPost = 3,
+    EditOwnPost = 4,
 
     /// <summary>Permission to delete own post.</summary>
-    DeleteOwnPost = 4,
+    DeleteOwnPost = 5,
 
     /// <summary>Permission to edit any user's post.</summary>
-    EditAnyPost = 5,
+    EditAnyPost = 6,
 
     /// <summary>Permission to delete any user's post.</summary>
-    DeleteAnyPost = 6,
+    DeleteAnyPost = 7,
 
     /// <summary>Permission to create a comment.</summary>
-    CreateComment = 7,
+    CreateComment = 8,
 
     /// <summary>Permission to delete own comment.</summary>
-    DeleteOwnComment = 8,
+    DeleteOwnComment = 9,
 
     /// <summary>Permission to delete any user's comment.</summary>
-    DeleteAnyComment = 9,
+    DeleteAnyComment = 10,
 
     /// <summary>Permission to like or dislike content.</summary>
-    LikeDislike = 10,
+    LikeDislike = 11,
 
     /// <summary>Permission to manage users with restricted access.</summary>
-    ManageRestrictedUsers = 11,
+    ManageRestrictedUsers = 12,
 
     /// <summary>Permission to manage all users in the system.</summary>
-    ManageUsers = 12
+    ManageUsers = 13
 }

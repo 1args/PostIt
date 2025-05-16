@@ -33,23 +33,34 @@ public static class UserEndpoints
         group.MapPost("/refresh-token", RefreshTokenAsync)
             .RequireAuthorization();
         
-        group.MapPatch("/users/{id:guid}/restrict", RestrictUserAsync)
+        group.MapPatch("/{id:guid}/roles/restricted", RestrictUserAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.ManageRestrictedUsers);
 
-        group.MapPatch("/users/{id:guid}/unrestrict", UnrestrictUserAsync)
+        group.MapDelete("/{id:guid}/roles/restricted", UnrestrictUserAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.ManageRestrictedUsers);
+        
+        group.MapPatch("/{id:guid}/roles/moderator", AssignModeratorRoleAsync)
+            .RequireAuthorization()
+            .RequirePermissions(Permission.ManageUsers);
+        
+        group.MapDelete("/{id:guid}/roles/moderator", UnassignModeratorRoleAsync)
+            .RequireAuthorization()
+            .RequirePermissions(Permission.ManageUsers);
 
         group.MapPatch("/avatar", UploadAvatarAsync)
             .WithRequestValidation<UploadAvatarRequest>()
             .RequireAuthorization()
+            .RequirePermissions(Permission.EditOwnProfile)
             .DisableAntiforgery();
 
-        group.MapGet("{id:guid}/avatar", GetAvatarAsync);
+        group.MapGet("u{id:guid}/avatar", GetAvatarAsync);
 
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
-            .WithRequestValidation<UpdateUserBioRequest>();
+            .WithRequestValidation<UpdateUserBioRequest>()
+            .RequireAuthorization()
+            .RequirePermissions(Permission.EditOwnProfile);
         
         group.MapGet("/me", GetUserByIdAsync);
         
@@ -149,6 +160,32 @@ public static class UserEndpoints
         CancellationToken cancellationToken)
     {
         await userService.UnrestrictUserAsync(id, cancellationToken);
+
+        return Results.Ok();
+    }
+    
+    /// <summary>
+    /// Assigns the moderator role.
+    /// </summary>
+    private static async Task<IResult> AssignModeratorRoleAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.AssignModeratorRoleAsync(id, cancellationToken);
+
+        return Results.Ok();
+    }
+    
+    /// <summary>
+    /// Unassign the moderator role.
+    /// </summary>
+    private static async Task<IResult> UnassignModeratorRoleAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.UnassignModeratorRoleAsync(id, cancellationToken);
 
         return Results.Ok();
     }

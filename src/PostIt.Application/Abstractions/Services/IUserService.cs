@@ -51,4 +51,18 @@ public interface IUserService
     /// <param name="userId">User ID.></param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task UnrestrictUserAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Assigns the moderator role.
+    /// </summary>
+    /// <param name="userId">User ID.></param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task AssignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Unassign the moderator role.
+    /// </summary>
+    /// <param name="userId">User ID.></param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task UnassignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
 }

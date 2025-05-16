@@ -35,19 +35,19 @@ public static class PostEndpoints
             .RequireAuthorization()
             .RequirePermissions(Permission.DeleteOwnPost, Permission.DeleteAnyPost);
 
-        group.MapPost("{id:guid}/like", LikePostAsync)
+        group.MapPost("{id:guid}/likes", LikePostAsync)
             .WithName("LikePost")
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
 
-        group.MapDelete("{id:guid}/unlike", UnlikePostAsync)
+        group.MapDelete("{id:guid}/unlikes", UnlikePostAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         
-        group.MapPost("{id:guid}/view", ViewPostAsync)
+        group.MapPost("{id:guid}/views", ViewPostAsync)
             .RequireAuthorization();
 
-        group.MapPut("{id:guid}/visibility", ChangeVisibilityAsync)
+        group.MapPatch("{id:guid}/visibility", ChangeVisibilityAsync)
             .WithRequestValidation<ChangePostVisibilityRequest>()
             .RequireAuthorization()
             .RequirePermissions(Permission.EditOwnPost);
@@ -93,6 +93,7 @@ public static class PostEndpoints
         CancellationToken cancellationToken)
     {
         await postService.DeletePostAsync(id, cancellationToken);
+        
         return Results.NoContent();
     }
 
@@ -105,6 +106,7 @@ public static class PostEndpoints
         CancellationToken cancellationToken)
     {
         await postService.LikePostAsync(id, cancellationToken);
+        
         return Results.NoContent();
     }
 
@@ -117,6 +119,7 @@ public static class PostEndpoints
         CancellationToken cancellationToken)
     {
         await postService.UnlikePostAsync(id, cancellationToken);
+        
         return Results.NoContent();
     }
 
@@ -129,6 +132,7 @@ public static class PostEndpoints
         CancellationToken cancellationToken)
     {
         await postService.ViewPostAsync(id, cancellationToken);
+        
         return Results.NoContent();
     }
 
@@ -142,6 +146,7 @@ public static class PostEndpoints
         CancellationToken cancellationToken)
     {
         await postService.ChangeVisibilityAsync(id, request, cancellationToken);
+        
         return Results.NoContent();
     }
 
