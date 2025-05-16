@@ -10,5 +10,6 @@ namespace PostIt.Infrastructure.Auth.Authorization;
 public class PermissionRequirement(
     params Permission[] permissions) : IAuthorizationRequirement
 {
+    /// <summary>Permissions required by this requirement.</summary>
     public Permission[] Permissions { get; set; } = permissions;
 }

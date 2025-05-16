@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Application.Abstractions.Utilities;
 using PostIt.Application.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Responses;
@@ -11,6 +12,7 @@ using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
+using Permission = PostIt.Domain.Enums.Permission;
 
 namespace PostIt.Application.Services;
 
@@ -20,6 +22,7 @@ public class CommentService(
     IRepository<Post> postRepository,
     IRepository<User> userRepository,
     IAuthenticationService authenticationService,
+    IPermissionChecker<Comment> permissionChecker,
     ILogger<CommentService> logger) : ICommentService
 {
     /// <inheritdoc/>
@@ -75,7 +78,12 @@ public class CommentService(
         
         var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
         
-        EnsureUserIsAuthorOrThrow(comment, authorId);
+        await permissionChecker.CheckPermissionsAsync(
+            comment,
+            authorId, 
+            Permission.DeleteOwnComment,
+            Permission.DeleteAnyComment,
+            cancellationToken);
 
         await commentRepository.DeleteAsync([comment], cancellationToken);
         logger.LogInformation("Comment with ID `{CommentId}` deleted successfully.", commentId);
@@ -103,8 +111,6 @@ public class CommentService(
             logger.LogWarning("Comment with ID `{CommentId}` not found.", commentId);
             throw new NotFoundException($"Comment with ID '{commentId}' not found.");
         }
-        
-        EnsureUserIsAuthorOrThrow(comment, authorId);
         
         comment.Like(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
@@ -137,8 +143,6 @@ public class CommentService(
             logger.LogWarning("Comment with ID `{CommentId}` not found.", commentId);
             throw new NotFoundException($"Comment with ID '{commentId}' not found.");
         }
-        
-        EnsureUserIsAuthorOrThrow(comment, authorId);
         
         comment.Unlike(authorId);
         await commentRepository.UpdateAsync(comment, cancellationToken);
@@ -205,19 +209,6 @@ public class CommentService(
     }
 
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
-
-    private void EnsureUserIsAuthorOrThrow(Comment comment, Guid currentUserId)
-    {
-        if (comment.AuthorId != currentUserId)
-        {
-            logger.LogWarning(
-                "User `{UserId}` attempted to perform an unauthorized action on comment `{PostId}`.",
-                currentUserId,
-                comment.Id);
-            
-            throw new UnauthorizedException("Only the author is allowed to perform this action on the cp,,emt.");
-        }
-    }
     
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,

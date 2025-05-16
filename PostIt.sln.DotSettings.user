@@ -40,4 +40,5 @@
     &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.CommentTests.Unlike_UserCanUnlikeOnlyIfLikedBefore&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::6A208DFF-EAF2-4A09-B040-22E47A62554F::net9.0::PostIt.Domain.Tests.Entities.CommentTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=ownable/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Application.Abstractions.Utilities;
 using PostIt.Application.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.ApiContracts.Responses;
@@ -11,6 +12,7 @@ using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
+using Permission = PostIt.Domain.Enums.Permission;
 
 namespace PostIt.Application.Services;
 
@@ -19,6 +21,7 @@ public class PostService(
     IRepository<Post> postRepository,
     IRepository<User> userRepository,
     IAuthenticationService authenticationService,
+    IPermissionChecker<Post> permissionChecker,
     ILogger<PostService> logger) : IPostService
 {
     /// <inheritdoc/>
@@ -60,7 +63,13 @@ public class PostService(
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         var authorId = GetCurrentUserId();
-        EnsureUserIsAuthorOrThrow(post, authorId);
+        
+        await permissionChecker.CheckPermissionsAsync(
+            post,
+            authorId, 
+            Permission.EditOwnPost,
+            Permission.EditAnyPost,
+            cancellationToken);
         
         var newTitle = PostTitle.Create(request.Title);
         var newContent = PostContent.Create(request.Content);
@@ -68,7 +77,10 @@ public class PostService(
         post.UpdateContent(newTitle, newContent);
         await postRepository.UpdateAsync(post, cancellationToken);
         
-        logger.LogInformation("Post with ID `{PostId}` updated successfully.", postId);
+        logger.LogInformation(
+            "Post with ID `{PostId}` updated successfully by user `{authorId}`.",
+            postId,
+            authorId);
     }
 
     /// <inheritdoc/>
@@ -81,13 +93,22 @@ public class PostService(
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
      
         var authorId = GetCurrentUserId();
-        EnsureUserIsAuthorOrThrow(post, authorId);
+        
+        await permissionChecker.CheckPermissionsAsync(
+            post,
+            authorId, 
+            Permission.DeleteOwnPost,
+            Permission.DeleteAnyPost,
+            cancellationToken);
         
         await postRepository.DeleteAsync([post], cancellationToken);
         
         await UpdateUserPostCountAsync(authorId, increase: false, cancellationToken);
         
-        logger.LogInformation("Post with ID `{PostId}` deleted successfully.", postId);
+        logger.LogInformation(
+            "Post with ID `{PostId}` deleted successfully by user `{authorId}`.",
+            postId,
+            authorId);
     }
     
     /// <inheritdoc/>
@@ -171,15 +192,22 @@ public class PostService(
         var post = await GetPostOrThrowAsync(postId, cancellationToken);
         
         var authorId = GetCurrentUserId();
-        EnsureUserIsAuthorOrThrow(post, authorId);
+        
+        await permissionChecker.CheckPermissionsAsync(
+            post,
+            authorId, 
+            Permission.EditOwnPost,
+            Permission.EditAnyPost,
+            cancellationToken);
         
         post.SetVisibility(request.Visibility);
         await postRepository.UpdateAsync(post, cancellationToken);
         
         logger.LogInformation(
-            "Visibility for post `{PostId}` changed to `{Visibility}`.",
+            "Visibility for post `{PostId}` changed to `{Visibility}` by user `{authorId}`.",
             postId, 
-            request.Visibility);
+            request.Visibility,
+            authorId);
     }
 
     /// <inheritdoc/>
@@ -237,19 +265,6 @@ public class PostService(
     }
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
-
-    private void EnsureUserIsAuthorOrThrow(Post post, Guid currentUserId)
-    {
-        if (post.AuthorId != currentUserId)
-        {
-            logger.LogWarning(
-                "User `{UserId}` attempted to perform an unauthorized action on post `{PostId}`.",
-                currentUserId,
-                post.Id);
-            
-            throw new UnauthorizedException("Only the author is allowed to perform this action on the post.");
-        }
-    }
     
     private async Task<Post> GetPostOrThrowAsync(
         Guid postId, 
