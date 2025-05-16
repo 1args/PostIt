@@ -18,7 +18,7 @@ public class PostTitle : ValueObject
     public string Value { get; }
 
     /// <summary>
-    /// Constructor for EF Core
+    /// Constructor for EF Core.
     /// </summary>
     private PostTitle() { }
     

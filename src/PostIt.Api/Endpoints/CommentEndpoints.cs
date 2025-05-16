@@ -5,6 +5,7 @@ using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
+using PostIt.Domain.Enums;
 
 namespace PostIt.Api.Endpoints;
 
@@ -22,15 +23,19 @@ public static class CommentEndpoints
 
         group.MapPost("/", CreateCommentAsync)
             .WithRequestValidation<CreatePostRequest>()
+            .RequirePermissions(Permission.CreateComment)
             .WithName("CreateComment");
         
         group.MapDelete("{id:guid}", DeleteCommentAsync)
+            .RequirePermissions(Permission.DeleteOwnComment, Permission.DeleteAnyComment)
             .WithName("DeleteComment");
         
-        group.MapPost("{id:guid}/like/{authorId:guid}", LikeCommentAsync)
+        group.MapPost("{id:guid}/like", LikeCommentAsync)
+            .RequirePermissions(Permission.LikeDislike)
             .WithName("LikeComment");
         
-        group.MapDelete("{id:guid}/like/{authorId:guid}", UnlikeCommentAsync)
+        group.MapDelete("{id:guid}/like", UnlikeCommentAsync)
+            .RequirePermissions(Permission.LikeDislike)
             .WithName("UnlikeComment");
         
         group.MapGet("{id:guid}", GetCommentsByPostAsync)

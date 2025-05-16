@@ -9,5 +9,4 @@ public sealed record CreateUserRequest(
     string Name,
     string Bio,
     string Email,
-    string Password,
-    Role Role);
+    string Password);

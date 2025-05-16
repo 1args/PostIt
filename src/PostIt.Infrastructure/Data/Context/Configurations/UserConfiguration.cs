@@ -51,8 +51,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .IsRequired();
         });
 
-        builder.Property(u => u.Role)
-            .HasConversion<string>()
+        builder.Property(u => u.Roles)
             .IsRequired();
         
         builder.ToTable("Users");

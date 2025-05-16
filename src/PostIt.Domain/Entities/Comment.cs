@@ -36,7 +36,7 @@ public class Comment : Entity<Guid>, IAuditableEntity
     public Post Post { get; private set; } = null!;
 
     /// <summary>
-    /// Constructor for EF Core
+    /// Constructor for EF Core.
     /// </summary>
     private Comment() { }
 

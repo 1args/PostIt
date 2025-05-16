@@ -27,25 +27,25 @@ public static class UserEndpoints
             .WithRequestValidation<LoginRequest>();
 
         group.MapPost("/logout", LogoutAsync)
-            .WithName(nameof(LogoutAsync))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName(nameof(LogoutAsync));
 
         group.MapPost("/refresh-token", RefreshTokenAsync)
-            .WithName(nameof(RefreshTokenAsync))
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .WithName(nameof(RefreshTokenAsync));
 
         group.MapPatch("/avatar", UploadAvatarAsync)
-            .WithName(nameof(UploadAvatarAsync))
             .WithRequestValidation<UploadAvatarRequest>()
             .RequireAuthorization()
-            .DisableAntiforgery();
+            .DisableAntiforgery()
+            .WithName(nameof(UploadAvatarAsync));
 
         group.MapGet("{id:guid}/avatar", GetAvatarAsync)
             .WithName(nameof(GetAvatarAsync));
-        
+
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
-            .WithName(nameof(UpdateUserBioAsync))
-            .WithRequestValidation<UpdateUserBioRequest>();
+            .WithRequestValidation<UpdateUserBioRequest>()
+            .WithName(nameof(UpdateUserBioAsync));
         
         group.MapGet("/me", GetUserByIdAsync)
             .WithName(nameof(GetUserByIdAsync));

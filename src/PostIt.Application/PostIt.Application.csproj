@@ -22,8 +22,4 @@
       <PackageReference Include="System.Linq.Dynamic.Core" Version="1.6.3" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Abstractions\Auth\Authorization\" />
-    </ItemGroup>
-
 </Project>

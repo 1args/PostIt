@@ -12,5 +12,5 @@ public abstract class Entity<TKey> where TKey : struct
     /// Unique entity identifier.
     /// </summary>
     [Key]
-    public virtual TKey Id { get; protected set; }
+    public virtual TKey Id { get; set; }
 }

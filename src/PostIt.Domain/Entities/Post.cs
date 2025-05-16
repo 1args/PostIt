@@ -51,7 +51,7 @@ public class Post : Entity<Guid>, IAuditableEntity
     public User Author { get; private set; } = null!;
 
     /// <summary>
-    /// Constructor for EF Core
+    /// Constructor for EF Core.
     /// </summary>
     private Post() { }
     

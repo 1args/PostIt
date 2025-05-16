@@ -20,7 +20,7 @@ public sealed class EmailVerificationToken : Entity<Guid>, IAuditableEntity
     public User User { get; private set; } = null!;
 
     /// <summary>
-    /// Constructor for EF Core
+    /// Constructor for EF Core.
     /// </summary>
     private EmailVerificationToken() { }
     

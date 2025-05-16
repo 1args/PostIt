@@ -28,8 +28,8 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <summary>User's password hash.</summary>
     public UserPassword Password { get; private set; }
 
-    /// <summary>Role of the user.</summary>
-    public Role Role { get; private set; }
+    /// <summary>Roles of the user.</summary>
+    public IReadOnlyCollection<Role> Roles { get; private set; }
 
     /// <summary>Indicates whether the user's email has been verified.</summary>
     public bool IsEmailConfirmed  { get; private set; }
@@ -41,7 +41,7 @@ public class User : Entity<Guid>, IAuditableEntity
     public DateTime CreatedAt { get; private set; }
 
     /// <summary>
-    /// Constructor for EF Core
+    /// Constructor for EF Core.
     /// </summary>
     private User() { }
 
@@ -53,14 +53,14 @@ public class User : Entity<Guid>, IAuditableEntity
         UserBio bio,
         UserEmail email, 
         UserPassword password, 
-        Role role, 
+        IReadOnlyCollection<Role> roles, 
         DateTime createdAt)
     {
         Name = name;
         Bio = bio.IsEmpty() ? UserBio.Create("Empty") : bio;
         Email = email;
         Password = password;
-        Role = role;
+        Roles = roles;
         CreatedAt = createdAt;
     }
     
@@ -71,7 +71,7 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <param name="bio">The biography.</param>
     /// <param name="email">The email address.</param>
     /// <param name="password">The hashed password.</param>
-    /// <param name="role">The user role.</param>
+    /// <param name="roles">The user roles.</param>
     /// <param name="createdAt">The creation timestamp.</param>
     /// <returns>A new instance of the <see cref="User"/> class.</returns>
     public static User Create(
@@ -79,9 +79,9 @@ public class User : Entity<Guid>, IAuditableEntity
         UserBio bio, 
         UserEmail email, 
         UserPassword password,
-        Role role,
+        IReadOnlyCollection<Role> roles,
         DateTime createdAt) =>
-        new(name, bio, email, password, role, createdAt);
+        new(name, bio, email, password, roles, createdAt);
 
     /// <summary>
     /// Marks the user's email as verified.

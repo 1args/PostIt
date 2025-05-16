@@ -1,19 +1,25 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Application.Abstractions.Auth.Authentication;
+using PostIt.Application.Abstractions.Auth.Authorization;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Services;
 using PostIt.Infrastructure.Auth.Authentication;
+using PostIt.Infrastructure.Auth.Authorization;
 using PostIt.Infrastructure.Communication.Email;
 using PostIt.Infrastructure.Options;
+using AuthorizationOptions = PostIt.Infrastructure.Options.AuthorizationOptions;
 
 namespace PostIt.Infrastructure.Extensions;
 
-internal static class AuthenticationExtensions
+internal static class AuthExtensions
 {
     public static IServiceCollection AddAuthRegister(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+        services
+            .Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)))
+            .Configure<AuthorizationOptions>(configuration.GetSection(nameof(AuthorizationOptions)));
         
         services
             .AddScoped<IAuthenticationService, AuthenticationService>()
@@ -22,6 +28,9 @@ internal static class AuthenticationExtensions
             .AddScoped<IPasswordHasher, PasswordHasher>()
             .AddScoped<IJwtProvider, JwtProvider>()
             .AddScoped<IEmailVerificationLinkFactory, EmailVerificationLinkFactory>();
+
+        services.AddScoped<IPermissionService, PermissionService>();
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         
         return services;
     }

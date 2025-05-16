@@ -42,7 +42,7 @@ public class UserAccountService(
         
         var passwordHash = passwordHasher.HashPassword(request.Password);
         var password = UserPassword.Create(passwordHash);
-        var user = User.Create(name, bio, email, password, request.Role, DateTime.UtcNow);
+        var user = User.Create(name, bio, email, password, [], DateTime.UtcNow);
         
         await userRepository.AddAsync(user, cancellationToken);
 

@@ -1,4 +1,4 @@
-using PostIt.Domain.Enums;
+using PostIt.Domain.Entities;
 
 namespace PostIt.Contracts.ApiContracts.Responses;
 
@@ -9,7 +9,7 @@ public sealed record UserResponse(
     Guid Id,
     string Name,
     string Bio,
-    Role Role,
+    ICollection<Role> Roles,
     int PostsCount,
     int CommentsCount,
     DateTime CreatedAt);
