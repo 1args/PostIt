@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PostIt.Application.Abstractions.Authentication;
+using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.User;

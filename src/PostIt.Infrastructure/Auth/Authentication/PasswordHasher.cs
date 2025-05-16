@@ -1,6 +1,6 @@
-using PostIt.Application.Abstractions.Authentication;
+using PostIt.Application.Abstractions.Auth.Authentication;
 
-namespace PostIt.Infrastructure.Authentication;
+namespace PostIt.Infrastructure.Auth.Authentication;
 
 /// <inheritdoc/>
 public class PasswordHasher : IPasswordHasher

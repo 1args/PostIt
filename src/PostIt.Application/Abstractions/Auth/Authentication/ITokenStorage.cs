@@ -1,4 +1,4 @@
-namespace PostIt.Application.Abstractions.Authentication;
+namespace PostIt.Application.Abstractions.Auth.Authentication;
 
 /// <summary>
 /// Determines the operation of the token in the storage.

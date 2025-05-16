@@ -1,6 +1,6 @@
 using PostIt.Domain.Entities;
 
-namespace PostIt.Application.Abstractions.Authentication;
+namespace PostIt.Application.Abstractions.Auth.Authentication;
 
 /// <summary>
 /// A factory for creating email verification links.

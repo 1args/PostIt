@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace PostIt.Application.Abstractions.Authentication;
+namespace PostIt.Application.Abstractions.Auth.Authentication;
 
 /// <summary>
 /// Provides functionality for JSON Web Tokens.
