@@ -27,9 +27,11 @@ public class User : Entity<Guid>, IAuditableEntity
     
     /// <summary>User's password hash.</summary>
     public UserPassword Password { get; private set; }
-
+    
+    private readonly List<Role> _roles = [];
+    
     /// <summary>Roles of the user.</summary>
-    public IReadOnlyCollection<Role> Roles { get; private set; }
+    public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
     /// <summary>Indicates whether the user's email has been verified.</summary>
     public bool IsEmailConfirmed  { get; private set; }
@@ -53,14 +55,12 @@ public class User : Entity<Guid>, IAuditableEntity
         UserBio bio,
         UserEmail email, 
         UserPassword password, 
-        IReadOnlyCollection<Role> roles, 
         DateTime createdAt)
     {
         Name = name;
         Bio = bio.IsEmpty() ? UserBio.Create("Empty") : bio;
         Email = email;
         Password = password;
-        Roles = roles;
         CreatedAt = createdAt;
     }
     
@@ -71,7 +71,6 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <param name="bio">The biography.</param>
     /// <param name="email">The email address.</param>
     /// <param name="password">The hashed password.</param>
-    /// <param name="roles">The user roles.</param>
     /// <param name="createdAt">The creation timestamp.</param>
     /// <returns>A new instance of the <see cref="User"/> class.</returns>
     public static User Create(
@@ -81,7 +80,7 @@ public class User : Entity<Guid>, IAuditableEntity
         UserPassword password,
         IReadOnlyCollection<Role> roles,
         DateTime createdAt) =>
-        new(name, bio, email, password, roles, createdAt);
+        new(name, bio, email, password, createdAt);
 
     /// <summary>
     /// Marks the user's email as verified.
@@ -141,5 +140,33 @@ public class User : Entity<Guid>, IAuditableEntity
             throw new DomainException("Avatar cannot be empty.");
         }
         Avatar = avatar;
+    }
+
+    /// <summary>
+    /// Adds a role to the user's roles.
+    /// </summary>
+    /// <param name="role">The role to add.</param>
+    /// <exception cref="DomainException">Thrown if the role is already assigned to the user.</exception>
+    public void AddRole(Role role)
+    {
+        if (_roles.Contains(role))
+        {
+            throw new DomainException($"Role '{role.Name}' is already assigned to the user.");
+        }
+        
+        _roles.Add(role);
+    }
+    
+    /// <summary>
+    /// Removes a role from the user's roles.
+    /// </summary>
+    /// <param name="role">The role to remove.</param>
+    /// <exception cref="DomainException">Thrown if the role is not assigned to the user.</exception>
+    public void RemoveRole(Role role)
+    {
+        if (!_roles.Remove(role))
+        {
+            throw new DomainException($"Role '{role.Name}' is not assigned to the user.");
+        }
     }
 }

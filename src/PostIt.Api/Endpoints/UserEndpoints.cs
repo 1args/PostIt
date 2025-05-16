@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Domain.Enums;
 
 namespace PostIt.Api.Endpoints;
 
@@ -27,34 +28,34 @@ public static class UserEndpoints
             .WithRequestValidation<LoginRequest>();
 
         group.MapPost("/logout", LogoutAsync)
-            .RequireAuthorization()
-            .WithName(nameof(LogoutAsync));
+            .RequireAuthorization();
 
         group.MapPost("/refresh-token", RefreshTokenAsync)
+            .RequireAuthorization();
+        
+        group.MapPatch("/users/{id:guid}/restrict", RestrictUserAsync)
             .RequireAuthorization()
-            .WithName(nameof(RefreshTokenAsync));
+            .RequirePermissions(Permission.ManageRestrictedUsers);
+
+        group.MapPatch("/users/{id:guid}/unrestrict", UnrestrictUserAsync)
+            .RequireAuthorization()
+            .RequirePermissions(Permission.ManageRestrictedUsers);
 
         group.MapPatch("/avatar", UploadAvatarAsync)
             .WithRequestValidation<UploadAvatarRequest>()
             .RequireAuthorization()
-            .DisableAntiforgery()
-            .WithName(nameof(UploadAvatarAsync));
+            .DisableAntiforgery();
 
-        group.MapGet("{id:guid}/avatar", GetAvatarAsync)
-            .WithName(nameof(GetAvatarAsync));
+        group.MapGet("{id:guid}/avatar", GetAvatarAsync);
 
         group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
-            .WithRequestValidation<UpdateUserBioRequest>()
-            .WithName(nameof(UpdateUserBioAsync));
+            .WithRequestValidation<UpdateUserBioRequest>();
         
-        group.MapGet("/me", GetUserByIdAsync)
-            .WithName(nameof(GetUserByIdAsync));
+        group.MapGet("/me", GetUserByIdAsync);
         
-        group.MapGet("/{id:guid}", GetUserByIdAsync)
-            .WithName(nameof(GetUserByIdAsync));
+        group.MapGet("/{id:guid}", GetUserByIdAsync);
         
-        group.MapDelete("{id:guid}", DeleteUserAsync).
-            WithName(nameof(DeleteUserAsync));
+        group.MapDelete("{id:guid}", DeleteUserAsync);
         
         return endpoints;
     }
@@ -124,6 +125,32 @@ public static class UserEndpoints
         var data = await userAccountService.RefreshToken(cancellationToken);
         
         return Results.Ok(data);
+    }
+    
+    /// <summary>
+    /// Restricts a specific user.
+    /// </summary>
+    private static async Task<IResult> RestrictUserAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.RestrictUserAsync(id, cancellationToken);
+
+        return Results.Ok();
+    }
+    
+    /// <summary>
+    /// Removes restrictions for a specific user.
+    /// </summary>
+    private static async Task<IResult> UnrestrictUserAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.UnrestrictUserAsync(id, cancellationToken);
+
+        return Results.Ok();
     }
     
     /// <summary>

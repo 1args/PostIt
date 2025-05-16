@@ -123,7 +123,7 @@ public class PostService(
         var post = await postRepository
             .AsQueryable()
             .Include(p => p.Likes)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken);
 
         if (post is null)
         {
@@ -149,7 +149,7 @@ public class PostService(
         var post = await postRepository
             .AsQueryable()
             .Include(p => p.Likes)
-            .SingleOrDefaultAsync(cancellationToken);
+            .SingleOrDefaultAsync(p => p.Id == postId, cancellationToken);
 
         if (post is null)
         {

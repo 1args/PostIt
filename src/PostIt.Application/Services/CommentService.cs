@@ -104,7 +104,7 @@ public class CommentService(
         var comment = await commentRepository
             .AsQueryable()
             .Include(p => p.Likes)
-            .FirstOrDefaultAsync(p => p.Id == commentId, cancellationToken);
+            .SingleOrDefaultAsync(p => p.Id == commentId, cancellationToken);
 
         if (comment is null)
         {
@@ -136,7 +136,7 @@ public class CommentService(
         var comment = await commentRepository
             .AsQueryable()
             .Include(p => p.Likes)
-            .FirstOrDefaultAsync(p => p.Id == commentId, cancellationToken);
+            .SingleOrDefaultAsync(p => p.Id == commentId, cancellationToken);
 
         if (comment is null)
         {

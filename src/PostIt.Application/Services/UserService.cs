@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.User;
@@ -15,10 +14,8 @@ namespace PostIt.Application.Services;
 /// <inheritdoc/>
 public class UserService(
     IRepository<User> userRepository,
-    IPasswordHasher passwordHasher,
+    IRepository<Role> roleRepository,
     IAuthenticationService authenticationService,
-    IEmailVerificationService emailVerificationService,
-    IAvatarService avatarService,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<UserResponse> GetCurrentUserAsync(
@@ -39,7 +36,7 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserOrThrowAsync(userId, tracking: false, cancellationToken: cancellationToken);
         
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
         
@@ -77,6 +74,93 @@ public class UserService(
         logger.LogInformation("Bio updated successfully for user with ID `{UserId}`.",
             userId);
     }
+
+    /// <inheritdoc/>
+    public async Task RestrictUserAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to restrict user with ID `{UserId}`...", userId);
+        
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Moderator with ID `{UserId}` attempted to restrict themselves.", userId);
+            throw new InvalidOperationException("Cannot restrict yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        if (user.Roles.Any(r => r.Id is (int)Domain.Enums.Role.Moderator or (int)Domain.Enums.Role.Admin))
+        {
+            logger.LogWarning(
+                "Moderator with ID `{ModeratorId}` attempted to restrict a moderator with ID `{UserId}`.", 
+                currentUserId,
+                userId);
+            throw new UnauthorizedAccessException("Cannot restrict moderators.");
+        }
+        
+        var restrictedRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+
+        if (user.Roles.Any(r => r.Id == restrictedRole.Id))
+        {
+            logger.LogWarning("User with ID `{UserId}` is already restricted.", userId);
+            throw new ConflictException("User is already restricted.");
+        }
+        
+        user.AddRole(restrictedRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+        
+        logger.LogInformation(
+            "User with ID `{UserId}` restricted successfully by moderator `{Moderator}`.", 
+            userId,
+            currentUserId);
+    }
+    
+    /// <inheritdoc/>
+    public async Task UnrestrictUserAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to unrestrict user with ID `{UserId}`...", userId);
+
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Moderator with ID `{UserId}` attempted to unrestrict themselves.", userId);
+            throw new InvalidOperationException("Cannot unrestrict yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        var restrictedRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+        
+        var hasRestrictedRole = user.Roles.SingleOrDefault(r => r.Id == restrictedRole.Id);
+        
+        if (hasRestrictedRole is null)
+        {
+            logger.LogWarning("User with ID `{UserId}` is not restricted.", userId);
+            throw new ConflictException("User is not restricted.");
+        }
+
+        user.RemoveRole(restrictedRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+
+        logger.LogInformation(
+            "User with ID `{UserId}` unrestricted successfully by moderator `{Moderator}`.",
+            userId,
+            currentUserId);
+    }
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
     
@@ -90,6 +174,7 @@ public class UserService(
         query = tracking ? query.AsTracking() : query.AsNoTracking();
         
         var user = await query
+            .Include(u => u.Roles)
             .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)

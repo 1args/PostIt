@@ -14,6 +14,7 @@ namespace PostIt.Application.Services;
 /// <inheritdoc/>
 public class UserAccountService(
     IRepository<User> userRepository,
+    IRepository<Role> roleRepository,
     IPasswordHasher passwordHasher,
     IAuthenticationService authenticationService,
     IEmailVerificationService emailVerificationService,
@@ -43,6 +44,13 @@ public class UserAccountService(
         var passwordHash = passwordHasher.HashPassword(request.Password);
         var password = UserPassword.Create(passwordHash);
         var user = User.Create(name, bio, email, password, [], DateTime.UtcNow);
+
+         var role = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.User, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.User} does not exist.");
+        
+        user.AddRole(role);
         
         await userRepository.AddAsync(user, cancellationToken);
 

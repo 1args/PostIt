@@ -22,42 +22,37 @@ public static class PostEndpoints
 
         group.MapPost("/", CreatePostAsync)
             .WithRequestValidation<CreatePostRequest>()
-            .RequirePermissions(Permission.CreatePost)
-            .RequireAuthorization();
-        
+            .RequireAuthorization()
+            .RequirePermissions(Permission.CreatePost);
+
         group.MapPut("{id:guid}", UpdatePostAsync)
             .WithRequestValidation<UpdatePostRequest>()
-            .RequirePermissions(Permission.EditOwnPost, Permission.EditAnyPost)
             .RequireAuthorization()
-            .WithName(nameof(UpdatePostAsync));
-        
+            .RequirePermissions(Permission.EditOwnPost, Permission.EditAnyPost);
+
         group.MapDelete("{id:guid}", DeletePostAsync)
             .WithName(nameof(DeletePostAsync))
-            .RequirePermissions(Permission.DeleteOwnPost, Permission.DeleteAnyPost)
-            .RequireAuthorization();
-        
+            .RequireAuthorization()
+            .RequirePermissions(Permission.DeleteOwnPost, Permission.DeleteAnyPost);
+
         group.MapPost("{id:guid}/like", LikePostAsync)
             .WithName("LikePost")
-            .RequirePermissions(Permission.LikeDislike)
-            .RequireAuthorization();
+            .RequireAuthorization()
+            .RequirePermissions(Permission.LikeDislike);
 
         group.MapDelete("{id:guid}/unlike", UnlikePostAsync)
-            .RequirePermissions(Permission.LikeDislike)
             .RequireAuthorization()
-            .WithName("UnlikePost");
+            .RequirePermissions(Permission.LikeDislike);
         
         group.MapPost("{id:guid}/view", ViewPostAsync)
-            .RequireAuthorization()
-            .WithName("ViewPost");
+            .RequireAuthorization();
 
         group.MapPut("{id:guid}/visibility", ChangeVisibilityAsync)
             .WithRequestValidation<ChangePostVisibilityRequest>()
-            .RequirePermissions(Permission.EditOwnPost)
             .RequireAuthorization()
-            .WithName("ChangePostVisibility");
+            .RequirePermissions(Permission.EditOwnPost);
 
-        group.MapGet("/", GetAllPostsAsync)
-            .WithName("GetAllPosts");
+        group.MapGet("/", GetAllPostsAsync);
         
         return endpoints;
     }

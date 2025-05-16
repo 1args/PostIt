@@ -23,23 +23,22 @@ public static class CommentEndpoints
 
         group.MapPost("/", CreateCommentAsync)
             .WithRequestValidation<CreatePostRequest>()
-            .RequirePermissions(Permission.CreateComment)
-            .WithName("CreateComment");
+            .RequireAuthorization()
+            .RequirePermissions(Permission.CreateComment);
         
         group.MapDelete("{id:guid}", DeleteCommentAsync)
-            .RequirePermissions(Permission.DeleteOwnComment, Permission.DeleteAnyComment)
-            .WithName("DeleteComment");
+            .RequireAuthorization()
+            .RequirePermissions(Permission.DeleteOwnComment, Permission.DeleteAnyComment);
         
         group.MapPost("{id:guid}/like", LikeCommentAsync)
-            .RequirePermissions(Permission.LikeDislike)
-            .WithName("LikeComment");
+            .RequireAuthorization()
+            .RequirePermissions(Permission.LikeDislike);
         
         group.MapDelete("{id:guid}/like", UnlikeCommentAsync)
-            .RequirePermissions(Permission.LikeDislike)
-            .WithName("UnlikeComment");
+            .RequireAuthorization()
+            .RequirePermissions(Permission.LikeDislike);
         
-        group.MapGet("{id:guid}", GetCommentsByPostAsync)
-            .WithName("GetCommentsByPost");
+        group.MapGet("{id:guid}", GetCommentsByPostAsync);
         
         return endpoints;
     }
