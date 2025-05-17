@@ -23,10 +23,22 @@ public class AvatarManagementService(
         
         var user = await GetUserOrThrowAsync(userId, cancellationToken);
         
-        var avatarPath = await avatarService.UploadAvatarAsync(userId, avatar, cancellationToken);
+        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
         
-        user.UpdateAvatar(avatarPath);
-        await userRepository.UpdateAsync(user, cancellationToken);
+        try
+        {
+            var avatarPath = await avatarService.UploadAvatarAsync(userId, avatar, cancellationToken);
+
+            user.UpdateAvatar(avatarPath);
+            await userRepository.UpdateAsync(user, cancellationToken);
+            
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 
     public async Task<ReadOnlyMemory<byte>> GetCurrentUserAvatarAsync(

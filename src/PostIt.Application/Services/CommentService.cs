@@ -20,7 +20,6 @@ namespace PostIt.Application.Services;
 public class CommentService(
     IRepository<Comment> commentRepository,
     IRepository<Post> postRepository,
-    IRepository<User> userRepository,
     IAuthenticationService authenticationService,
     IPermissionChecker<Comment> permissionChecker,
     ILogger<CommentService> logger) : ICommentService
@@ -53,11 +52,6 @@ public class CommentService(
         var comment = Comment.Create(text, authorId, request.PostId, DateTime.UtcNow);
         
         await commentRepository.AddAsync(comment, cancellationToken);
-
-        var user = await GetUserOrThrowAsync(authorId,cancellationToken);
-        user.IncrementCommentsCount();
-        
-        await userRepository.UpdateAsync(user, cancellationToken);
         
         logger.LogInformation(
             "Comment created successfully with ID `{CommentId}` to post with ID `{PostId}`.",
@@ -209,22 +203,4 @@ public class CommentService(
     }
 
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
-    
-    private async Task<User> GetUserOrThrowAsync(
-        Guid userId,
-        CancellationToken cancellationToken)
-    {
-        var user = await userRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
-
-        if (user is null)
-        {
-            logger.LogWarning("User with ID `{UserId}` not found.", userId);
-            throw new NotFoundException($"User with ID '{userId}' not found.");
-        }
-        
-        logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
-        return user;
-    }
 }

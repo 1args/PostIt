@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PostIt.Domain.Entities;
+using PostIt.Infrastructure.Data.Context.Configurations;
+using PostIt.Infrastructure.Options;
 
 namespace PostIt.Infrastructure.Data.Context;
 
@@ -7,7 +10,8 @@ namespace PostIt.Infrastructure.Data.Context;
 /// Basic database context
 /// </summary>
 public class ApplicationDbContext(
-    DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+    DbContextOptions<ApplicationDbContext> options,
+    IOptions<AuthorizationOptions> authorizationOptions) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
     
@@ -25,5 +29,6 @@ public class ApplicationDbContext(
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         CustomModelBuilder.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new RolePermissionConfiguration(authorizationOptions.Value));
     }
 }

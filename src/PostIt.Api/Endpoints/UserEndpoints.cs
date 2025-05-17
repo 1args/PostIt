@@ -55,18 +55,24 @@ public static class UserEndpoints
             .RequirePermissions(Permission.EditOwnProfile)
             .DisableAntiforgery();
 
-        group.MapGet("u{id:guid}/avatar", GetAvatarAsync);
+        group.MapGet("/{id:guid}/avatar", GetAvatarAsync);
 
-        group.MapPut("{id:guid}/bio", UpdateUserBioAsync)
+        group.MapPut("/{id:guid}/bio", UpdateUserBioAsync)
             .WithRequestValidation<UpdateUserBioRequest>()
             .RequireAuthorization()
             .RequirePermissions(Permission.EditOwnProfile);
+
+        group.Map("/follow/{id:guid}", FollowUserAsync)
+            .RequireAuthorization();
+        
+        group.Map("/unfollow/{id:guid}", UnFollowUserAsync)
+            .RequireAuthorization();
         
         group.MapGet("/me", GetUserByIdAsync);
         
         group.MapGet("/{id:guid}", GetUserByIdAsync);
         
-        group.MapDelete("{id:guid}", DeleteUserAsync);
+        group.MapDelete("/{id:guid}", DeleteUserAsync);
         
         return endpoints;
     }
@@ -143,10 +149,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> RestrictUserAsync(
         [FromRoute] Guid id,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.RestrictUserAsync(id, cancellationToken);
+        await userAccountService.RestrictUserAsync(id, cancellationToken);
 
         return Results.Ok();
     }
@@ -156,10 +162,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> UnrestrictUserAsync(
         [FromRoute] Guid id,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.UnrestrictUserAsync(id, cancellationToken);
+        await userAccountService.UnrestrictUserAsync(id, cancellationToken);
 
         return Results.Ok();
     }
@@ -169,10 +175,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> AssignModeratorRoleAsync(
         [FromRoute] Guid id,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.AssignModeratorRoleAsync(id, cancellationToken);
+        await userAccountService.AssignModeratorRoleAsync(id, cancellationToken);
 
         return Results.Ok();
     }
@@ -182,10 +188,10 @@ public static class UserEndpoints
     /// </summary>
     private static async Task<IResult> UnassignModeratorRoleAsync(
         [FromRoute] Guid id,
-        [FromServices] IUserService userService,
+        [FromServices] IUserAccountService userAccountService,
         CancellationToken cancellationToken)
     {
-        await userService.UnassignModeratorRoleAsync(id, cancellationToken);
+        await userAccountService.UnassignModeratorRoleAsync(id, cancellationToken);
 
         return Results.Ok();
     }
@@ -241,6 +247,32 @@ public static class UserEndpoints
         CancellationToken cancellationToken)
     {
         await userService.UpdateUserBioAsync(id, request, cancellationToken);
+        
+        return Results.NoContent();
+    }
+    
+    /// <summary>
+    /// Allows a user to follow another user.
+    /// </summary>
+    private static async Task<IResult> FollowUserAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.FollowUserAsync(id, cancellationToken);
+        
+        return Results.NoContent();
+    }
+    
+    /// <summary>
+    /// Allows a user to unfollow another user.
+    /// </summary>
+    private static async Task<IResult> UnFollowUserAsync(
+        [FromRoute] Guid id,
+        [FromServices] IUserService userService,
+        CancellationToken cancellationToken)
+    {
+        await userService.UnfollowUserAsync(id, cancellationToken);
         
         return Results.NoContent();
     }

@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using PostIt.Application.Abstractions.Data;
 
 namespace PostIt.Infrastructure.Data.Configuration.Repositories;
@@ -56,6 +57,22 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <inheritdoc/>
+    public Task UpdateRangeAsync(TEntity[] entities, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+        
+        foreach (var entity in entities)
+        {
+            if (DbContext.Entry(entity).State == EntityState.Detached)
+            {
+                DbContext.Attach(entity);
+            }
+            DbContext.Update(entity);
+        }
+        return SaveChangesAsync(cancellationToken);
+    }
+    
+    /// <inheritdoc/>
     public async Task DeleteAsync(TEntity[] entities, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entities);
@@ -74,7 +91,13 @@ public class Repository<TEntity> : IRepository<TEntity>
         ArgumentNullException.ThrowIfNull(expression);
         return DbSet.Where(expression);
     }
-    
+
+    /// <inheritdoc/>
+    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
+    {
+        return await DbContext.Database.BeginTransactionAsync(cancellationToken);
+    }
+
     private Task<int> SaveChangesAsync(CancellationToken cancellationToken)
     {
         return DbContext.SaveChangesAsync(cancellationToken);

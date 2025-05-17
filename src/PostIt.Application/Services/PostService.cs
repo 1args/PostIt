@@ -19,7 +19,6 @@ namespace PostIt.Application.Services;
 /// <inheritdoc/>
 public class PostService(
     IRepository<Post> postRepository,
-    IRepository<User> userRepository,
     IAuthenticationService authenticationService,
     IPermissionChecker<Post> permissionChecker,
     ILogger<PostService> logger) : IPostService
@@ -44,8 +43,6 @@ public class PostService(
             request.Visibility);
 
         await postRepository.AddAsync(post, cancellationToken);
-
-        await UpdateUserPostCountAsync(authorId, increase: true, cancellationToken);
 
         logger.LogInformation("Post with ID `{PostId}` created successfully.", post.Id);
         
@@ -102,8 +99,6 @@ public class PostService(
             cancellationToken);
         
         await postRepository.DeleteAsync([post], cancellationToken);
-        
-        await UpdateUserPostCountAsync(authorId, increase: false, cancellationToken);
         
         logger.LogInformation(
             "Post with ID `{PostId}` deleted successfully by user `{authorId}`.",
@@ -239,29 +234,6 @@ public class PostService(
             HasPreviousPage = paginatedPosts.HasPreviousPage,
             HasNextPage = paginatedPosts.HasNextPage
         };
-    }
-    
-    private async Task UpdateUserPostCountAsync(Guid userId, bool increase, CancellationToken cancellationToken)
-    {
-        var user = await userRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
-        
-        if (user is null)
-        {
-            logger.LogWarning("User with ID `{UserId}` no found while updating post count.", userId);
-            return;
-        }
-        if (increase)
-        {
-            user.IncrementPostsCount();
-        }
-        else
-        {
-            user.DecrementPostsCount();
-        }
-
-        await userRepository.UpdateAsync(user, cancellationToken);
     }
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();

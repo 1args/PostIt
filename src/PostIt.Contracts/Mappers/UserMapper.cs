@@ -19,7 +19,7 @@ public static class UserMapper
             Name: user.Name.Value,
             Bio: user.Bio.Value,
             Roles: user.Roles.ToList(),
-            PostsCount: user.PostsCount,
-            CommentsCount: user.CommentsCount,
+            PostsCount: user.Posts.Count,
+            CommentsCount: user.Comments.Count,
             CreatedAt: user.CreatedAt);
 }

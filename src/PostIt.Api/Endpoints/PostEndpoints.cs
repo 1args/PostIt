@@ -25,29 +25,29 @@ public static class PostEndpoints
             .RequireAuthorization()
             .RequirePermissions(Permission.CreatePost);
 
-        group.MapPut("{id:guid}", UpdatePostAsync)
+        group.MapPut("/{id:guid}", UpdatePostAsync)
             .WithRequestValidation<UpdatePostRequest>()
             .RequireAuthorization()
             .RequirePermissions(Permission.EditOwnPost, Permission.EditAnyPost);
 
-        group.MapDelete("{id:guid}", DeletePostAsync)
+        group.MapDelete("/{id:guid}", DeletePostAsync)
             .WithName(nameof(DeletePostAsync))
             .RequireAuthorization()
             .RequirePermissions(Permission.DeleteOwnPost, Permission.DeleteAnyPost);
 
-        group.MapPost("{id:guid}/likes", LikePostAsync)
+        group.MapPost("/{id:guid}/likes", LikePostAsync)
             .WithName("LikePost")
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
 
-        group.MapDelete("{id:guid}/unlikes", UnlikePostAsync)
+        group.MapDelete("/{id:guid}/unlikes", UnlikePostAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         
-        group.MapPost("{id:guid}/views", ViewPostAsync)
+        group.MapPost("/{id:guid}/views", ViewPostAsync)
             .RequireAuthorization();
 
-        group.MapPatch("{id:guid}/visibility", ChangeVisibilityAsync)
+        group.MapPatch("/{id:guid}/visibility", ChangeVisibilityAsync)
             .WithRequestValidation<ChangePostVisibilityRequest>()
             .RequireAuthorization()
             .RequirePermissions(Permission.EditOwnPost);

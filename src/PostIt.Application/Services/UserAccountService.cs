@@ -52,9 +52,20 @@ public class UserAccountService(
         
         user.AddRole(role);
         
-        await userRepository.AddAsync(user, cancellationToken);
-
-        await emailVerificationService.SendVerificationEmailAsync(user, cancellationToken);
+        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
+        
+        try
+        {
+            await userRepository.AddAsync(user, cancellationToken);
+            await emailVerificationService.SendVerificationEmailAsync(user, cancellationToken);
+            
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
         
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         
@@ -114,7 +125,19 @@ public class UserAccountService(
         if (isVerified)
         {
             user.ConfirmEmail();
-            await userRepository.UpdateAsync(user, cancellationToken);
+            
+            await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
+            
+            try
+            {
+                await userRepository.UpdateAsync(user, cancellationToken);
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
             logger.LogInformation("Email verified successfully for user with ID `{UserId}`.", userId);
         }
  
@@ -136,6 +159,171 @@ public class UserAccountService(
             refreshToken);
     }
     
+        /// <inheritdoc/>
+    public async Task RestrictUserAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to restrict user with ID `{UserId}`...", userId);
+        
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Moderator with ID `{UserId}` attempted to restrict themselves.", userId);
+            throw new ForbiddenException("Cannot restrict yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        if (user.Roles.Any(r => r.Id is (int)Domain.Enums.Role.Moderator or (int)Domain.Enums.Role.Admin))
+        {
+            logger.LogWarning(
+                "Moderator with ID `{ModeratorId}` attempted to restrict a moderator with ID `{UserId}`.", 
+                currentUserId,
+                userId);
+            throw new ForbiddenException("Cannot restrict moderators.");
+        }
+        
+        var restrictedRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+
+        if (user.Roles.Any(r => r.Id == restrictedRole.Id))
+        {
+            logger.LogWarning("User with ID `{UserId}` is already restricted.", userId);
+            throw new ForbiddenException("User is already restricted.");
+        }
+        
+        user.AddRole(restrictedRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+        
+        logger.LogInformation(
+            "User with ID `{UserId}` restricted successfully by moderator `{Moderator}`.", 
+            userId,
+            currentUserId);
+    }
+    
+    /// <inheritdoc/>
+    public async Task UnrestrictUserAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to unrestrict user with ID `{UserId}`...", userId);
+
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Moderator with ID `{UserId}` attempted to unrestrict themselves.", userId);
+            throw new ForbiddenException("Cannot unrestrict yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        var restrictedRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+        
+        var hasRestrictedRole = user.Roles.SingleOrDefault(r => r.Id == restrictedRole.Id);
+        
+        if (hasRestrictedRole is null)
+        {
+            logger.LogWarning("User with ID `{UserId}` is not restricted.", userId);
+            throw new ConflictException("User is not restricted.");
+        }
+
+        user.RemoveRole(restrictedRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+
+        logger.LogInformation(
+            "User with ID `{UserId}` unrestricted successfully by moderator `{Moderator}`.",
+            userId,
+            currentUserId);
+    }
+
+    /// <inheritdoc/>
+    public async Task AssignModeratorRoleAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to assign moderator role to user with ID `{UserId}`...", userId);
+        
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Admin with ID `{UserId}` attempted to assign moderator role to themselves.", userId);
+            throw new ForbiddenException("Cannot assign moderator role to yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+         var moderatorRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Moderator, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Moderator} does not exist.");
+        
+        if (user.Roles.Any(r => r.Id == moderatorRole.Id))
+        {
+            logger.LogWarning("User with ID `{UserId}` already has the moderator role.", userId);
+            throw new ConflictException("User is already a moderator.");
+        }
+        
+        user.AddRole(moderatorRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+        
+        logger.LogInformation(
+            "Moderator role assigned successfully to user with ID `{UserId}` by admin `{Admin}`.",
+            userId,
+            currentUserId);
+    }
+
+    /// <inheritdoc/>
+    public async Task UnassignModeratorRoleAsync(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Attempting to remove moderator role from user with ID `{UserId}`...", userId);
+
+        var currentUserId = GetCurrentUserId();
+        
+        if (userId == currentUserId)
+        {
+            logger.LogWarning("Admin with ID `{UserId}` attempted to remove moderator role from themselves.", userId);
+            throw new ForbiddenException("Cannot remove moderator role from yourself.");
+        }
+        
+        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        
+        var moderatorRole = await roleRepository
+            .AsQueryable()
+            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Moderator, cancellationToken)
+            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Moderator} does not exist.");
+
+        var userModeratorRole = user.Roles.FirstOrDefault(r => r.Id == moderatorRole.Id);
+        
+        if (userModeratorRole is null)
+        {
+            logger.LogWarning("User with ID `{UserId}` is not a moderator.", userId);
+            throw new ConflictException("User is not a moderator.");
+        }
+        
+        user.RemoveRole(moderatorRole);
+        
+        await userRepository.UpdateAsync(user, cancellationToken);
+        
+        logger.LogInformation(
+            "Moderator role removed successfully from user with ID `{UserId}` by admin `{Admin}`.",
+            userId,
+            currentUserId);
+    }
+    
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
 
     private async Task<User> GetUserOrThrowAsync(
@@ -144,6 +332,7 @@ public class UserAccountService(
     {
         var user = await userRepository
             .AsQueryable()
+            .Include(u => u.Roles)
             .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
         if (user is null)

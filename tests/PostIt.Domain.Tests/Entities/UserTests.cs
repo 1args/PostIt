@@ -36,8 +36,8 @@ public class UserTests
             Email = email,
         });
         user.CreatedAt.Should().BeCloseTo(createdAt, precision);
-        user.PostsCount.Should().Be(0);
-        user.CommentsCount.Should().Be(0);
+        user.Posts.Count.Should().Be(0);
+        user.Comments.Count.Should().Be(0);
     }
 
     [Fact]

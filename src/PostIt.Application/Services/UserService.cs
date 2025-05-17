@@ -14,7 +14,6 @@ namespace PostIt.Application.Services;
 /// <inheritdoc/>
 public class UserService(
     IRepository<User> userRepository,
-    IRepository<Role> roleRepository,
     IAuthenticationService authenticationService,
     ILogger<UserService> logger) : IUserService
 {
@@ -24,7 +23,11 @@ public class UserService(
         var userId = GetCurrentUserId();
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-       var user = await GetUserOrThrowAsync(userId, tracking: false, cancellationToken: cancellationToken);
+       var user = await GetUserOrThrowAsync(
+           userId,
+           tracking: false,
+           includes: true, 
+           cancellationToken: cancellationToken);
 
        return user.MapToPublic();
     }
@@ -36,7 +39,11 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(userId, tracking: false, cancellationToken: cancellationToken);
+        var user = await GetUserOrThrowAsync(
+            userId, 
+            tracking: false, 
+            includes: true, 
+            cancellationToken: cancellationToken);
         
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
         
@@ -76,193 +83,145 @@ public class UserService(
     }
 
     /// <inheritdoc/>
-    public async Task RestrictUserAsync(
-        Guid userId,
+    public async Task FollowUserAsync(
+        Guid followingId,
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Attempting to restrict user with ID `{UserId}`...", userId);
+        var userId = GetCurrentUserId();
         
-        var currentUserId = GetCurrentUserId();
+        logger.LogInformation(
+            "User `{UserId}` is attempting to follow user `{FollowingId}`...",
+            userId,
+            followingId);
         
-        if (userId == currentUserId)
+        if (userId == followingId)
         {
-            logger.LogWarning("Moderator with ID `{UserId}` attempted to restrict themselves.", userId);
-            throw new ForbiddenException("Cannot restrict yourself.");
+            logger.LogWarning("User `{UserId}` attempted to follow themselves.", userId);
+            throw new ConflictException("A user cannot follow themselves.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var follower = await GetUserOrThrowAsync(userId, cancellationToken);
+        var following = await GetUserOrThrowAsync(followingId, cancellationToken);
+
+        var isAlreadyFollowing = await userRepository
+            .AsQueryable()
+            .Where(u => u.Id == userId)
+            .SelectMany(u => u.Followings)
+            .AnyAsync(f => f.Id == followingId, cancellationToken);
         
-        if (user.Roles.Any(r => r.Id is (int)Domain.Enums.Role.Moderator or (int)Domain.Enums.Role.Admin))
+        if (isAlreadyFollowing)
         {
             logger.LogWarning(
-                "Moderator with ID `{ModeratorId}` attempted to restrict a moderator with ID `{UserId}`.", 
-                currentUserId,
-                userId);
-            throw new ForbiddenException("Cannot restrict moderators.");
+                "User `{UserId}` is already following user `{FollowingId}`.",
+                userId,
+                followingId);
+            throw new ConflictException($"User is already following user with ID '{followingId}'.");
         }
         
-        var restrictedRole = await roleRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+        follower.AddFollowing(following);
+        following.AddFollower(follower);
 
-        if (user.Roles.Any(r => r.Id == restrictedRole.Id))
+        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
+        
+        try
         {
-            logger.LogWarning("User with ID `{UserId}` is already restricted.", userId);
-            throw new ForbiddenException("User is already restricted.");
+            await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            
+            logger.LogInformation(
+                "User {UserId} successfully followed user {FollowingId}.", 
+                userId,
+                followingId);
         }
-        
-        user.AddRole(restrictedRole);
-        
-        await userRepository.UpdateAsync(user, cancellationToken);
-        
-        logger.LogInformation(
-            "User with ID `{UserId}` restricted successfully by moderator `{Moderator}`.", 
-            userId,
-            currentUserId);
-    }
-    
-    /// <inheritdoc/>
-    public async Task UnrestrictUserAsync(
-        Guid userId,
-        CancellationToken cancellationToken)
-    {
-        logger.LogInformation("Attempting to unrestrict user with ID `{UserId}`...", userId);
-
-        var currentUserId = GetCurrentUserId();
-        
-        if (userId == currentUserId)
+        catch
         {
-            logger.LogWarning("Moderator with ID `{UserId}` attempted to unrestrict themselves.", userId);
-            throw new ForbiddenException("Cannot unrestrict yourself.");
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
         }
-        
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
-        
-        var restrictedRole = await roleRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
-        
-        var hasRestrictedRole = user.Roles.SingleOrDefault(r => r.Id == restrictedRole.Id);
-        
-        if (hasRestrictedRole is null)
-        {
-            logger.LogWarning("User with ID `{UserId}` is not restricted.", userId);
-            throw new ConflictException("User is not restricted.");
-        }
-
-        user.RemoveRole(restrictedRole);
-        
-        await userRepository.UpdateAsync(user, cancellationToken);
-
-        logger.LogInformation(
-            "User with ID `{UserId}` unrestricted successfully by moderator `{Moderator}`.",
-            userId,
-            currentUserId);
     }
 
     /// <inheritdoc/>
-    public async Task AssignModeratorRoleAsync(
-        Guid userId,
+    public async Task UnfollowUserAsync(
+        Guid followingId, 
         CancellationToken cancellationToken)
     {
-        logger.LogInformation("Attempting to assign moderator role to user with ID `{UserId}`...", userId);
-        
-        var currentUserId = GetCurrentUserId();
-        
-        if (userId == currentUserId)
-        {
-            logger.LogWarning("Admin with ID `{UserId}` attempted to assign moderator role to themselves.", userId);
-            throw new ForbiddenException("Cannot assign moderator role to yourself.");
-        }
-        
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
-        
-         var moderatorRole = await roleRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Moderator, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Moderator} does not exist.");
-        
-        if (user.Roles.Any(r => r.Id == moderatorRole.Id))
-        {
-            logger.LogWarning("User with ID `{UserId}` already has the moderator role.", userId);
-            throw new ConflictException("User is already a moderator.");
-        }
-        
-        user.AddRole(moderatorRole);
-        
-        await userRepository.UpdateAsync(user, cancellationToken);
+        var userId = GetCurrentUserId();
         
         logger.LogInformation(
-            "Moderator role assigned successfully to user with ID `{UserId}` by admin `{Admin}`.",
+            "User `{UserId}` is attempting to unfollow user `{FollowingId}`...",
             userId,
-            currentUserId);
-    }
-
-    /// <inheritdoc/>
-    public async Task UnassignModeratorRoleAsync(
-        Guid userId,
-        CancellationToken cancellationToken)
-    {
-        logger.LogInformation("Attempting to remove moderator role from user with ID `{UserId}`...", userId);
-
-        var currentUserId = GetCurrentUserId();
+            followingId);
         
-        if (userId == currentUserId)
+        if (userId == followingId)
         {
-            logger.LogWarning("Admin with ID `{UserId}` attempted to remove moderator role from themselves.", userId);
-            throw new ForbiddenException("Cannot remove moderator role from yourself.");
+            logger.LogWarning("User `{UserId}` attempted to unfollow themselves.", userId);
+            throw new ConflictException("A user cannot unfollow themselves.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
-        
-        var moderatorRole = await roleRepository
+        var follower = await GetUserOrThrowAsync(userId, cancellationToken);
+        var following = await GetUserOrThrowAsync(followingId, cancellationToken);
+
+        var isFollowing = await userRepository
             .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Moderator, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Moderator} does not exist.");
-
-        var userModeratorRole = user.Roles.FirstOrDefault(r => r.Id == moderatorRole.Id);
+            .Where(u => u.Id == userId)
+            .SelectMany(u => u.Followings)
+            .AnyAsync(f => f.Id == followingId, cancellationToken);
         
-        if (userModeratorRole is null)
+        if (!isFollowing)
         {
-            logger.LogWarning("User with ID `{UserId}` is not a moderator.", userId);
-            throw new ConflictException("User is not a moderator.");
+            logger.LogWarning("User `{UserId}` is not following user `{FollowingId}`.", userId, followingId);
+            throw new BadRequestException($"Ви не стежите за користувачем з ID '{followingId}'.");
         }
         
-        user.RemoveRole(moderatorRole);
+        follower.RemoveFollowing(following);
+        following.RemoveFollower(follower);
         
-        await userRepository.UpdateAsync(user, cancellationToken);
+        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
         
-        logger.LogInformation(
-            "Moderator role removed successfully from user with ID `{UserId}` by admin `{Admin}`.",
-            userId,
-            currentUserId);
+        try
+        {
+            await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            
+            logger.LogInformation(
+                "User {UserId} successfully unfollowed user {FollowingId}.", 
+                userId,
+                followingId);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
-    
+
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
     
     private async Task<User> GetUserOrThrowAsync(
         Guid userId,
         CancellationToken cancellationToken,
-        bool tracking = true)
+        bool tracking = true,
+        bool includes = false)
     {
         var query = userRepository.AsQueryable();
-        
         query = tracking ? query.AsTracking() : query.AsNoTracking();
         
-        var user = await query
-            .Include(u => u.Roles)
-            .SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
+        if (includes)
+        {
+            query = query
+                .Include(u => u.Posts)
+                .Include(u => u.Comments);
+        }
+        
+        var user = await query.SingleOrDefaultAsync(u => u.Id == userId, cancellationToken);
 
-        if (user is null)
+        if (user == null)
         {
             logger.LogWarning("User with ID `{UserId}` not found.", userId);
             throw new NotFoundException($"User with ID '{userId}' not found.");
         }
 
         logger.LogInformation("User with ID `{UserId}` retrieved successfully.", userId);
-        
         return user;
     }
 }

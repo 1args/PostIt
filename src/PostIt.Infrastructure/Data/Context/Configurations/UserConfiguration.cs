@@ -53,6 +53,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.Roles)
             .IsRequired();
+
+        builder.HasMany(u => u.Followers)
+            .WithMany(u => u.Followings)
+            .UsingEntity(j => j.ToTable("UserFollowers"));
         
         builder.ToTable("Users");
     }

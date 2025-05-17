@@ -1,4 +1,3 @@
-using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
 using PostIt.Domain.Primitives;
 using PostIt.Domain.ValueObjects;
@@ -15,12 +14,6 @@ public class User : Entity<Guid>, IAuditableEntity
 
     /// <summary>User's biography.</summary>
     public UserBio Bio { get; private set; }
-
-    /// <summary>Number of posts created by the user.</summary>
-    public int PostsCount { get; private set; }
-    
-    /// <summary>Number of comments created by the user.</summary>
-    public int CommentsCount { get; private set; }
     
     /// <summary>User's email address.</summary>
     public UserEmail Email { get; private set; }
@@ -33,6 +26,16 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <summary>Roles of the user.</summary>
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
+    private readonly List<User> _followers = [];
+    
+    /// <summary>Users who follow this user.</summary>
+    public IReadOnlyCollection<User> Followers => _followers.AsReadOnly();
+    
+    private readonly List<User> _followings = [];
+    
+    /// <summary>Users this user is following.</summary>
+    public IReadOnlyCollection<User> Followings => _followings.AsReadOnly();
+
     /// <summary>Indicates whether the user's email has been verified.</summary>
     public bool IsEmailConfirmed  { get; private set; }
 
@@ -41,6 +44,10 @@ public class User : Entity<Guid>, IAuditableEntity
 
     /// <summary>Date when the user was created.</summary>
     public DateTime CreatedAt { get; private set; }
+
+    public ICollection<Post> Posts { get; private set; }
+    
+    public ICollection<Comment> Comments { get; private set; }
 
     /// <summary>
     /// Constructor for EF Core.
@@ -109,22 +116,6 @@ public class User : Entity<Guid>, IAuditableEntity
         }
         Bio = bio;
     }
-    
-    public void IncrementPostsCount() => PostsCount++;
-    
-    public void DecrementPostsCount()
-    {
-        if (PostsCount <= 0) throw new DomainException("Posts count cannot be negative.");
-        PostsCount--;
-    }
-    
-    public void IncrementCommentsCount() => CommentsCount++;
-    
-    public void DecrementCommentsCount()
-    {
-        if (CommentsCount <= 0) throw new DomainException("Comment count cannot be negative.");
-        CommentsCount--;
-    }
 
     /// <summary>
     /// Updates the user's avatar.
@@ -167,6 +158,68 @@ public class User : Entity<Guid>, IAuditableEntity
         if (!_roles.Remove(role))
         {
             throw new DomainException($"Role '{role.Name}' is not assigned to the user.");
+        }
+    }
+    
+    /// <summary>
+    /// Adds a follower to this user.
+    /// </summary>
+    /// <param name="follower">The user who wants to follow.</param>
+    /// <exception cref="DomainException">Thrown if the follower is already following or is the same user.</exception>
+    public void AddFollower(User follower)
+    {
+        if (follower.Id == Id)
+        {
+            throw new DomainException("A user cannot follow themselves.");
+        }
+        if (_followers.Contains(follower))
+        {
+            throw new DomainException("This user is already a follower.");
+        }
+        _followers.Add(follower);
+    }
+    
+    /// <summary>
+    /// Removes a follower from this user.
+    /// </summary>
+    /// <param name="follower">The user to unfollow.</param>
+    /// <exception cref="DomainException">Thrown אם the follower is not following this user.</exception>
+    public void RemoveFollower(User follower)
+    {
+        if (!_followers.Remove(follower))
+        {
+            throw new DomainException("This user is not a follower.");
+        }
+    }
+    
+    /// <summary>
+    /// Adds a user to this user's followings.
+    /// </summary>
+    /// <param name="following">The user to follow.</param>
+    /// <exception cref="DomainException">Thrown if already following or is the same user.</exception>
+    public void AddFollowing(User following)
+    {
+        if (following.Id == Id)
+        {
+            throw new DomainException("A user cannot follow themselves.");
+        }
+        if (_followings.Contains(following))
+        {
+            throw new DomainException("This user is already being followed.");
+        }
+        _followings.Add(following);
+    }
+    
+    /// <summary>
+    /// Removes a user from this user's followings.
+    /// </summary>
+    /// <param name="following">The user to unfollow.</param>
+    /// <exception cref="DomainException">Thrown if the user is not being followed.</exception>
+    public void RemoveFollowing(User following)
+    {
+        if (!_followings.Remove(following))
+        {
+            throw new DomainException("This user is not being followed.");
         }
     }
 }

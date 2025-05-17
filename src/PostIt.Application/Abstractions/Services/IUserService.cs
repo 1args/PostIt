@@ -37,32 +37,18 @@ public interface IUserService
     /// <param name="request">Request containing the new bio information.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task UpdateUserBioAsync(Guid userId, UpdateUserBioRequest request, CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Restricts a specific user.
-    /// </summary>
-    /// <param name="userId">User ID.</param>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task RestrictUserAsync(Guid userId, CancellationToken cancellationToken);
     
     /// <summary>
-    /// Removes restrictions for a specific user.
+    /// Allows a user to follow another user.
     /// </summary>
-    /// <param name="userId">User ID.></param>
+    /// <param name="followingId">ID of the user to be followed.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task UnrestrictUserAsync(Guid userId, CancellationToken cancellationToken);
+    Task FollowUserAsync(Guid followingId, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Assigns the moderator role.
+    /// Allows a user to unfollow another user.
     /// </summary>
-    /// <param name="userId">User ID.></param>
+    /// <param name="followingId">ID of the user to be unfollowed.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task AssignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
-
-    /// <summary>
-    /// Unassign the moderator role.
-    /// </summary>
-    /// <param name="userId">User ID.></param>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task UnassignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
+    Task UnfollowUserAsync(Guid followingId, CancellationToken cancellationToken);
 }

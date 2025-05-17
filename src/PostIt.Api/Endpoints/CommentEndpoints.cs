@@ -26,19 +26,19 @@ public static class CommentEndpoints
             .RequireAuthorization()
             .RequirePermissions(Permission.CreateComment);
         
-        group.MapDelete("{id:guid}", DeleteCommentAsync)
+        group.MapDelete("/{id:guid}", DeleteCommentAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.DeleteOwnComment, Permission.DeleteAnyComment);
         
-        group.MapPost("{id:guid}/likes", LikeCommentAsync)
+        group.MapPost("/{id:guid}/likes", LikeCommentAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         
-        group.MapDelete("{id:guid}/likes", UnlikeCommentAsync)
+        group.MapDelete("/{id:guid}/likes", UnlikeCommentAsync)
             .RequireAuthorization()
             .RequirePermissions(Permission.LikeDislike);
         
-        group.MapGet("{id:guid}", GetCommentsByPostAsync);
+        group.MapGet("/{id:guid}", GetCommentsByPostAsync);
         
         return endpoints;
     }

@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace PostIt.Application.Abstractions.Data;
 
@@ -27,6 +28,13 @@ public interface IRepository<TEntity> where TEntity : class
     /// <param name="entity">Entity.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     Task UpdateAsync(TEntity entity, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Updates a collection of entities from the data source.
+    /// </summary>
+    /// <param name="entities">Entities.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task UpdateRangeAsync(TEntity[] entities, CancellationToken cancellationToken);
     
     /// <summary>
     /// Deletes a collection of entities from the data source.
@@ -41,4 +49,11 @@ public interface IRepository<TEntity> where TEntity : class
     /// <param name="expression">Expression used to filter the entities.</param>
     /// <returns>Non-materialised collection of filtered entities.</returns>
     IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
+    
+    /// <summary>
+    /// Starts a transaction in the database.
+    /// </summary>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>A transaction object that can be used for commit or rollback</returns>
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
 }

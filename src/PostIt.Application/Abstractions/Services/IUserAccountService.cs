@@ -45,4 +45,32 @@ public interface IUserAccountService
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Login response containing the refreshed authentication details.</returns>
     Task<AuthResponse> RefreshToken(CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Restricts a specific user.
+    /// </summary>
+    /// <param name="userId">User ID.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task RestrictUserAsync(Guid userId, CancellationToken cancellationToken);
+    
+    /// <summary>
+    /// Removes restrictions for a specific user.
+    /// </summary>
+    /// <param name="userId">User ID.></param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task UnrestrictUserAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Assigns the moderator role.
+    /// </summary>
+    /// <param name="userId">User ID.></param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task AssignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Unassign the moderator role.
+    /// </summary>
+    /// <param name="userId">User ID.></param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    Task UnassignModeratorRoleAsync(Guid userId, CancellationToken cancellationToken);
 }
