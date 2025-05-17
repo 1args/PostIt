@@ -45,8 +45,10 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <summary>Date when the user was created.</summary>
     public DateTime CreatedAt { get; private set; }
 
+    /// <summary>EF navigation property.</summary>
     public ICollection<Post> Posts { get; private set; }
     
+    /// <summary>EF navigation property.</summary>
     public ICollection<Comment> Comments { get; private set; }
 
     /// <summary>

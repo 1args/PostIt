@@ -27,6 +27,7 @@ public class GlobalExceptionHandler(
             ConflictException => (StatusCodes.Status409Conflict, "Conflict", exception.Message),
             UnauthorizedException => (StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message),
             ForbiddenException => (StatusCodes.Status403Forbidden, "Forbidden", exception.Message),
+            BadRequestException => (StatusCodes.Status400BadRequest, "Bad Request", exception.Message),
             ReadableException => (StatusCodes.Status500InternalServerError, "Internal Server Error", exception.Message),
             _ => (StatusCodes.Status500InternalServerError, "Internal Server Error",
                 "An unexpected error occurred. Please try again later.")
