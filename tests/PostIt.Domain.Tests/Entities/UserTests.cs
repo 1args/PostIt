@@ -26,7 +26,7 @@ public class UserTests
         var precision = TimeSpan.FromSeconds(1);
         
         // Act
-        var user = User.Create(name, bio, email, password, [], createdAt);
+        var user = User.Create(name, bio, email, password, createdAt);
         
         // Assert
         user.Should().BeEquivalentTo(new
@@ -48,7 +48,7 @@ public class UserTests
         var futureDate = DateTime.UtcNow.AddMinutes(10);
         
         // Actions
-        Action act = () => User.Create(name, bio, email, password, [], futureDate);
+        Action act = () => User.Create(name, bio, email, password, futureDate);
         
         // Assert
         act.Should().Throw<DomainException>()

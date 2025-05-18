@@ -4,11 +4,16 @@ using PostIt.Domain.Entities;
 
 namespace PostIt.Infrastructure.Data.Context.Configurations;
 
+/// <summary>
+/// Configuration of the permission model.
+/// </summary>
 public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 {
+    /// <inheritdoc/>
     public void Configure(EntityTypeBuilder<Permission> builder)
     {
         builder.HasKey(p => p.Id);
+        
         builder.HasMany(p => p.Roles)
             .WithMany(r => r.Permissions)
             .UsingEntity<RolePermission>(
@@ -18,11 +23,7 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
 
         var permissions = Enum
             .GetValues<Domain.Enums.Permission>()
-            .Select(p => new Permission
-            {
-                Id = (int)p,
-                Name = p.ToString()
-            });
+            .Select(p => Permission.Create((int)p, p.ToString()));
 
         builder.HasData(permissions);
     }

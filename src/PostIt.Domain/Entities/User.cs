@@ -46,10 +46,10 @@ public class User : Entity<Guid>, IAuditableEntity
     public DateTime CreatedAt { get; private set; }
 
     /// <summary>EF navigation property.</summary>
-    public ICollection<Post> Posts { get; private set; }
+    public IReadOnlyCollection<Post> Posts { get; private set; } = null!;
     
     /// <summary>EF navigation property.</summary>
-    public ICollection<Comment> Comments { get; private set; }
+    public IReadOnlyCollection<Comment> Comments { get; private set; } = null!;
 
     /// <summary>
     /// Constructor for EF Core.
@@ -87,7 +87,6 @@ public class User : Entity<Guid>, IAuditableEntity
         UserBio bio, 
         UserEmail email, 
         UserPassword password,
-        IReadOnlyCollection<Role> roles,
         DateTime createdAt) =>
         new(name, bio, email, password, createdAt);
 

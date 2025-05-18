@@ -9,6 +9,9 @@ namespace PostIt.Domain.ValueObjects;
 /// </summary>
 public class UserEmail : ValueObject
 {
+    /// <summary>Maximum length of email.</summary>
+    public const int MaxLength = 320;
+    
     /// <summary>The actual value.</summary>
     public string Value { get; }
     

@@ -15,48 +15,55 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(u => u.Id);
 
-        builder.Property(u => u.CreatedAt).IsRequired();
-        
-        builder.OwnsOne(u => u.Name, name =>
-        {
-            name.Property(n => n.Value)
-                .HasColumnName("Name")
-                .HasMaxLength(UserName.MaxLength)
-                .IsRequired();
-        });
-
-        builder.OwnsOne(u => u.Bio, bio =>
-        {
-            bio.Property(b => b.Value)
-                .HasColumnName("Bio")
-                .HasMaxLength(UserBio.MaxLength)
-                .IsRequired();
-        });
-        
-        builder.OwnsOne(u => u.Email, email =>
-        {
-            email.Property(e => e.Value)
-                .HasColumnName("Email")
-                .HasMaxLength(100)
-                .IsRequired();
-            
-            email.HasIndex(e => e.Value)
-                .IsUnique();
-        });
-        
-        builder.OwnsOne(u => u.Password, password =>
-        {
-            password.Property(e => e.Value)
-                .HasColumnName("Password")
-                .IsRequired();
-        });
-
-        builder.Property(u => u.Roles)
+        builder.Property(u => u.Name)
+            .HasConversion(name => name.Value, v => UserName.Create(v))
+            .HasMaxLength(UserName.MaxLength)
             .IsRequired();
+
+        builder.Property(u => u.Bio)
+            .HasConversion(bio => bio.Value, v => UserBio.Create(v))
+            .HasMaxLength(UserBio.MaxLength)
+            .IsRequired();
+
+        builder.Property(u => u.Email)
+            .HasConversion(email => email.Value, v => UserEmail.Create(v))
+            .HasMaxLength(UserEmail.MaxLength)
+            .IsRequired();
+        
+        builder.HasIndex(u => u.Email)
+            .IsUnique();
+
+        builder.Property(u => u.Password)
+            .HasConversion(password => password.Value, v => UserPassword.Create(v))
+            .IsRequired();
+
+        builder.Property(u => u.CreatedAt)
+            .IsRequired();
+        
+        builder.HasMany(u => u.Roles)
+            .WithMany(r => r.Users)
+            .UsingEntity<UserRole>();
+
+        builder.Navigation(u => u.Roles)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
 
         builder.HasMany(u => u.Followers)
             .WithMany(u => u.Followings)
             .UsingEntity(j => j.ToTable("UserFollowers"));
+        
+        builder.Navigation(u => u.Followers)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+        
+        builder.Navigation(u => u.Followings)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasMany(u => u.Posts)
+            .WithOne(p => p.Author)
+            .HasForeignKey(p => p.AuthorId);
+        
+        builder.HasMany(u => u.Comments)
+            .WithOne(c => c.Author)
+            .HasForeignKey(c => c.AuthorId);
         
         builder.ToTable("Users");
     }

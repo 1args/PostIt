@@ -21,10 +21,12 @@ public static class ApplicationExtensions
     {
         services
             .AddScoped<IUserService, UserService>()
+            .AddScoped<IUserAccountService, UserAccountService>()
             .AddScoped<IPostService, PostService>()
             .AddScoped<ICommentService, CommentService>()
             .AddScoped<IEmailVerificationService, EmailVerificationService>()
-            .AddScoped<IAvatarService, AvatarService>();
+            .AddScoped<IAvatarService, AvatarService>()
+            .AddScoped<IAvatarManagementService, AvatarManagementService>();
         
         services
             .AddValidatorsFromAssemblyContaining<CreateUserRequestValidator>();

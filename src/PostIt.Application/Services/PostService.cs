@@ -216,6 +216,7 @@ public class PostService(
         var paginatedPosts = await postRepository
             .AsQueryable()
             .AsNoTracking()
+            .Include(p => p.Likes)
             .SortedBy(sortParams)
             .AsPaginatedAsync(paginationParams, cancellationToken);
         

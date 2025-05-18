@@ -19,9 +19,6 @@ public class Post : Entity<Guid>, IAuditableEntity, IAuthoredEntity
     /// <summary>Total number of views of the post.</summary>
     public int ViewCount { get; private set; }
     
-    /// <summary>Number of likes on the post.</summary>
-    public int LikesCount { get; private set; }
-    
     /// <summary>Date when the post was created.</summary>
     public DateTime CreatedAt { get; private set; }
 
@@ -37,12 +34,12 @@ public class Post : Entity<Guid>, IAuditableEntity, IAuthoredEntity
     private readonly List<PostLike> _likes = [];
     
     /// <summary>Read-only list of likes on the post.</summary>
-    public IReadOnlyList<PostLike> Likes => _likes.AsReadOnly();
+    public IReadOnlyCollection<PostLike> Likes => _likes.AsReadOnly();
     
     private readonly List<Comment> _comments = [];
     
     /// <summary>Read-only list of comments on the post.</summary>
-    public IReadOnlyList<Comment> Comments => _comments.AsReadOnly();
+    public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
     /// <summary>ID of the post's author.</summary>
     public Guid AuthorId { get; private set; }
@@ -105,7 +102,6 @@ public class Post : Entity<Guid>, IAuditableEntity, IAuthoredEntity
             throw new DomainException($"User with ID {userId} already liked this post.");
         }
         _likes.Add(PostLike.Create(Id, userId));
-        LikesCount++;
     }
 
     /// <summary>
@@ -124,7 +120,6 @@ public class Post : Entity<Guid>, IAuditableEntity, IAuthoredEntity
             throw new DomainException($"User with ID {userId} not liked this post.");
         }
         _likes.Remove(like);
-        LikesCount--;
     }
     
     /// <summary>

@@ -9,16 +9,13 @@ namespace PostIt.Domain.Entities;
 /// </summary>
 public class Comment : Entity<Guid>, IAuditableEntity, IAuthoredEntity
 {
-    private readonly List<CommentLike> _likes = [];
-    
     /// <summary>Text content of the comment.</summary>
     public CommentText Text { get; private set; }
     
     /// <summary>Date when the comment was created.</summary>
     public DateTime CreatedAt { get; private set; }
-
-    /// <summary>Number of likes.</summary>
-    public int LikesCount { get; private set; }
+    
+    private readonly List<CommentLike> _likes = [];
     
     /// <summary>Read-only list of likes.</summary>
     public IReadOnlyList<CommentLike> Likes => _likes;
@@ -56,7 +53,7 @@ public class Comment : Entity<Guid>, IAuditableEntity, IAuthoredEntity
     }
     
     /// <summary>
-    /// Factory method to create a new comment instance.
+    /// Factory method to create a new comment.
     /// </summary>
     /// <param name="text">The text of the comment.</param>
     /// <param name="authorId">The ID of the comment author.</param>
@@ -80,7 +77,6 @@ public class Comment : Entity<Guid>, IAuditableEntity, IAuthoredEntity
             throw new DomainException($"User with ID '{userId}' already liked this comment.");
         }
         _likes.Add(CommentLike.Create(Id, userId));
-        LikesCount++;
     }
 
     /// <summary>
@@ -99,6 +95,5 @@ public class Comment : Entity<Guid>, IAuditableEntity, IAuthoredEntity
             throw new DomainException($"User with ID '{userId}' not liked this comment.");
         }
         _likes.Remove(like);
-        LikesCount--;
     }
 }

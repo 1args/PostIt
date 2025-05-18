@@ -68,7 +68,11 @@ public static class UserEndpoints
         group.Map("/unfollow/{id:guid}", UnFollowUserAsync)
             .RequireAuthorization();
         
-        group.MapGet("/me", GetUserByIdAsync);
+        group.MapGet("/me", GetCurrentUserAsync)
+            .RequireAuthorization();
+        
+        group.MapGet("me/avatar", GetCurrentUserAvatarAsync)
+            .RequireAuthorization();
         
         group.MapGet("/{id:guid}", GetUserByIdAsync);
         

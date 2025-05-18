@@ -34,7 +34,7 @@ public class UserAccountService(
         var userExists = await userRepository
             .AsQueryable()
             .AsNoTracking()
-            .AnyAsync(u => u.Email.Value == email.Value, cancellationToken);
+            .AnyAsync(u => u.Email == email, cancellationToken);
 
         if (userExists)
         {
@@ -43,7 +43,7 @@ public class UserAccountService(
         
         var passwordHash = passwordHasher.HashPassword(request.Password);
         var password = UserPassword.Create(passwordHash);
-        var user = User.Create(name, bio, email, password, [], DateTime.UtcNow);
+        var user = User.Create(name, bio, email, password, DateTime.UtcNow);
 
          var role = await roleRepository
             .AsQueryable()

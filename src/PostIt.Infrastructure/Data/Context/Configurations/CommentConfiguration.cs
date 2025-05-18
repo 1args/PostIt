@@ -15,16 +15,14 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.HasKey(c => c.Id);
 
-        builder.Property(c =>c.LikesCount).IsRequired();
-        builder.Property(c => c.CreatedAt).IsRequired();
+        builder.Property(c => c.Text)
+            .HasConversion(text => text.Value, v => CommentText.Create(v))
+            .IsRequired();
+
+        builder.Property(c => c.CreatedAt)
+            .IsRequired();
         
-        builder.OwnsOne(c => c.Text, text =>
-        {
-            text.Property(t => t.Value)
-                .HasColumnName("Text")
-                .HasMaxLength(CommentText.MaxLength)
-                .IsRequired();
-        });
+        builder.HasIndex(c => c.CreatedAt);
 
         builder.HasOne(c => c.Post)
             .WithMany(p => p.Comments)
@@ -32,7 +30,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(p => p.Author)
-            .WithMany()
+            .WithMany(u => u.Comments)
             .HasForeignKey(c => c.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
 
@@ -41,9 +39,12 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasForeignKey(cl => cl.CommentId)
             .OnDelete(DeleteBehavior.Cascade);
         
+        builder.Navigation(c => c.Likes)
+            .UsePropertyAccessMode(PropertyAccessMode.Field);
+        
         builder.HasIndex(c => c.PostId);
+        
         builder.HasIndex(c => c.AuthorId);
-        builder.HasIndex(c => c.CreatedAt);
         
         builder.ToTable("Comments");
     }

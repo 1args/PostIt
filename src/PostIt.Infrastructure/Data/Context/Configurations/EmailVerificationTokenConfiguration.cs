@@ -18,5 +18,7 @@ public class EmailVerificationTokenConfiguration : IEntityTypeConfiguration<Emai
             .HasOne(t => t.User)
             .WithMany()
             .HasForeignKey(t => t.UserId);
+        
+        builder.ToTable("EmailVerificationTokens");
     }
 }

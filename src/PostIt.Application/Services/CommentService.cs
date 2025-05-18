@@ -159,6 +159,7 @@ public class CommentService(
         var paginatedComments = await commentRepository
             .AsQueryable()
             .AsNoTracking()
+            .Include(c => c.Likes)
             .Where(c => c.PostId == postId)
             .SortedBy(sortParams)
             .AsPaginatedAsync(paginationParams, cancellationToken);
