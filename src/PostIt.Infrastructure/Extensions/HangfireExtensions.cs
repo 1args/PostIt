@@ -1,5 +1,5 @@
 using Hangfire;
-using Hangfire.Redis.StackExchange;
+using Hangfire.MemoryStorage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +9,6 @@ internal static class HangfireExtensions
 {
     public static IServiceCollection AddHangfireConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        // Not a good idea use redis
         var connectionString = configuration.GetConnectionString("RedisConnection");
 
         services.AddHangfire(config =>
@@ -18,12 +17,7 @@ internal static class HangfireExtensions
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseRedisStorage(connectionString, new RedisStorageOptions
-                {
-                    Db = 1,
-                    Prefix = "hangfire:",
-                    InvisibilityTimeout = TimeSpan.FromHours(1)
-                });
+                .UseMemoryStorage();
         });
         
         services.AddHangfireServer();

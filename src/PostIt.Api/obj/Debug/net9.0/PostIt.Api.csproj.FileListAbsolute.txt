@@ -172,7 +172,6 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\F
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.AspNetCore.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.Core.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.NetCore.dll
-C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.Redis.StackExchange.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.SqlServer.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Newtonsoft.Json.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\ca\Hangfire.Core.resources.dll
@@ -195,3 +194,4 @@ C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\S
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.IO.Hashing.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.Reactive.dll
 C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\System.Linq.Dynamic.Core.dll
+C:\Users\incrysteer 1args\RiderProjects\PostIt\src\PostIt.Api\bin\Debug\net9.0\Hangfire.MemoryStorage.dll

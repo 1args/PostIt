@@ -1,4 +1,6 @@
-version: '3.9'
+networks:
+  postit-network:
+    driver: bridge
 
 volumes:
   postit-postgres: 
@@ -12,25 +14,41 @@ services:
   postgres:
     container_name: postit-postgres
     image: postgres:latest
+    restart: on-failure
     ports:
       - '5432:5432'
-    restart: on-failure
     environment:
       POSTGRES_DB: postit-general
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: bvytnfr,jkmyj
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d postit-general" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postit-postgres:/var/lib/postgresql/data
+    networks:
+      - postit-network
   
   # Redis
   redis:
     container_name: postit-redis
     image: redis:7.2-alpine
     restart: on-failure
+    command: >
+      --requirepass p4ssword
     ports:
       - '6379:6379'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postit-redis:/data
+    networks:
+      - postit-network
   
   # OpenSearch
   opensearch:
@@ -43,9 +61,16 @@ services:
     environment:
       discovery.type: single-node
       plugins.security.disabled: true
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: opensearchpassword
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: OpenSear4Pa$$w0rd
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 30s
+      retries: 3
+      timeout: 5s
     volumes:
       - postit-logs:/usr/share/opensearch/data
+    networks:
+      - postit-network
         
   # OpenSearch Dashboard
   opensearch-dashboard:
@@ -58,7 +83,10 @@ services:
       OPENSEARCH_HOSTS: '["http://postit-opensearch:9200"]'
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
     depends_on:
-      - opensearch  
+      opensearch:
+        condition: service_healthy
+    networks:
+      - postit-network
   
   # CalConnect Papercut
   calconnect-papercut:
@@ -67,20 +95,28 @@ services:
     restart: on-failure
     ports:
       - '25:25'
-      - '8080:80'
+      - '8082:80'
+    networks:
+      - postit-network
   
   # Minio
   minio:
     container_name: postit-minio
     image: minio/minio:latest
     restart: on-failure
+    command: server /data --console-address ":9001"
     ports:
       - '9000:9000'
       - '9001:9001'
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - postit-minio:/data
-    command: server /data --console-address ":9001"
-      
+    networks:
+      - postit-network

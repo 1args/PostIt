@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7b4e3a7ed849d13080f3e474feb4f886eee0b09")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+facdcdbd344694ce8ce3b6e5f76185ba998bb2df")]
 [assembly: System.Reflection.AssemblyProductAttribute("PostIt.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
