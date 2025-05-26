@@ -4,164 +4,6 @@
     "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Hosts\\PostIt.Hosts.csproj": {}
   },
   "projects": {
-    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\PostIt.Common.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\PostIt.Common.csproj",
-        "projectName": "PostIt.Common",
-        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\PostIt.Common.csproj",
-        "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\obj\\",
-        "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\incrysteer 1args\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net9.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
-            "projectReferences": {
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj"
-              }
-            }
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[9.0.5, )"
-            },
-            "System.Linq.Dynamic": {
-              "target": "Package",
-              "version": "[1.0.8, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
-    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj",
-        "projectName": "PostIt.Migrations",
-        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj",
-        "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\obj\\",
-        "projectStyle": "PackageReference",
-        "UsingMicrosoftNETSdk": false,
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\incrysteer 1args\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
-        ],
-        "originalTargetFrameworks": [
-          "net9.0"
-        ],
-        "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
-        },
-        "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
-            "projectReferences": {}
-          }
-        },
-        "warningProperties": {
-          "warnAsError": [
-            "NU1605"
-          ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        }
-      },
-      "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
-          "dependencies": {
-            "Microsoft.EntityFrameworkCore.Design": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[9.0.5, )"
-            },
-            "Npgsql.EntityFrameworkCore.PostgreSQL": {
-              "target": "Package",
-              "version": "[9.0.4, )"
-            }
-          },
-          "imports": [
-            "net461",
-            "net462",
-            "net47",
-            "net471",
-            "net472",
-            "net48",
-            "net481"
-          ],
-          "assetTargetFallback": true,
-          "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
-        }
-      }
-    },
     "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -192,11 +34,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\PostIt.Common.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Common\\PostIt.Common.csproj"
-              },
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj"
+              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\PostIt.Common.csproj": {
+                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\PostIt.Common.csproj"
               },
               "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj": {
                 "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj"
@@ -254,6 +93,89 @@
             "System.Linq.Dynamic.Core": {
               "target": "Package",
               "version": "[1.6.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\PostIt.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\PostIt.Common.csproj",
+        "projectName": "PostIt.Common",
+        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\PostIt.Common.csproj",
+        "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "UsingMicrosoftNETSdk": false,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\incrysteer 1args\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj": {
+                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj"
+              },
+              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj": {
+                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.5, )"
+            },
+            "System.Linq.Dynamic": {
+              "target": "Package",
+              "version": "[1.0.8, )"
             }
           },
           "imports": [
@@ -558,9 +480,6 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj"
-              },
               "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj": {
                 "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj"
               },

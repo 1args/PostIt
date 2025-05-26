@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Application")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71966c8bb4e5ec588515aa6cc9fce3e5a697c21b")]
-[assembly: System.Reflection.AssemblyProductAttribute("PostIt.Application")]
-[assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Application")]
+[assembly: System.Reflection.AssemblyProductAttribute("PostIt.Common")]
+[assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.

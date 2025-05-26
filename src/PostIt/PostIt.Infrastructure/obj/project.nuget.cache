@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KSUfjHCW3lQ=",
+  "dgSpecHash": "VHBQB1w1mUA=",
   "success": false,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Infrastructure\\PostIt.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -63,6 +63,15 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

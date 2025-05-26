@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "s/gC6sSdG5E=",
+  "dgSpecHash": "DsYo7KsinFE=",
   "success": false,
   "projectFilePath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj",
   "expectedPackageFiles": [
@@ -20,10 +20,9 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.4\\microsoft.entityframeworkcore.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\9.0.4\\microsoft.entityframeworkcore.abstractions.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\9.0.4\\microsoft.entityframeworkcore.analyzers.9.0.4.nupkg.sha512",
-    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\9.0.1\\microsoft.entityframeworkcore.relational.9.0.1.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\9.0.4\\microsoft.extensions.caching.abstractions.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.caching.memory\\9.0.4\\microsoft.extensions.caching.memory.9.0.4.nupkg.sha512",
-    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.1\\microsoft.extensions.configuration.abstractions.9.0.1.nupkg.sha512",
+    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\3.0.0\\microsoft.extensions.configuration.abstractions.3.0.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.4\\microsoft.extensions.dependencyinjection.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.4\\microsoft.extensions.dependencyinjection.abstractions.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\3.0.0\\microsoft.extensions.fileproviders.abstractions.3.0.0.nupkg.sha512",
@@ -35,14 +34,21 @@
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.4\\microsoft.extensions.primitives.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\microsoft.net.http.headers\\2.3.0\\microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\newtonsoft.json\\11.0.1\\newtonsoft.json.11.0.1.nupkg.sha512",
-    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\npgsql\\9.0.3\\npgsql.9.0.3.nupkg.sha512",
-    "C:\\Users\\incrysteer 1args\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.buffers\\4.6.0\\system.buffers.4.6.0.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.linq.dynamic\\1.0.8\\system.linq.dynamic.1.0.8.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.linq.dynamic.core\\1.6.3\\system.linq.dynamic.core.1.6.3.nupkg.sha512",
     "C:\\Users\\incrysteer 1args\\.nuget\\packages\\system.text.encodings.web\\8.0.0\\system.text.encodings.web.8.0.0.nupkg.sha512"
   ],
   "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PostIt.Hosts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d1db632da7f8d4e1b90cc5c52d7af86d10d7bb9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71966c8bb4e5ec588515aa6cc9fce3e5a697c21b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PostIt.Hosts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PostIt.Hosts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -977,7 +977,6 @@
           "Microsoft.Extensions.Logging.Abstractions": "9.0.4",
           "PostIt.Common": "1.0.0",
           "PostIt.Contracts": "1.0.0",
-          "PostIt.Migrations": "1.0.0",
           "System.Linq.Dynamic.Core": "1.6.3"
         },
         "compile": {
@@ -991,6 +990,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
+          "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj": "1.0.0",
           "Microsoft.EntityFrameworkCore": "9.0.5",
           "PostIt.Contracts": "1.0.0",
           "System.Linq.Dynamic": "1.0.8"
@@ -1024,19 +1024,6 @@
         },
         "runtime": {
           "bin/placeholder/PostIt.Domain.dll": {}
-        }
-      },
-      "PostIt.Migrations/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
-        "dependencies": {
-          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4"
-        },
-        "compile": {
-          "bin/placeholder/PostIt.Migrations.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/PostIt.Migrations.dll": {}
         }
       }
     }
@@ -2434,8 +2421,8 @@
     },
     "PostIt.Common/1.0.0": {
       "type": "project",
-      "path": "../../../PostIt.Common/PostIt.Common.csproj",
-      "msbuildProject": "../../../PostIt.Common/PostIt.Common.csproj"
+      "path": "../PostIt.Common/PostIt.Common.csproj",
+      "msbuildProject": "../PostIt.Common/PostIt.Common.csproj"
     },
     "PostIt.Contracts/1.0.0": {
       "type": "project",
@@ -2446,11 +2433,6 @@
       "type": "project",
       "path": "../PostIt.Domain/PostIt.Domain.csproj",
       "msbuildProject": "../PostIt.Domain/PostIt.Domain.csproj"
-    },
-    "PostIt.Migrations/1.0.0": {
-      "type": "project",
-      "path": "../../../PostIt.Migrations/PostIt.Migrations.csproj",
-      "msbuildProject": "../../../PostIt.Migrations/PostIt.Migrations.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2466,7 +2448,6 @@
       "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.4",
       "PostIt.Application >= 1.0.0",
       "PostIt.Domain >= 1.0.0",
-      "PostIt.Migrations >= 1.0.0",
       "SixLabors.ImageSharp >= 3.1.8",
       "StackExchange.Redis >= 2.8.31"
     ]
@@ -2505,9 +2486,6 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj": {
-              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\PostIt.Migrations\\PostIt.Migrations.csproj"
-            },
             "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj": {
               "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Application\\PostIt.Application.csproj"
             },
@@ -2598,6 +2576,15 @@
     }
   },
   "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\src\\PostIt\\PostIt.Contracts\\PostIt.Contracts.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
     {
       "code": "NU1701",
       "level": "Warning",
