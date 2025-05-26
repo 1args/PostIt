@@ -983,8 +983,8 @@
     },
     "PostIt.Domain/1.0.0": {
       "type": "project",
-      "path": "../../src/PostIt.Domain/PostIt.Domain.csproj",
-      "msbuildProject": "../../src/PostIt.Domain/PostIt.Domain.csproj"
+      "path": "../../src/PostIt/PostIt.Domain/PostIt.Domain.csproj",
+      "msbuildProject": "../../src/PostIt/PostIt.Domain/PostIt.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1033,6 +1033,9 @@
           "projectReferences": {
             "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
               "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
+            },
+            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj": {
+              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj"
             }
           }
         }
