@@ -425,6 +425,16 @@
           "build/net6.0/xunit.runner.visualstudio.props": {}
         }
       },
+      "Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.dll": {}
+        }
+      },
       "PostIt.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
@@ -981,14 +991,20 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
+    "Domain/1.0.0": {
+      "type": "project",
+      "path": "../../src/PostIt/Domain/Domain.csproj",
+      "msbuildProject": "../../src/PostIt/Domain/Domain.csproj"
+    },
     "PostIt.Domain/1.0.0": {
       "type": "project",
-      "path": "../../src/PostIt/PostIt.Domain/PostIt.Domain.csproj",
-      "msbuildProject": "../../src/PostIt/PostIt.Domain/PostIt.Domain.csproj"
+      "path": "../../src/PostIt.Domain/PostIt.Domain.csproj",
+      "msbuildProject": "../../src/PostIt.Domain/PostIt.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "Domain >= 1.0.0",
       "FluentAssertions >= 8.2.0",
       "Microsoft.NET.Test.Sdk >= 17.11.1",
       "PostIt.Domain >= 1.0.0",
@@ -1034,8 +1050,8 @@
             "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
               "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
             },
-            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj": {
-              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj"
+            "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj"
             }
           }
         }

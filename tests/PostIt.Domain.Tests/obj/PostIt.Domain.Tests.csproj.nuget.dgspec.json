@@ -70,14 +70,14 @@
         }
       }
     },
-    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj": {
+    "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj",
-        "projectName": "PostIt.Domain",
-        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\incrysteer 1args\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\obj\\",
+        "outputPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "UsingMicrosoftNETSdk": false,
         "fallbackFolders": [
@@ -169,8 +169,8 @@
               "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj": {
                 "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt.Domain\\PostIt.Domain.csproj"
               },
-              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj": {
-                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\PostIt.Domain\\PostIt.Domain.csproj"
+              "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\incrysteer 1args\\RiderProjects\\PostIt\\src\\PostIt\\Domain\\Domain.csproj"
               }
             }
           }

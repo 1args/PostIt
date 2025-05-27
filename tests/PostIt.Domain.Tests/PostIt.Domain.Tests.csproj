@@ -21,7 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\PostIt.Domain\PostIt.Domain.csproj" />
-      <ProjectReference Include="..\..\src\PostIt\PostIt.Domain\PostIt.Domain.csproj" />
+      <ProjectReference Include="..\..\src\PostIt\Domain\Domain.csproj" />
     </ItemGroup>
 
 </Project>
