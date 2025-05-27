@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Common.Transactions.Abstractions;
 using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Exceptions;
@@ -15,6 +16,7 @@ namespace PostIt.Application.Services;
 public class UserService(
     IRepository<User> userRepository,
     IAuthenticationService authenticationService,
+    ITransactionManager transactionManager,
     ILogger<UserService> logger) : IUserService
 {
     public async Task<UserResponse> GetCurrentUserAsync(
@@ -23,7 +25,7 @@ public class UserService(
         var userId = GetCurrentUserId();
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-       var user = await GetUserOrThrowAsync(
+       var user = await GetUserAsync(
            userId,
            tracking: false,
            includes: true, 
@@ -39,7 +41,7 @@ public class UserService(
     {
         logger.LogInformation("Fetching user by ID `{UserId}`.", userId);
 
-        var user = await GetUserOrThrowAsync(
+        var user = await GetUserAsync(
             userId, 
             tracking: false, 
             includes: true, 
@@ -57,7 +59,7 @@ public class UserService(
     {
         logger.LogInformation("Deleting user with ID `{UserId}`.", userId);
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
 
         await userRepository.DeleteAsync([user], cancellationToken);
         logger.LogInformation("User with ID `{UserId}` deleted successfully.", userId);
@@ -71,7 +73,7 @@ public class UserService(
     {
         logger.LogInformation("Updating bio for user with ID `{UserId}`.", userId);
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
 
         var newBio = UserBio.Create(request.Bio);
         user.UpdateBio(newBio);
@@ -100,8 +102,8 @@ public class UserService(
             throw new ConflictException("A user cannot follow themselves.");
         }
         
-        var follower = await GetUserOrThrowAsync(userId, cancellationToken);
-        var following = await GetUserOrThrowAsync(followingId, cancellationToken);
+        var follower = await GetUserAsync(userId, cancellationToken);
+        var following = await GetUserAsync(followingId, cancellationToken);
 
         var isAlreadyFollowing = await userRepository
             .AsQueryable()
@@ -121,23 +123,15 @@ public class UserService(
         follower.AddFollowing(following);
         following.AddFollower(follower);
 
-        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
-        
-        try
+        await transactionManager.ExecuteInTransactionAsync(async () =>
         {
             await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            
-            logger.LogInformation(
-                "User {UserId} successfully followed user {FollowingId}.", 
-                userId,
-                followingId);
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        }, cancellationToken);
+        
+        logger.LogInformation(
+            "User {UserId} successfully followed user {FollowingId}.", 
+            userId,
+            followingId);
     }
 
     /// <inheritdoc/>
@@ -158,8 +152,8 @@ public class UserService(
             throw new ConflictException("A user cannot unfollow themselves.");
         }
         
-        var follower = await GetUserOrThrowAsync(userId, cancellationToken);
-        var following = await GetUserOrThrowAsync(followingId, cancellationToken);
+        var follower = await GetUserAsync(userId, cancellationToken);
+        var following = await GetUserAsync(followingId, cancellationToken);
 
         var isFollowing = await userRepository
             .AsQueryable()
@@ -176,28 +170,20 @@ public class UserService(
         follower.RemoveFollowing(following);
         following.RemoveFollower(follower);
         
-        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
-        
-        try
+        await transactionManager.ExecuteInTransactionAsync(async () =>
         {
             await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            
-            logger.LogInformation(
-                "User {UserId} successfully unfollowed user {FollowingId}.", 
-                userId,
-                followingId);
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        }, cancellationToken);
+   
+        logger.LogInformation(
+            "User {UserId} successfully unfollowed user {FollowingId}.", 
+            userId,
+            followingId);
     }
 
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
     
-    private async Task<User> GetUserOrThrowAsync(
+    private async Task<User> GetUserAsync(
         Guid userId,
         CancellationToken cancellationToken,
         bool tracking = true,

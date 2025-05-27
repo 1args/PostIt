@@ -30,15 +30,6 @@ public static class SortingExtensions
 
         var expression = $"{sortParams.Criteria} {(sortParams.IsAscending ? "ascending" : "descending")}";
         
-        try
-        {
-            return query.OrderBy(expression);
-        }
-        catch (Exception)
-        {
-            throw new NotFoundException(
-                $"Failed to sort by criterion '{sortParams.Criteria}'. " +
-                $"Please refer to the documentation for the eligibility criteria for the relevant requests.");
-        }
+        return query.OrderBy(expression);
     }
 }

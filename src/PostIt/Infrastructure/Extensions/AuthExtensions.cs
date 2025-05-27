@@ -8,7 +8,7 @@ using PostIt.Application.Services;
 using PostIt.Contracts.Options;
 using PostIt.Infrastructure.Auth.Authentication;
 using PostIt.Infrastructure.Auth.Authorization;
-using PostIt.Infrastructure.Communication.Email;
+using PostIt.Infrastructure.Messaging;
 using AuthorizationOptions = PostIt.Contracts.Options.AuthorizationOptions;
 
 namespace PostIt.Infrastructure.Extensions;

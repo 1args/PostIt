@@ -20,7 +20,6 @@ public static class InfrastructureExtensions
             .AddDataAccess<ApplicationDbContext, ApplicationDbContextConfigurator>()
             .AddCaching(configuration)
             .AddAuthRegister(configuration)
-            .AddHangfireConfiguration(configuration)
             .AddMinio(configuration)
             .AddSmtpConfiguration(configuration);
         

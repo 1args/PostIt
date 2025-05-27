@@ -6,7 +6,7 @@ namespace PostIt.Common.Extensions;
 /// <summary>
 /// Provides extension methods for paginating queryable data.
 /// </summary>
-public static class PaginationExtension
+public static class PaginationExtensions
 {
     /// <summary>
     /// Paginates the query according to the specified parameters.

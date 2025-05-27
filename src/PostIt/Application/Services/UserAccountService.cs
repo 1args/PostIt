@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Common.Transactions.Abstractions;
 using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Exceptions;
@@ -18,6 +19,7 @@ public class UserAccountService(
     IPasswordHasher passwordHasher,
     IAuthenticationService authenticationService,
     IEmailVerificationService emailVerificationService,
+    ITransactionManager transactionManager,
     ILogger<UserAccountService> logger) : IUserAccountService
 {
     /// <inheritdoc/>
@@ -51,21 +53,12 @@ public class UserAccountService(
             ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.User} does not exist.");
         
         user.AddRole(role);
-        
-        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
-        
-        try
+
+        await transactionManager.ExecuteInTransactionAsync(async () =>
         {
             await userRepository.AddAsync(user, cancellationToken);
             await emailVerificationService.SendVerificationEmailAsync(user, cancellationToken);
-            
-            await transaction.CommitAsync(cancellationToken);
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        }, cancellationToken);
         
         logger.LogInformation("User created successfully with ID `{UserId}`.", user.Id);
         
@@ -112,36 +105,28 @@ public class UserAccountService(
     {
         logger.LogInformation("Verifying email for user with ID `{UserId}` and token `{Token}`...", userId, token);
 
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
 
         if (user.IsEmailConfirmed)
         {
             logger.LogInformation("Email already confirmed for user {UserId}", userId);
             return false;
         }
-
-        var isVerified = await emailVerificationService.VerifyEmailAsync(user: user, token, cancellationToken);
-
-        if (isVerified)
+        
+        var result = await transactionManager.ExecuteInTransactionAsync(async () =>
         {
-            user.ConfirmEmail();
+            var isVerified = await emailVerificationService.VerifyEmailAsync(user: user, token, cancellationToken);
             
-            await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
-            
-            try
+            if (isVerified)
             {
+                user.ConfirmEmail();
                 await userRepository.UpdateAsync(user, cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
+                logger.LogInformation("Email verified successfully for user with ID `{UserId}`.", userId);
             }
-            catch
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
-            logger.LogInformation("Email verified successfully for user with ID `{UserId}`.", userId);
-        }
- 
-        return isVerified;
+            
+            return isVerified;
+        }, cancellationToken);
+        return result;
     }
     
     /// <inheritdoc/>
@@ -174,7 +159,7 @@ public class UserAccountService(
             throw new ForbiddenException("Cannot restrict yourself.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
         
         if (user.Roles.Any(r => r.Id is (int)Domain.Enums.Role.Moderator or (int)Domain.Enums.Role.Admin))
         {
@@ -221,7 +206,7 @@ public class UserAccountService(
             throw new ForbiddenException("Cannot unrestrict yourself.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
         
         var restrictedRole = await roleRepository
             .AsQueryable()
@@ -261,7 +246,7 @@ public class UserAccountService(
             throw new ForbiddenException("Cannot assign moderator role to yourself.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
         
          var moderatorRole = await roleRepository
             .AsQueryable()
@@ -299,7 +284,7 @@ public class UserAccountService(
             throw new ForbiddenException("Cannot remove moderator role from yourself.");
         }
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
         
         var moderatorRole = await roleRepository
             .AsQueryable()
@@ -326,7 +311,7 @@ public class UserAccountService(
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
 
-    private async Task<User> GetUserOrThrowAsync(
+    private async Task<User> GetUserAsync(
         Guid userId,
         CancellationToken cancellationToken)
     {

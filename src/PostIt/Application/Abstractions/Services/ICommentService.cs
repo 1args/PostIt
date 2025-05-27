@@ -47,5 +47,5 @@ public interface ICommentService
     /// <param name="paginationParams">Pagination parameters.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>List of comments for the post.</returns>
-    Task<Paginated<CommentResponse>> GetCommentsByPostAsync(Guid postId, SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
+    Task<Paginated<CommentResponse>> PagingCommentsByPostAsync(Guid postId, SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
 }

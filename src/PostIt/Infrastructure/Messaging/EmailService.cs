@@ -1,7 +1,7 @@
 using FluentEmail.Core;
 using PostIt.Application.Abstractions.Services;
 
-namespace PostIt.Infrastructure.Communication.Email;
+namespace PostIt.Infrastructure.Messaging;
 
 public class EmailService(IFluentEmail fluentEmail) : IEmailService
 {

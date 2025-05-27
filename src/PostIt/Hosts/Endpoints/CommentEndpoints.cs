@@ -121,7 +121,7 @@ public static class CommentEndpoints
                 IsAscending = isAscending
             };
         
-        var comments = await commentService.GetCommentsByPostAsync(
+        var comments = await commentService.PagingCommentsByPostAsync(
             id,
             sortParams,
             paginationParams,

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Application.Abstractions.Data;
@@ -16,7 +17,15 @@ internal static class CacheExtensions
             options.InstanceName = "PostIt_";
         });
 
-        services.AddDistributedMemoryCache();
+        services.AddHybridCache(options =>
+        {
+            options.DefaultEntryOptions = new HybridCacheEntryOptions
+            {
+                Expiration = TimeSpan.FromMinutes(5),
+                LocalCacheExpiration = TimeSpan.FromSeconds(30) 
+            };
+        });
+        
         services.AddSingleton<ICacheService, CacheService>();
         
         return services;

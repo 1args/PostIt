@@ -1,59 +1,54 @@
-using System.Collections.Concurrent;
-using System.Text.Json;
-using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Hybrid;
 using PostIt.Application.Abstractions.Data;
-using PostIt.Application.Abstractions.Services;
+using StackExchange.Redis;
 
 namespace PostIt.Infrastructure.Data.Caching;
 
 /// <inheritdoc/>
 public class CacheService(
-    IDistributedCache redisCache) : ICacheService
+    HybridCache hybridCache,
+    IConnectionMultiplexer redis) : ICacheService
 {
-    private static readonly ConcurrentDictionary<string, bool> CacheKeys = [];
-        
     /// <inheritdoc/>
-    public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken) 
-        where T : class
+    public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken) where T : class
     {
-        var cachedValue = await redisCache .GetStringAsync(key, cancellationToken);
+        return await hybridCache.GetOrCreateAsync(
+            key,
+            ct => ValueTask.FromResult(default(T)),
+            new HybridCacheEntryOptions { Expiration = TimeSpan.FromMinutes(5) },
+            cancellationToken: cancellationToken);
+    }
 
-        return cachedValue is null 
-            ? null 
-            : JsonSerializer.Deserialize<T>(cachedValue);
-    }
-    
     /// <inheritdoc/>
-    public async Task SetAsync<T>(string key, T value, CancellationToken cancellationToken) 
-        where T : class
+    public async Task SetAsync<T>(string key, T value, TimeSpan? expiry, CancellationToken cancellationToken) where T : class
     {
-        var cachedValue = JsonSerializer.Serialize(value);
+        var options = new HybridCacheEntryOptions { Expiration = expiry ?? TimeSpan.FromMinutes(5) };
         
-        var cacheOptions = new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10), 
-            SlidingExpiration = TimeSpan.FromMinutes(3)               
-        };
-        
-        await redisCache.SetStringAsync(key, cachedValue, cacheOptions, cancellationToken);
-        
-        CacheKeys.TryAdd(key, false);
+        await hybridCache.GetOrCreateAsync(
+            key,
+            ct => ValueTask.FromResult(value),
+            options,
+            cancellationToken: cancellationToken);
     }
-    
+
     /// <inheritdoc/>
     public async Task RemoveAsync(string key, CancellationToken cancellationToken)
     {
-        await redisCache.RemoveAsync(key, cancellationToken);
-        CacheKeys.TryRemove(key, out _);
+        await hybridCache.RemoveAsync(key, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken)
+    public async Task RemoveByPatternAsync(string pattern, CancellationToken cancellationToken)
     {
-        var tasks = CacheKeys.Keys
-            .Where(k => k.StartsWith(prefixKey))
-            .Select(k => RemoveAsync(k, cancellationToken));
+        var server = redis.GetServer(redis.GetEndPoints()
+            .First());
         
-        return Task.WhenAll(tasks);
+        var keys = server.Keys(pattern: pattern)
+            .ToArray();
+
+        foreach (var key in keys)
+        {
+            await hybridCache.RemoveAsync(key!, cancellationToken);
+        }
     }
 }

@@ -69,5 +69,5 @@ public interface IPostService
     /// <param name="sortParams">ID of the post for which to fetch comments.</param>
     /// <param name="paginationParams">Pagination parameters.</param>
     /// <returns>List of all posts.</returns>
-    Task<Paginated<PostResponse>> GetAllPosts(SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
+    Task<Paginated<PostResponse>> PagingPostsAsync(SortParams? sortParams, PaginationParams paginationParams, CancellationToken cancellationToken);
 }

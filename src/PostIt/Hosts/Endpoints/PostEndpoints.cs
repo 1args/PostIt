@@ -175,7 +175,7 @@ public static class PostEndpoints
                 IsAscending = isAscending
             };
 
-        var posts = await postService.GetAllPosts(sortParams, paginationParams, cancellationToken);
+        var posts = await postService.PagingPostsAsync(sortParams, paginationParams, cancellationToken);
 
         return Results.Ok(posts);
     }

@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Abstractions.Utilities;
-using PostIt.Application.Extensions;
 using PostIt.Common.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.ApiContracts.Responses;
@@ -58,7 +57,7 @@ public class PostService(
     {
         logger.LogInformation("Updating post with ID `{PostId}`.", postId);
         
-        var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        var post = await GetPostAsync(postId, cancellationToken);
         
         var authorId = GetCurrentUserId();
         
@@ -88,7 +87,7 @@ public class PostService(
     {
         logger.LogInformation("Deleting post with ID `{PostId}`.", postId);
         
-        var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        var post = await GetPostAsync(postId, cancellationToken);
      
         var authorId = GetCurrentUserId();
         
@@ -166,7 +165,7 @@ public class PostService(
     {
         logger.LogInformation("Viewing post with ID `{PostId}`.", postId);
         
-        var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        var post = await GetPostAsync(postId, cancellationToken);
         
         post.View();
         await postRepository.UpdateAsync(post, cancellationToken);
@@ -185,7 +184,7 @@ public class PostService(
             postId,
             request.Visibility);
 
-        var post = await GetPostOrThrowAsync(postId, cancellationToken);
+        var post = await GetPostAsync(postId, cancellationToken);
         
         var authorId = GetCurrentUserId();
         
@@ -207,7 +206,7 @@ public class PostService(
     }
 
     /// <inheritdoc/>
-    public async Task<Paginated<PostResponse>> GetAllPosts(
+    public async Task<Paginated<PostResponse>> PagingPostsAsync(
         SortParams? sortParams,
         PaginationParams paginationParams, 
         CancellationToken cancellationToken)
@@ -240,7 +239,7 @@ public class PostService(
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
     
-    private async Task<Post> GetPostOrThrowAsync(
+    private async Task<Post> GetPostAsync(
         Guid postId, 
         CancellationToken cancellationToken)
     {

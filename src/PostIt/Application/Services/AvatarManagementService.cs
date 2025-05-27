@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
+using PostIt.Common.Transactions.Abstractions;
 using PostIt.Contracts.Exceptions;
 using PostIt.Domain.Entities;
 
@@ -12,6 +13,7 @@ public class AvatarManagementService(
     IRepository<User> userRepository,
     IAvatarService avatarService,
     IAuthenticationService authenticationService,
+    ITransactionManager transactionManager,
     ILogger<AvatarManagementService> logger) : IAvatarManagementService
 {
     /// <inheritdoc/>
@@ -21,31 +23,22 @@ public class AvatarManagementService(
     {
         var userId = GetCurrentUserId();
         
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
-        
-        await using var transaction = await userRepository.BeginTransactionAsync(cancellationToken);
-        
-        try
+        var user = await GetUserAsync(userId, cancellationToken);
+
+        await transactionManager.ExecuteInTransactionAsync(async () =>
         {
             var avatarPath = await avatarService.UploadAvatarAsync(userId, avatar, cancellationToken);
-
+            
             user.UpdateAvatar(avatarPath);
             await userRepository.UpdateAsync(user, cancellationToken);
-            
-            await transaction.CommitAsync(cancellationToken);
-        }
-        catch
-        {
-            await transaction.RollbackAsync(cancellationToken);
-            throw;
-        }
+        }, cancellationToken);
     }
 
     public async Task<ReadOnlyMemory<byte>> GetCurrentUserAvatarAsync(
         CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
-        var user = await GetUserOrThrowAsync(userId, cancellationToken);
+        var user = await GetUserAsync(userId, cancellationToken);
 
         return await avatarService.DownloadAvatarAsync(user, cancellationToken);
     }
@@ -55,14 +48,14 @@ public class AvatarManagementService(
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var user = await GetUserOrThrowAsync(userId, tracking: false, cancellationToken: cancellationToken);
+        var user = await GetUserAsync(userId, tracking: false, cancellationToken: cancellationToken);
 
         return await avatarService.DownloadAvatarAsync(user, cancellationToken);
     }
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
 
-    private async Task<User> GetUserOrThrowAsync(
+    private async Task<User> GetUserAsync(
         Guid userId,
         CancellationToken cancellationToken,
         bool tracking = true)

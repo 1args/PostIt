@@ -19,9 +19,10 @@ public interface ICacheService
     /// </summary>
     /// <param name="key">Cache key.</param>
     /// <param name="value">Object to cache.</param>
+    /// /// <param name="expiry">Object lifetime.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <typeparam name="T">Type of the object being cached.</typeparam>
-    Task SetAsync<T>(string key, T value, CancellationToken cancellationToken) where T : class;
+    Task SetAsync<T>(string key, T value, TimeSpan? expiry, CancellationToken cancellationToken) where T : class;
 
     /// <summary>
     /// Removes a cached value by key.
@@ -31,9 +32,9 @@ public interface ICacheService
     Task RemoveAsync(string key, CancellationToken cancellationToken);
     
     /// <summary>
-    /// Removes all cached entries that start with the specified prefix.
+    /// Removes all cached entries that start with the specified pattern.
     /// </summary>
-    /// <param name="prefixKey">Prefix used to match multiple cache keys.</param>
+    /// <param name="pattern">Pattern used to match multiple cache keys.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task RemoveByPrefixAsync(string prefixKey, CancellationToken cancellationToken);
+    Task RemoveByPatternAsync(string pattern, CancellationToken cancellationToken);
 }

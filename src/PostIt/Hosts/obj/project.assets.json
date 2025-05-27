@@ -189,18 +189,6 @@
           }
         }
       },
-      "Hangfire.MemoryStorage/1.8.1.1": {
-        "type": "package",
-        "dependencies": {
-          "Hangfire.Core": "1.7.35"
-        },
-        "compile": {
-          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {}
-        }
-      },
       "Hangfire.NetCore/1.8.18": {
         "type": "package",
         "dependencies": {
@@ -826,6 +814,28 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
+      "Microsoft.Extensions.Caching.Hybrid/9.5.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Caching.Abstractions": "9.0.5",
+          "Microsoft.Extensions.Caching.Memory": "9.0.5",
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.5",
+          "Microsoft.Extensions.Options": "9.0.5"
+        },
+        "compile": {
+          "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net8.0/_._": {}
+        }
+      },
       "Microsoft.Extensions.Caching.Memory/9.0.5": {
         "type": "package",
         "dependencies": {
@@ -925,7 +935,7 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.4": {
+      "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.5": {
         "type": "package",
         "compile": {
           "lib/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
@@ -1040,10 +1050,10 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/9.0.4": {
+      "Microsoft.Extensions.Logging.Abstractions/9.0.5": {
         "type": "package",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.4"
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.5"
         },
         "compile": {
           "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -2027,10 +2037,9 @@
           "BCrypt.Net-Next": "4.0.3",
           "Domain": "1.0.0",
           "FluentEmail.Smtp": "3.0.2",
-          "Hangfire": "1.8.18",
-          "Hangfire.MemoryStorage": "1.8.1.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "9.0.4",
-          "Microsoft.EntityFrameworkCore": "9.0.4",
+          "Microsoft.EntityFrameworkCore": "9.0.5",
+          "Microsoft.Extensions.Caching.Hybrid": "9.5.0",
           "Microsoft.Extensions.Caching.StackExchangeRedis": "9.0.2",
           "Minio": "6.0.4",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
@@ -2312,19 +2321,6 @@
         "lib/netstandard2.0/tr-TR/Hangfire.Core.resources.dll",
         "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll",
         "lib/netstandard2.0/zh/Hangfire.Core.resources.dll"
-      ]
-    },
-    "Hangfire.MemoryStorage/1.8.1.1": {
-      "sha512": "qXq7rr2c4UoX5aFZcji817RPTzNR/hX4T27jhp7YNYcGiGNsyi2bjp+yX9AhICQlyrm4/W7YDGgm/mxVkeEAng==",
-      "type": "package",
-      "path": "hangfire.memorystorage/1.8.1.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "hangfire.memorystorage.1.8.1.1.nupkg.sha512",
-        "hangfire.memorystorage.nuspec",
-        "lib/net40/Hangfire.MemoryStorage.dll",
-        "lib/netstandard1.3/Hangfire.MemoryStorage.dll"
       ]
     },
     "Hangfire.NetCore/1.8.18": {
@@ -3663,6 +3659,31 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Microsoft.Extensions.Caching.Hybrid/9.5.0": {
+      "sha512": "M4B0z8sdOFEntf0KbvmL7nv0LfQgGHiBDH2cfSAscJ3FTGxnq7uOpFo7sVaPuYZmpPK/KIJdWDAzu/Bc2Otrxg==",
+      "type": "package",
+      "path": "microsoft.extensions.caching.hybrid/9.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "README.md",
+        "buildTransitive/net462/Microsoft.Extensions.Caching.Hybrid.targets",
+        "buildTransitive/net8.0/_._",
+        "lib/net462/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net462/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/net8.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net8.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/net9.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.Caching.Hybrid.xml",
+        "lib/netstandard2.1/Microsoft.Extensions.Caching.Hybrid.dll",
+        "lib/netstandard2.1/Microsoft.Extensions.Caching.Hybrid.xml",
+        "microsoft.extensions.caching.hybrid.9.5.0.nupkg.sha512",
+        "microsoft.extensions.caching.hybrid.nuspec"
+      ]
+    },
     "Microsoft.Extensions.Caching.Memory/9.0.5": {
       "sha512": "qDmoAzIUBup5KZG1Abv51ifbHMCWFnaXbt05l+Sd92mLOpF9OwHOuoxu3XhzXaPGfq0Ns3pv1df5l8zuKjFgGw==",
       "type": "package",
@@ -3809,10 +3830,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.4": {
-      "sha512": "UI0TQPVkS78bFdjkTodmkH0Fe8lXv9LnhGFKgKrsgUJ5a5FVdFRcgjIkBVLbGgdRhxWirxH/8IXUtEyYJx6GQg==",
+    "Microsoft.Extensions.DependencyInjection.Abstractions/9.0.5": {
+      "sha512": "cjnRtsEAzU73aN6W7vkWy8Phj5t3Xm78HSqgrbh/O4Q9SK/yN73wZVa21QQY6amSLQRQ/M8N+koGnY6PuvKQsw==",
       "type": "package",
-      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.4",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/9.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -3834,7 +3855,7 @@
         "lib/netstandard2.0/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.dll",
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
-        "microsoft.extensions.dependencyinjection.abstractions.9.0.4.nupkg.sha512",
+        "microsoft.extensions.dependencyinjection.abstractions.9.0.5.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -3982,10 +4003,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Microsoft.Extensions.Logging.Abstractions/9.0.4": {
-      "sha512": "0MXlimU4Dud6t+iNi5NEz3dO2w1HXdhoOLaYFuLPCjAsvlPQGwOT6V2KZRMLEhCAm/stSZt1AUv0XmDdkjvtbw==",
+    "Microsoft.Extensions.Logging.Abstractions/9.0.5": {
+      "sha512": "pP1PADCrIxMYJXxFmTVbAgEU7GVpjK5i0/tyfU9DiE0oXQy3JWQaOVgCkrCiePLgS8b5sghM3Fau3EeHiVWbCg==",
       "type": "package",
-      "path": "microsoft.extensions.logging.abstractions/9.0.4",
+      "path": "microsoft.extensions.logging.abstractions/9.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -4048,7 +4069,7 @@
         "lib/net9.0/Microsoft.Extensions.Logging.Abstractions.xml",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.dll",
         "lib/netstandard2.0/Microsoft.Extensions.Logging.Abstractions.xml",
-        "microsoft.extensions.logging.abstractions.9.0.4.nupkg.sha512",
+        "microsoft.extensions.logging.abstractions.9.0.5.nupkg.sha512",
         "microsoft.extensions.logging.abstractions.nuspec",
         "useSharedDesignerContext.txt"
       ]
@@ -5571,24 +5592,6 @@
       "warningLevel": 1,
       "message": "Package 'System.Linq.Dynamic 1.0.8' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net9.0'. This package may not be fully compatible with your project.",
       "libraryId": "System.Linq.Dynamic",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    },
-    {
-      "code": "NU1605",
-      "level": "Error",
-      "message": "Warning As Error: Detected package downgrade: Microsoft.Extensions.DependencyInjection.Abstractions from 9.0.5 to 9.0.4. Reference the package directly from the project to select a different version. \r\n Hosts -> Microsoft.EntityFrameworkCore.Design 9.0.4 -> Microsoft.Extensions.Caching.Memory 9.0.5 -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 9.0.5) \r\n Hosts -> Application -> Microsoft.Extensions.DependencyInjection.Abstractions (>= 9.0.4)",
-      "libraryId": "Microsoft.Extensions.DependencyInjection.Abstractions",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    },
-    {
-      "code": "NU1605",
-      "level": "Error",
-      "message": "Warning As Error: Detected package downgrade: Microsoft.Extensions.Logging.Abstractions from 9.0.5 to 9.0.4. Reference the package directly from the project to select a different version. \r\n Hosts -> Microsoft.EntityFrameworkCore.Design 9.0.4 -> Microsoft.Extensions.Caching.Memory 9.0.5 -> Microsoft.Extensions.Logging.Abstractions (>= 9.0.5) \r\n Hosts -> Application -> Microsoft.Extensions.Logging.Abstractions (>= 9.0.4)",
-      "libraryId": "Microsoft.Extensions.Logging.Abstractions",
       "targetGraphs": [
         "net9.0"
       ]

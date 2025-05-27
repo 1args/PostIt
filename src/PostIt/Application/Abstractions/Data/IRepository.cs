@@ -49,11 +49,4 @@ public interface IRepository<TEntity> where TEntity : class
     /// <param name="expression">Expression used to filter the entities.</param>
     /// <returns>Non-materialised collection of filtered entities.</returns>
     IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
-    
-    /// <summary>
-    /// Starts a transaction in the database.
-    /// </summary>
-    /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>A transaction object that can be used for commit or rollback</returns>
-    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
 }

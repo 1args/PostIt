@@ -1,6 +1,5 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using PostIt.Application.Abstractions.Data;
 
 namespace PostIt.Infrastructure.Data.Configuration.Repositories;
@@ -12,16 +11,16 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// <summary>
     /// Database context.
     /// </summary>
-    protected DbContext DbContext { get; }
+    private DbContext DbContext { get; }
 
     /// <summary>
     /// Storage of entities./>
     /// </summary>
-    protected DbSet<TEntity> DbSet { get; }
+    private DbSet<TEntity> DbSet { get; }
 
-    public Repository(DbContext context)
+    public Repository(DbContext dbContext)
     {
-        DbContext = context;
+        DbContext = dbContext;
         DbSet = DbContext.Set<TEntity>();
     }
     
@@ -90,12 +89,6 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         ArgumentNullException.ThrowIfNull(expression);
         return DbSet.Where(expression);
-    }
-
-    /// <inheritdoc/>
-    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
-    {
-        return await DbContext.Database.BeginTransactionAsync(cancellationToken);
     }
 
     private Task<int> SaveChangesAsync(CancellationToken cancellationToken)

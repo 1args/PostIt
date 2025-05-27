@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Abstractions.Utilities;
-using PostIt.Application.Extensions;
 using PostIt.Common.Extensions;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
 using PostIt.Contracts.ApiContracts.Responses;
@@ -41,7 +40,6 @@ public class CommentService(
 
         var postExists = await postRepository
             .AsQueryable()
-            .AsNoTracking()
             .AnyAsync(post => post.Id == request.PostId, cancellationToken);
 
         if (!postExists)
@@ -71,7 +69,7 @@ public class CommentService(
         
         logger.LogInformation("Deleting comment with ID `{CommentId}`.", commentId);
         
-        var comment = await GetCommentOrThrowAsync(commentId, cancellationToken);
+        var comment = await GetCommentAsync(commentId, cancellationToken);
         
         await permissionChecker.CheckPermissionsAsync(
             comment,
@@ -149,7 +147,7 @@ public class CommentService(
     }
 
     /// <inheritdoc/>
-    public async Task<Paginated<CommentResponse>> GetCommentsByPostAsync(
+    public async Task<Paginated<CommentResponse>> PagingCommentsByPostAsync(
         Guid postId,
         SortParams? sortParams,
         PaginationParams paginationParams,
@@ -185,7 +183,7 @@ public class CommentService(
         };
     }
     
-    private async Task<Comment> GetCommentOrThrowAsync(
+    private async Task<Comment> GetCommentAsync(
         Guid commentId,
         CancellationToken cancellationToken)
     {

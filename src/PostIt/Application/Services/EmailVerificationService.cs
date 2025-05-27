@@ -10,8 +10,8 @@ namespace PostIt.Application.Services;
 /// <inheritdoc/>
 public class EmailVerificationService(
     IRepository<EmailVerificationToken> emailVerificationTokenRepository,
-    IEmailVerificationLinkFactory emailVerificationLinkFactory,
-    IBackgroundJobClient backgroundJobClient) : IEmailVerificationService
+    IEmailService emailService,
+    IEmailVerificationLinkFactory emailVerificationLinkFactory) : IEmailVerificationService
 {
     /// <inheritdoc/>
     public async Task SendVerificationEmailAsync(User user, CancellationToken cancellationToken)
@@ -21,16 +21,15 @@ public class EmailVerificationService(
         await emailVerificationTokenRepository.AddAsync(emailVerificationToken, cancellationToken);
         
         var verificationLink = emailVerificationLinkFactory.Create(emailVerificationToken);
-        
-        backgroundJobClient.Enqueue<IEmailService>(emailService => 
-            emailService.SendEmailAsync(
-                user.Email.Value,
-                "Welcome to the world of notes and creativity - PostIt is waiting for you!",
-                $"Congratulations, <b>{user.Name}</b>, your account has been successfully created. " +
-                $"Please <a href='{verificationLink}'>click here</a> to confirm your email. " +
-                $"The link will expire in <b>24 hours</b>.",
-                cancellationToken,
-                true));
+
+        await emailService.SendEmailAsync(
+            user.Email.Value,
+            "Welcome to the world of notes and creativity - PostIt is waiting for you!",
+            $"Congratulations, <b>{user.Name}</b>, your account has been successfully created. " +
+            $"Please <a href='{verificationLink}'>click here</a> to confirm your email. " +
+            $"The link will expire in <b>24 hours</b>.",
+            cancellationToken,
+            true);
     }
 
     /// <inheritdoc/>
