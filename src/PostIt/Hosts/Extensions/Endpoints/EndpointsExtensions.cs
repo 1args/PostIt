@@ -1,5 +1,5 @@
-using PostIt.Api.Endpoints;
 using PostIt.Domain.Enums;
+using PostIt.Hosts.Endpoints;
 using PostIt.Infrastructure.Auth.Authorization;
 
 namespace PostIt.Api.Extensions.Endpoints;

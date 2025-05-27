@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.Comment;
-using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Enums;
+using PostIt.Hosts.Extensions.Endpoints;
 
-namespace PostIt.Api.Endpoints;
+namespace PostIt.Hosts.Endpoints;
 
 /// <summary>
 /// Provides API endpoints for comment-related actions.

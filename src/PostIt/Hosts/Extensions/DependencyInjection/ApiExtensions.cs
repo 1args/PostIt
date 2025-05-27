@@ -1,4 +1,6 @@
-namespace PostIt.Api.Extensions.DependencyInjection;
+using PostIt.Api.Extensions.DependencyInjection;
+
+namespace PostIt.Hosts.Extensions.DependencyInjection;
 
 /// <summary>
 /// Extension for registering Api level services.

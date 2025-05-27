@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using PostIt.Common.Transactions.Abstractions;
+using PostIt.Common.Abstractions;
 
 namespace PostIt.Common.Transactions;
 

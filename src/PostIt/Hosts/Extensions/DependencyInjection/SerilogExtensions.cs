@@ -1,7 +1,7 @@
 using Serilog;
 using Serilog.Filters;
 
-namespace PostIt.Api.Extensions.DependencyInjection;
+namespace PostIt.Hosts.Extensions.DependencyInjection;
 
 internal static class SerilogExtensions
 {

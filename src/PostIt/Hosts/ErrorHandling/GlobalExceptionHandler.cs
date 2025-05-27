@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PostIt.Contracts.Exceptions;
 using PostIt.Domain.Exceptions;
 
-namespace PostIt.Api.ErrorHandling;
+namespace PostIt.Hosts.ErrorHandling;
 
 public class GlobalExceptionHandler(
     ILogger<GlobalExceptionHandler> logger,

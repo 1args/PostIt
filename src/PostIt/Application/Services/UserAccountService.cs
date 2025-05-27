@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Common.Transactions.Abstractions;
+using PostIt.Common.Abstractions;
 using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Exceptions;
@@ -51,7 +51,7 @@ public class UserAccountService(
             .AsQueryable()
             .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.User, cancellationToken)
             ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.User} does not exist.");
-        
+         
         user.AddRole(role);
 
         await transactionManager.ExecuteInTransactionAsync(async () =>
@@ -72,10 +72,12 @@ public class UserAccountService(
     {
         logger.LogInformation("Login attempt for `{Email}`...", request.Email);
 
+        var email = UserEmail.Create(request.Email);
+        
         var user = await userRepository
             .AsQueryable()
             .AsNoTracking()
-            .SingleOrDefaultAsync(u => u.Email.Value == request.Email, cancellationToken);
+            .SingleOrDefaultAsync(u => u.Email == email, cancellationToken);
 
         var verifiedPasswordHash = passwordHasher.VerifyHashedPassword(request.Password, user!.Password.Value);
 

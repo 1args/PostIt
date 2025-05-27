@@ -5,8 +5,9 @@ using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
 using PostIt.Domain.Enums;
+using PostIt.Hosts.Extensions.Endpoints;
 
-namespace PostIt.Api.Endpoints;
+namespace PostIt.Hosts.Endpoints;
 
 /// <summary>
 /// Provides API endpoints for post-related actions.

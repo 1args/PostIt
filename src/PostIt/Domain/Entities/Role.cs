@@ -11,10 +11,10 @@ public sealed class Role : Entity<int>
     public string Name { get; private set; }
 
     /// <summary>Collection of permissions assigned to the role.</summary>
-    public IReadOnlyCollection<Permission> Permissions { get; private set; } = null!;
+    public ICollection<Permission> Permissions { get; private set; } = null!;
     
     /// <summary>Collection of users who have this role.</summary>
-    public IReadOnlyCollection<User> Users { get; private set; } = [];
+    public ICollection<User> Users { get; private set; } = [];
 
     /// <summary>
     /// Constructor for EF Core.

@@ -1,8 +1,7 @@
-using Hangfire;
 using PostIt.Api.Extensions.Endpoints;
 using Scalar.AspNetCore;
 
-namespace PostIt.Api.Extensions.Middleware;
+namespace PostIt.Hosts.Extensions.Middleware;
 
 /// <summary>
 /// An extension for configuring middleware in WebApplication.
@@ -22,14 +21,13 @@ public static class WebApplicationExtensions
             app.MapOpenApi();
             app.MapScalarApiReference();
         }
-        
+
         app
             .UseRouting()
             .UseHttpsRedirection()
             .UseExceptionHandler()
             .UseAuthentication()
-            .UseAuthorization()
-            .UseHangfireDashboard();
+            .UseAuthorization();
         
         return app;
 ;    }

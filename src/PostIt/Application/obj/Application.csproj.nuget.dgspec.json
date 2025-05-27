@@ -70,25 +70,17 @@
               "target": "Package",
               "version": "[11.3.0, )"
             },
-            "Hangfire": {
-              "target": "Package",
-              "version": "[1.8.18, )"
-            },
             "Microsoft.AspNetCore.Http": {
               "target": "Package",
               "version": "[2.3.0, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[9.0.4, )"
+              "version": "[9.0.5, )"
             },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
-              "version": "[9.0.4, )"
-            },
-            "System.Linq.Dynamic.Core": {
-              "target": "Package",
-              "version": "[1.6.3, )"
+              "version": "[9.0.5, )"
             }
           },
           "imports": [
@@ -166,9 +158,15 @@
               "target": "Package",
               "version": "[9.0.5, )"
             },
-            "System.Linq.Dynamic": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[1.0.8, )"
+              "version": "[9.0.5, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.6.4, )"
             }
           },
           "imports": [

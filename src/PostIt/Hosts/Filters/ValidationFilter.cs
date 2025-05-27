@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace PostIt.Api.Filters;
+namespace PostIt.Hosts.Filters;
 
 /// <summary>
 /// Filter for validating requests to endpoints.

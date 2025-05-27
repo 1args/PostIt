@@ -21,17 +21,17 @@ public class User : Entity<Guid>, IAuditableEntity
     /// <summary>User's password hash.</summary>
     public UserPassword Password { get; private set; }
     
-    private readonly List<Role> _roles = new List<Role>();
+    private readonly List<Role> _roles = [];
     
     /// <summary>Roles of the user.</summary>
     public IReadOnlyCollection<Role> Roles => _roles.AsReadOnly();
 
-    private readonly List<User> _followers = new List<User>();
+    private readonly List<User> _followers = [];
     
     /// <summary>Users who follow this user.</summary>
     public IReadOnlyCollection<User> Followers => _followers.AsReadOnly();
     
-    private readonly List<User> _followings = new List<User>();
+    private readonly List<User> _followings = [];
     
     /// <summary>Users this user is following.</summary>
     public IReadOnlyCollection<User> Followings => _followings.AsReadOnly();

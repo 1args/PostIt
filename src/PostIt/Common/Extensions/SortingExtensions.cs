@@ -1,4 +1,4 @@
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Models.Sorting;
 

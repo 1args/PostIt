@@ -1,6 +1,6 @@
-using PostIt.Api.Filters;
+using PostIt.Hosts.Filters;
 
-namespace PostIt.Api.Extensions.Endpoints;
+namespace PostIt.Hosts.Extensions.Endpoints;
 
 /// <summary>
 /// Extension to add request validation to endpoints.

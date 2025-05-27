@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using PostIt.Contracts.Options;
 
-namespace PostIt.Api.Extensions.DependencyInjection;
+namespace PostIt.Hosts.Extensions.DependencyInjection;
 
 internal static class AuthenticationExtensions
 {

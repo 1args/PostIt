@@ -3,8 +3,9 @@ using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Contracts.ApiContracts.Requests.User;
 using PostIt.Domain.Enums;
+using PostIt.Hosts.Extensions.Endpoints;
 
-namespace PostIt.Api.Endpoints;
+namespace PostIt.Hosts.Endpoints;
 
 /// <summary>
 /// Provides API endpoints for user-related actions.

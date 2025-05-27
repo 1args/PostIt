@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Http.Features;
-using PostIt.Api.ErrorHandling;
+using PostIt.Hosts.ErrorHandling;
 
 namespace PostIt.Api.Extensions.DependencyInjection;
 

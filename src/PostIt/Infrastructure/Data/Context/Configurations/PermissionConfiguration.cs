@@ -17,12 +17,10 @@ public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
         builder.HasMany(p => p.Roles)
             .WithMany(r => r.Permissions)
             .UsingEntity<RolePermission>(
-                left => left.HasOne<Role>().WithMany().HasForeignKey(r => r.RoleId),
-                right => right.HasOne<Permission>().WithMany().HasForeignKey(p => p.PermissionId)
-            );
+                l => l.HasOne<Role>().WithMany().HasForeignKey(r => r.RoleId),
+                r => r.HasOne<Permission>().WithMany().HasForeignKey(p => p.PermissionId));
 
-        var permissions = Enum
-            .GetValues<Domain.Enums.Permission>()
+        var permissions = Enum.GetValues<Domain.Enums.Permission>()
             .Select(p => Permission.Create((int)p, p.ToString()));
 
         builder.HasData(permissions);

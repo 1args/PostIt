@@ -11,7 +11,7 @@ public sealed class Permission : Entity<int>
     public string Name { get; private set; }
 
     /// <summary>Collection of roles that have this permission.</summary>
-    public IReadOnlyCollection<Role> Roles { get; private set; } = null!;
+    public ICollection<Role> Roles { get; private set; } = null!;
 
     /// <summary>
     /// Constructor for EF Core.

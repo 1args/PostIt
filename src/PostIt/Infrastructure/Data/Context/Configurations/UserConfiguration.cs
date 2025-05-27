@@ -42,7 +42,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         
         builder.HasMany(u => u.Roles)
             .WithMany(r => r.Users)
-            .UsingEntity<UserRole>();
+            .UsingEntity<UserRole>(
+                l => l.HasOne<Role>().WithMany().HasForeignKey(r => r.RoleId),
+                r => r.HasOne<User>().WithMany().HasForeignKey(u => u.UserId));
 
         builder.Navigation(u => u.Roles)
             .UsePropertyAccessMode(PropertyAccessMode.Field);

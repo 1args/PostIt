@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using PostIt.Common.Abstractions;
 using PostIt.Common.Transactions;
-using PostIt.Common.Transactions.Abstractions;
 
 namespace PostIt.Common.Extensions;
 

@@ -17,13 +17,15 @@ public class RolePermissionConfiguration(
     public void Configure(EntityTypeBuilder<RolePermission> builder)
     {
         builder.HasKey(rp => new { rp.RoleId, rp.PermissionId });
-
+        
         var data = authorizationOptions.Permissions
             .SelectMany(rp => rp.Permissions
                 .Select(p => RolePermission.Create(
-                    (int)Enum.Parse<Role>(rp.Role), 
+                    (int)Enum.Parse<Role>(rp.Role),
                     (int)Enum.Parse<Permission>(p))))
-            .ToArray(); 
+            .GroupBy(rp => new { rp.RoleId, rp.PermissionId })
+            .Select(g => g.First())
+            .ToArray();
 
         builder.HasData(data);
         
