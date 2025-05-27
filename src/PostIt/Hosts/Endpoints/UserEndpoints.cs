@@ -63,10 +63,10 @@ public static class UserEndpoints
             .RequireAuthorization()
             .RequirePermissions(Permission.EditOwnProfile);
 
-        group.Map("/follow/{id:guid}", FollowUserAsync)
+        group.MapPost("/follow/{id:guid}", FollowUserAsync)
             .RequireAuthorization();
         
-        group.Map("/unfollow/{id:guid}", UnFollowUserAsync)
+        group.MapPost("/unfollow/{id:guid}", UnFollowUserAsync)
             .RequireAuthorization();
         
         group.MapGet("/me", GetCurrentUserAsync)
