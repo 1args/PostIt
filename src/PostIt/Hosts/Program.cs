@@ -1,4 +1,3 @@
-using PostIt.Api.Extensions.DependencyInjection;
 using PostIt.Application.Extensions;
 using PostIt.Common.Extensions;
 using PostIt.Hosts.Extensions.DependencyInjection;

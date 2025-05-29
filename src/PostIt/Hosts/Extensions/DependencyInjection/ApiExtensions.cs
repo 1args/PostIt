@@ -1,4 +1,4 @@
-using PostIt.Api.Extensions.DependencyInjection;
+using PostIt.Hosts.Features.HealthCheck;
 
 namespace PostIt.Hosts.Extensions.DependencyInjection;
 
@@ -20,6 +20,7 @@ public static class ApiExtensions
         services
             .AddSerilog(configuration)
             .AddAuthenticationRules(configuration)
+            .UseHealthCheck(configuration)
             .AddGlobalExceptionHandler();
         
         return services;

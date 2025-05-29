@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Contracts.Requests.User;
 using PostIt.Domain.Enums;
 using PostIt.Hosts.Extensions.Endpoints;
 

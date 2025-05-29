@@ -5,10 +5,17 @@ using PostIt.Domain.Exceptions;
 
 namespace PostIt.Hosts.ErrorHandling;
 
+/// <summary>
+/// Represents a global exception handler that catches and processes exceptions
+/// thrown during the request lifecycle, and returns standardized Problem Details responses.
+/// </summary>
+/// <param name="logger"> Logger used to record exception details.</param>
+/// <param name="detailsService">Service used to write Problem Details responses.</param>
 public class GlobalExceptionHandler(
     ILogger<GlobalExceptionHandler> logger,
     IProblemDetailsService detailsService) : IExceptionHandler
 {
+    /// <inheritdoc/>
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception, 

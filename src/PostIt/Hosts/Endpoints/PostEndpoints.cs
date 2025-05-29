@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PostIt.Api.Extensions.Endpoints;
 using PostIt.Application.Abstractions.Services;
-using PostIt.Contracts.ApiContracts.Requests.Post;
 using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
+using PostIt.Contracts.Requests.Post;
 using PostIt.Domain.Enums;
 using PostIt.Hosts.Extensions.Endpoints;
 

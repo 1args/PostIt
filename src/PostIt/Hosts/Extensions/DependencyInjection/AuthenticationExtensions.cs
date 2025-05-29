@@ -5,8 +5,14 @@ using PostIt.Contracts.Options;
 
 namespace PostIt.Hosts.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension to configure JWT-based authentication.
+/// </summary>
 internal static class AuthenticationExtensions
 {
+    /// <summary>
+    /// Adds JWT authentication.
+    /// </summary>
     public static IServiceCollection AddAuthenticationRules(this IServiceCollection services, IConfiguration configuration)
     {
         var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()
@@ -15,6 +21,7 @@ internal static class AuthenticationExtensions
         var validationOptions = jwtOptions.TokenValidationOptions;
 
         services.AddAuthorization();
+        
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -30,5 +37,4 @@ internal static class AuthenticationExtensions
         
         return services;
     }
-    
 }

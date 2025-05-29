@@ -3,8 +3,14 @@ using Serilog.Filters;
 
 namespace PostIt.Hosts.Extensions.DependencyInjection;
 
+/// <summary>
+/// Extension for configuring Serilog logging.
+/// </summary>
 internal static class SerilogExtensions
 {
+    /// <summary>
+    /// Configures Serilog with console and OpenSearch sinks.
+    /// </summary>
     public static IServiceCollection AddSerilog(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddLogging(builder => builder.AddSerilog(new LoggerConfiguration()

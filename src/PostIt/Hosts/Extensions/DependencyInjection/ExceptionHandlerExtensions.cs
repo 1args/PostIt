@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Http.Features;
 using PostIt.Hosts.ErrorHandling;
 
-namespace PostIt.Api.Extensions.DependencyInjection;
+namespace PostIt.Hosts.Extensions.DependencyInjection;
 
-internal static class ExceptionHandlerExtensions
+/// <summary>
+/// Extension to configure global exception handling.
+/// </summary>
+internal static class  ExceptionHandlerExtensions
 {
+    /// <summary>
+    /// Registers a global exception handler and configures ProblemDetails for consistent error responses.
+    /// </summary>
     public static IServiceCollection AddGlobalExceptionHandler(this IServiceCollection services)
     {
         services.AddProblemDetails(options =>

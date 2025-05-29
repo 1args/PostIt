@@ -1,4 +1,5 @@
 using PostIt.Api.Extensions.Endpoints;
+using PostIt.Hosts.Features.HealthCheck;
 using Scalar.AspNetCore;
 
 namespace PostIt.Hosts.Extensions.Middleware;
@@ -14,7 +15,9 @@ public static class WebApplicationExtensions
     /// <returns>WebApplication instance.</returns>
     public static WebApplication UseApiMiddlewares(this WebApplication app)
     {
-        app.MapApiEndpoints();
+        app
+            .MapHealthChecksEndpoints()
+            .MapApiEndpoints();
         
         if (app.Environment.IsDevelopment())
         {
