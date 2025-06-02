@@ -1,7 +1,5 @@
 # PostIt
 
-*(description and project in progress)*
-
 ### Description
 
 [>] The project is a blogging platform. Each user can share their impressions, ideas, etc. by creating posts and writing comments. 
