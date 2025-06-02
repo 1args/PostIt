@@ -13,8 +13,14 @@ using AuthorizationOptions = PostIt.Contracts.Options.AuthorizationOptions;
 
 namespace PostIt.Infrastructure.Extensions;
 
+/// <summary>
+/// Extension to register authentication and authorization services.
+/// </summary>
 internal static class AuthExtensions
 {
+    /// <summary>
+    /// Registers core authentication/authorization services, configuration, and handlers.
+    /// </summary>
     public static IServiceCollection AddAuthRegister(this IServiceCollection services, IConfiguration configuration)
     {
         services

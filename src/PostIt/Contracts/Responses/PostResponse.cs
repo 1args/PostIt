@@ -1,6 +1,6 @@
 using PostIt.Domain.Enums;
 
-namespace PostIt.Contracts.ApiContracts.Responses;
+namespace PostIt.Contracts.Responses;
 
 /// <summary>
 /// Represents a response containing detailed information about a post.

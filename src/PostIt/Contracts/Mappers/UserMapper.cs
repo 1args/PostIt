@@ -1,4 +1,4 @@
-using PostIt.Contracts.ApiContracts.Responses;
+using PostIt.Contracts.Responses;
 using PostIt.Domain.Entities;
 
 namespace PostIt.Contracts.Mappers;

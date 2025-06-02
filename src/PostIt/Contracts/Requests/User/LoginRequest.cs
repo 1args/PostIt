@@ -1,4 +1,4 @@
-namespace PostIt.Contracts.ApiContracts.Requests.User;
+namespace PostIt.Contracts.Requests.User;
 
 /// <summary>
 /// Represents a request to log in a user.

@@ -1,4 +1,4 @@
-namespace PostIt.Contracts.ApiContracts.Responses;
+namespace PostIt.Contracts.Responses;
 
 /// <summary>
 /// Represents a response with the required authentication information.

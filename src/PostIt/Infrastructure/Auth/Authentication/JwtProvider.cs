@@ -71,11 +71,11 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         }
         catch (SecurityTokenExpiredException)
         {
-            throw new TokenExpiredException("Token has expired.");
+            throw new UnauthorizedException("Token has expired.");
         }
         catch (SecurityTokenException)
         {
-            throw new InvalidTokenException("Invalid token");
+            throw new UnauthorizedException("Invalid token");
         }
     }
 

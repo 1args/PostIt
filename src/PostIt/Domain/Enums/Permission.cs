@@ -42,5 +42,8 @@ public enum Permission
     ManageRestrictedUsers = 12,
 
     /// <summary>Permission to manage all users in the system.</summary>
-    ManageUsers = 13
+    ManageUsers = 13,
+    
+    /// <summary>Permission to access special endpoints.</summary>
+    SpecialAccess = 14, 
 }

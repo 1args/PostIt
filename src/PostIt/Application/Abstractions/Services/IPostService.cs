@@ -1,7 +1,7 @@
-using PostIt.Contracts.ApiContracts.Requests.Post;
-using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Models.Pagination;
 using PostIt.Contracts.Models.Sorting;
+using PostIt.Contracts.Requests.Post;
+using PostIt.Contracts.Responses;
 
 namespace PostIt.Application.Abstractions.Services;
 

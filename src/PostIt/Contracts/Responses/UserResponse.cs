@@ -1,6 +1,6 @@
 using PostIt.Domain.Entities;
 
-namespace PostIt.Contracts.ApiContracts.Responses;
+namespace PostIt.Contracts.Responses;
 
 /// <summary>
 /// Represents a response containing information about a user.

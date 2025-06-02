@@ -1,6 +1,4 @@
-using PostIt.Domain.Enums;
-
-namespace PostIt.Contracts.ApiContracts.Requests.User;
+namespace PostIt.Contracts.Requests.User;
 
 /// <summary>
 /// Represents a request to register a new user.

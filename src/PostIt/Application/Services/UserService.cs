@@ -3,10 +3,10 @@ using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Common.Abstractions;
-using PostIt.Contracts.ApiContracts.Requests.User;
-using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Mappers;
+using PostIt.Contracts.Requests.User;
+using PostIt.Contracts.Responses;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
 

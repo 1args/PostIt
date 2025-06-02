@@ -23,11 +23,11 @@ public class TokenStorage(
 
         if (storedGuid is null)
         {
-            throw new TokenExpiredException("The token has expired.");
+            throw new UnauthorizedException("The token has expired.");
         }
         if (!Guid.TryParse(storedGuid, out var userId))
         {
-            throw new InvalidTokenException("Invalid token format.");
+            throw new UnauthorizedException("Invalid token format.");
         }
 
         return (token, userId);

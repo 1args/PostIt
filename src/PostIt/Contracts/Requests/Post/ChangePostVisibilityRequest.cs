@@ -1,6 +1,6 @@
 using PostIt.Domain.Enums;
 
-namespace PostIt.Contracts.ApiContracts.Requests.Post;
+namespace PostIt.Contracts.Requests.Post;
 
 /// <summary>
 /// Represents a request to change the visibility of a post.

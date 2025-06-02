@@ -1,6 +1,6 @@
 using FluentValidation;
 using PostIt.Application.Validators.User.Rules;
-using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Contracts.Requests.User;
 
 namespace PostIt.Application.Validators.User;
 

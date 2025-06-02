@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using PostIt.Application.Abstractions.Data;
 
-namespace PostIt.Infrastructure.Data.Configuration.Repositories;
+namespace PostIt.Infrastructure.Data.Context.Repositories;
 
 /// <inheritdoc/>
 public class Repository<TEntity> : IRepository<TEntity> 

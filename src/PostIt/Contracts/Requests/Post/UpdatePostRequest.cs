@@ -1,4 +1,4 @@
-namespace PostIt.Contracts.ApiContracts.Requests.Post;
+namespace PostIt.Contracts.Requests.Post;
 
 /// <summary>
 /// Represents a request to update an existing post.

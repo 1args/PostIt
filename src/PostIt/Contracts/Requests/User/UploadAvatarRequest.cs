@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 
-namespace PostIt.Contracts.ApiContracts.Requests.User;
+namespace PostIt.Contracts.Requests.User;
 
 /// <summary>
 /// Represents a request to upload a user avatar.

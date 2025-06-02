@@ -4,9 +4,9 @@ using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Common.Abstractions;
-using PostIt.Contracts.ApiContracts.Requests.User;
-using PostIt.Contracts.ApiContracts.Responses;
 using PostIt.Contracts.Exceptions;
+using PostIt.Contracts.Requests.User;
+using PostIt.Contracts.Responses;
 using PostIt.Domain.Entities;
 using PostIt.Domain.ValueObjects;
 
@@ -146,7 +146,7 @@ public class UserAccountService(
             refreshToken);
     }
     
-        /// <inheritdoc/>
+    /// <inheritdoc/>
     public async Task RestrictUserAsync(
         Guid userId,
         CancellationToken cancellationToken)
@@ -172,10 +172,7 @@ public class UserAccountService(
             throw new ForbiddenException("Cannot restrict moderators.");
         }
         
-        var restrictedRole = await roleRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+        var (restrictedRole, userRole) = await GetRolesAsync(cancellationToken);
 
         if (user.Roles.Any(r => r.Id == restrictedRole.Id))
         {
@@ -183,9 +180,13 @@ public class UserAccountService(
             throw new ForbiddenException("User is already restricted.");
         }
         
-        user.AddRole(restrictedRole);
+        await transactionManager.ExecuteInTransactionAsync(async () =>
+        {
+            user.AddRole(restrictedRole);
+            user.RemoveRole(userRole);
         
-        await userRepository.UpdateAsync(user, cancellationToken);
+            await userRepository.UpdateAsync(user, cancellationToken);
+        }, cancellationToken);
         
         logger.LogInformation(
             "User with ID `{UserId}` restricted successfully by moderator `{Moderator}`.", 
@@ -209,11 +210,8 @@ public class UserAccountService(
         }
         
         var user = await GetUserAsync(userId, cancellationToken);
-        
-        var restrictedRole = await roleRepository
-            .AsQueryable()
-            .SingleOrDefaultAsync(r => r.Id == (int)Domain.Enums.Role.Restricted, cancellationToken)
-            ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+
+        var (restrictedRole, userRole) = await GetRolesAsync(cancellationToken);
         
         var hasRestrictedRole = user.Roles.SingleOrDefault(r => r.Id == restrictedRole.Id);
         
@@ -223,9 +221,13 @@ public class UserAccountService(
             throw new ConflictException("User is not restricted.");
         }
 
-        user.RemoveRole(restrictedRole);
+        await transactionManager.ExecuteInTransactionAsync(async () =>
+        {
+            user.RemoveRole(restrictedRole);
+            user.AddRole(userRole);
         
-        await userRepository.UpdateAsync(user, cancellationToken);
+            await userRepository.UpdateAsync(user, cancellationToken);
+        }, cancellationToken);
 
         logger.LogInformation(
             "User with ID `{UserId}` unrestricted successfully by moderator `{Moderator}`.",
@@ -313,6 +315,22 @@ public class UserAccountService(
     
     private Guid GetCurrentUserId() => authenticationService.GetUserIdFromAccessToken();
 
+    private async Task<(Role restrictedRole, Role userRole)> GetRolesAsync(
+        CancellationToken cancellationToken)
+    {
+        var roles = await roleRepository
+            .AsQueryable()
+            .Where(r => r.Id == (int)Domain.Enums.Role.Restricted || r.Id == (int)Domain.Enums.Role.User)
+            .ToListAsync(cancellationToken);
+
+        var restrictedRole = roles.SingleOrDefault(r => r.Id == (int)Domain.Enums.Role.Restricted)
+                             ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.Restricted} does not exist.");
+        var userRole = roles.SingleOrDefault(r => r.Id == (int)Domain.Enums.Role.User)
+                       ?? throw new InvalidOperationException($"Role {Domain.Enums.Role.User} does not exist.");
+
+        return (restrictedRole, userRole);
+    }
+    
     private async Task<User> GetUserAsync(
         Guid userId,
         CancellationToken cancellationToken)

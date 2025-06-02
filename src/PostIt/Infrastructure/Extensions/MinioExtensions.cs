@@ -8,8 +8,14 @@ using PostIt.Infrastructure.Data.FileStorage;
 
 namespace PostIt.Infrastructure.Extensions;
 
+/// <summary>
+/// Extension to configure MinIO client and file storage services.
+/// </summary>
 internal static class MinioExtensions
 {
+    /// <summary>
+    /// Registers and configures MinIO client, file storage, and image processing services.
+    /// </summary>
     public static IServiceCollection AddMinio(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<MinioOptions>(configuration.GetSection(nameof(MinioOptions)));

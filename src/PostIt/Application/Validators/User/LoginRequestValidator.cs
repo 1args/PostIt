@@ -1,5 +1,5 @@
 using FluentValidation;
-using PostIt.Contracts.ApiContracts.Requests.User;
+using PostIt.Contracts.Requests.User;
 using PostIt.Domain.ValueObjects;
 
 namespace PostIt.Application.Validators.User;

@@ -1,37 +1,37 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PostIt.Application.Abstractions.Data;
-using PostIt.Infrastructure.Data.Configuration.Base;
-using PostIt.Infrastructure.Data.Configuration.Base.Abstractions;
-using PostIt.Infrastructure.Data.Configuration.Repositories;
+using PostIt.Infrastructure.Data.Context;
+using PostIt.Infrastructure.Data.Context.Repositories;
 
 namespace PostIt.Infrastructure.Extensions;
 
+/// <summary>
+/// Extension for setting up Entity Framework Core with custom DbContext configurators and repositories.
+/// </summary>
 internal static class DataAccessExtensions
 {
-    public static IServiceCollection AddDataAccess<TDbContext, TDbContextOptionsConfigurator>(
-        this IServiceCollection services) 
-        where TDbContext : DbContext
-        where TDbContextOptionsConfigurator : class, IDbContextOptionsConfigurator<TDbContext>
+    /// <summary>
+    /// Configures the database context, repositories, and options configurator for the specified DbContext type.
+    /// </summary>
+    public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddEntityFrameworkNpgsql()
-            .AddDbContextPool<TDbContext>(Configure<TDbContext>);
-
-        services.AddSingleton<IDbContextOptionsConfigurator<TDbContext>, TDbContextOptionsConfigurator>();
-        services.AddScoped<DbContext>(serviceProvider => serviceProvider.GetRequiredService<TDbContext>());
+        var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        
+        services.AddDbContextPool<ApplicationDbContext>(options =>
+        {
+            options.UseNpgsql(
+                    configuration.GetConnectionString("DefaultConnection"), 
+                    o => o.CommandTimeout(60))
+                .EnableSensitiveDataLogging()
+                .UseLoggerFactory(loggerFactory);
+        });
+        
+        services.AddScoped<DbContext, ApplicationDbContext>();
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         
         return services;
-    }
-
-    private static void Configure<TDbContext>(
-        IServiceProvider serviceProvider, 
-        DbContextOptionsBuilder optionsBuilder)
-        where TDbContext : DbContext
-    {
-        var configurator = serviceProvider
-            .GetRequiredService<IDbContextOptionsConfigurator<TDbContext>>();
-        
-        configurator.Configure((DbContextOptionsBuilder<TDbContext>)optionsBuilder);
     }
 }
