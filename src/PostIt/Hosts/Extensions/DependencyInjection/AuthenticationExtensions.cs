@@ -19,10 +19,12 @@ internal static class AuthenticationExtensions
             ?? throw new InvalidOperationException("JWTOptions is missing.");
 
         var validationOptions = jwtOptions.TokenValidationOptions;
-
-        services.AddAuthorization();
         
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -34,6 +36,8 @@ internal static class AuthenticationExtensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret))
                 };
             });
+        
+        services.AddAuthorization();
         
         return services;
     }
