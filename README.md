@@ -8,7 +8,7 @@
 
 ### Architecture
 
-The project uses the default layered architecture, divided into the following levels: 
+The project uses the default layered clean architecture, divided into the following levels: 
 
 - **Application** implements the system's use cases and coordinates the work between **Domain** and **Infrastructure**.
 - **Common** contains common components for all layers.
