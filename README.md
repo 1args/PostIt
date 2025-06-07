@@ -18,7 +18,7 @@ The project uses the default layered clean architecture, divided into the follow
 
 ### Technical implementation
 
-**PostgreSQL** is used as the primary database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is implemented using **BCrypt**. The **MinIO** file system is utilized for storing user avatars. Background tasks are managed with **Hangfire**. Logging is handled via **Serilog** and **OpenSearch**. **Papercut** is used to simulate the email service.
+**PostgreSQL** is used as the primary database. **JWT Bearer** with access and refresh tokens is used for authentication. Refresh tokens are stored in the **Redis** database and can be revoked as needed. Password hashing is implemented using **BCrypt**. The **MinIO** file system is utilized for storing user avatars. Logging is handled via **Serilog** and **OpenSearch**. **Papercut** is used to simulate the email service.
 
 ### Setup
 
