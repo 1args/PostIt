@@ -11,7 +11,7 @@ The project uses the default layered clean architecture, divided into the follow
 - **Application** implements the system's use cases and coordinates the work between **Domain** and **Infrastructure**.
 - **Common** contains common components for all layers.
 - **Contracts** contains contracts for communication with external sources.
-- **Domain** describes business rules, entities and value object.
+- **Domain** describes business rules, entities and value objects.
 - **Hosts** is responsible for interacting with external sources.
 - **Infrastructure** contains the technical implementation of interfaces with the **Application**, access to the database, email, file systems.
 - **Migrations** contains scripts that describe the structures of the database schema.
