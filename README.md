@@ -22,14 +22,14 @@ The project uses the default layered clean architecture, divided into the follow
 
 ### Setup
 
-Clone this repository:
+1. Clone this repository:
 ```
 git clone https://github.com/1args/PostIt
 ```
-For the necessary conditions, you need to have [Docker](https://www.docker.com/) installed:
+2. For the necessary conditions, you need to have [Docker](https://www.docker.com/) installed:
 ```
-cd localhost
+cd docker
 docker compose up -d
 ```
-The API is then accessed via http://localhost:5217/. 
+The API is then accessed via http://localhost:8080/. 
 
