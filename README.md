@@ -15,6 +15,7 @@ The project uses the default layered clean architecture, divided into the follow
 - **Hosts** is responsible for interacting with external sources.
 - **Infrastructure** contains the technical implementation of interfaces with the **Application**, access to the database, email, file systems.
 - **Migrations** contains scripts that describe the structures of the database schema.
+- **Tests** contains unit tests.
 
 ### Technical implementation
 
