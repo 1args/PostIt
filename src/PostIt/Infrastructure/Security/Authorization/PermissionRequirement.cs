@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using PostIt.Domain.Enums;
 
-namespace PostIt.Infrastructure.Auth.Authorization;
+namespace PostIt.Infrastructure.Security.Authorization;
 
 /// <summary>
 /// Represents a permission requirement used in authorization policies.

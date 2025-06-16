@@ -21,7 +21,7 @@ public class MinioFileStorage(
     public async Task UploadFileAsync(
         string fileName,
         string format, 
-        ReadOnlyMemory<byte> payload,
+        Stream payload,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Starting upload for file `{FileName}` with format `{Format}`.", fileName, format);
@@ -29,15 +29,16 @@ public class MinioFileStorage(
         try
         {
             await EnsureBucketExistsAsync(cancellationToken);
-        
-            using var memoryStream = new MemoryStream(payload.ToArray());
             
-            memoryStream.Seek(0, SeekOrigin.Begin);
-
+            if (payload.CanSeek)
+            {
+                payload.Seek(0, SeekOrigin.Begin);
+            }
+            
             var uploadArgs = new PutObjectArgs()
                 .WithBucket(_options.BucketName)
                 .WithObject(fileName)
-                .WithStreamData(memoryStream)
+                .WithStreamData(payload)
                 .WithObjectSize(payload.Length)
                 .WithContentType(format);
 
@@ -60,7 +61,7 @@ public class MinioFileStorage(
     }
     
     /// <inheritdoc/>
-    public async Task<ReadOnlyMemory<byte>> DownloadFileAsync(
+    public async Task<Stream> DownloadFileAsync(
         string fileName,
         CancellationToken cancellationToken)
     {
@@ -85,7 +86,7 @@ public class MinioFileStorage(
 
             await minioClient.GetObjectAsync(getObjectArgs, cancellationToken);
             
-            return memoryStream.ToArray();
+            return memoryStream;
         }
         catch (ObjectNotFoundException exception)
         {

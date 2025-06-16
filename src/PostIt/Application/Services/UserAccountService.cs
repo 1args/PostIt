@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Data;
+using PostIt.Application.Abstractions.Security.Authentication;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Common.Abstractions;
 using PostIt.Contracts.Exceptions;
@@ -54,7 +54,7 @@ public class UserAccountService(
          
         user.AddRole(role);
 
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
             await userRepository.AddAsync(user, cancellationToken);
             await emailVerificationService.SendVerificationEmailAsync(user, cancellationToken);
@@ -115,7 +115,7 @@ public class UserAccountService(
             return false;
         }
         
-        var result = await transactionManager.ExecuteInTransactionAsync(async () =>
+        var result = await transactionManager.StartEffect(async () =>
         {
             var isVerified = await emailVerificationService.VerifyEmailAsync(user: user, token, cancellationToken);
             
@@ -180,7 +180,7 @@ public class UserAccountService(
             throw new ForbiddenException("User is already restricted.");
         }
         
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
             user.AddRole(restrictedRole);
             user.RemoveRole(userRole);
@@ -221,7 +221,7 @@ public class UserAccountService(
             throw new ConflictException("User is not restricted.");
         }
 
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
             user.RemoveRole(restrictedRole);
             user.AddRole(userRole);

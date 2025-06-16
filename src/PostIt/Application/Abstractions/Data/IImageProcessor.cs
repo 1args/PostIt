@@ -8,8 +8,8 @@ public interface IImageProcessor
     /// <summary>
     /// Resizes an image and returns the new version as bytes.
     /// </summary>
-    /// <param name="imageStream">Original image data.</param>
+    /// <param name="payload">Original image stream.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns>Resized image in byte form.</returns>
-    Task<ReadOnlyMemory<byte>> ResizeImageAsync(ReadOnlyMemory<byte> imageStream, CancellationToken cancellationToken);
+    /// <returns>Stream containing the resized image.</returns>
+    Task<Stream> ResizeImageAsync(Stream payload, CancellationToken cancellationToken);
 }

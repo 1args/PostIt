@@ -11,7 +11,7 @@ public interface ITransactionManager
     /// <param name="operation">Operation to execute.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns></returns>
-    Task ExecuteInTransactionAsync(Func<Task> operation, CancellationToken cancellationToken);
+    Task StartEffect(Func<Task> operation, CancellationToken cancellationToken);
 
     /// <summary>
     /// Executes operation within a database transaction.
@@ -20,5 +20,5 @@ public interface ITransactionManager
     /// <param name="operation">Operation to execute.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns></returns>
-    Task<TResult> ExecuteInTransactionAsync<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken);
+    Task<TResult> StartEffect<TResult>(Func<Task<TResult>> operation, CancellationToken cancellationToken);
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using PostIt.Application.Abstractions.Auth.Authorization;
 
-namespace PostIt.Infrastructure.Auth.Authorization;
+namespace PostIt.Infrastructure.Security.Authorization;
 
 /// <summary>
 /// Handles authorization by validating whether a user has the required permissions.

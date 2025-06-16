@@ -123,7 +123,7 @@ public class UserService(
         follower.AddFollowing(following);
         following.AddFollower(follower);
 
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
             await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
         }, cancellationToken);
@@ -170,7 +170,7 @@ public class UserService(
         follower.RemoveFollowing(following);
         following.RemoveFollower(follower);
         
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
             await userRepository.UpdateRangeAsync([follower, following], cancellationToken);
         }, cancellationToken);

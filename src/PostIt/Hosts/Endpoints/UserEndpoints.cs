@@ -212,7 +212,7 @@ public static class UserEndpoints
         await using var stream = new MemoryStream();
         await request.Avatar.CopyToAsync(stream, cancellationToken);
 
-        await avatarManagementService.UploadAvatarAsync(stream.ToArray(), cancellationToken);
+        await avatarManagementService.UploadAvatarAsync(stream, cancellationToken);
 
         return Results.Created();
     }
@@ -226,7 +226,7 @@ public static class UserEndpoints
     {
         var avatar = await avatarManagementService.GetCurrentUserAvatarAsync(cancellationToken);
 
-        return Results.File(avatar.ToArray(), "image/webp");
+        return Results.File(avatar, "image/webp");
     }
 
     /// <summary>
@@ -239,7 +239,7 @@ public static class UserEndpoints
     {
         var avatar = await avatarManagementService.GetAvatarAsync(id, cancellationToken);
 
-        return Results.File(avatar.ToArray(), "image/webp");
+        return Results.File(avatar, "image/webp");
     }
 
     /// <summary>

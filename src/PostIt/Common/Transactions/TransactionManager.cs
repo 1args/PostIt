@@ -13,7 +13,7 @@ public class TransactionManager(
     private DbContext DbContext { get; } = dbContext;
 
     /// <inheritdoc/>
-    public async Task ExecuteInTransactionAsync(
+    public async Task StartEffect(
         Func<Task> operation, 
         CancellationToken cancellationToken)
     {
@@ -32,7 +32,7 @@ public class TransactionManager(
     }
 
     /// <inheritdoc/>
-    public async Task<TResult> ExecuteInTransactionAsync<TResult>(
+    public async Task<TResult> StartEffect<TResult>(
         Func<Task<TResult>> operation,
         CancellationToken cancellationToken)
     {

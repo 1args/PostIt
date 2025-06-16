@@ -3,11 +3,11 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using PostIt.Application.Abstractions.Auth.Authentication;
+using PostIt.Application.Abstractions.Security.Authentication;
 using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Options;
 
-namespace PostIt.Infrastructure.Auth.Authentication;
+namespace PostIt.Infrastructure.Security.Authentication;
 
 /// <inheritdoc/>
 public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider

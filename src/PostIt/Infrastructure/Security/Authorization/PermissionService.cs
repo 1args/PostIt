@@ -4,7 +4,7 @@ using PostIt.Application.Abstractions.Data;
 using PostIt.Domain.Entities;
 using Permission = PostIt.Domain.Enums.Permission;
 
-namespace PostIt.Infrastructure.Auth.Authorization;
+namespace PostIt.Infrastructure.Security.Authorization;
 
 /// <inheritdoc/>
 public class PermissionService(

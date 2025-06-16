@@ -1,14 +1,13 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using PostIt.Domain.Entities;
-using PostIt.Domain.Enums;
 using PostIt.Domain.Exceptions;
 using PostIt.Domain.ValueObjects;
 
-namespace PostIt.Domain.Tests.Entities;
+namespace Tests.Domain;
 
 public class UserTests
 {
-    private static (UserName name, UserBio bio, UserEmail email, UserPassword password, DateTime createdAt) 
+    private static (UserName name, UserBio bio, UserEmail email, UserPassword password, DateTime createdAt)
         BuildValidUserData() =>
     (
         UserName.Create("John Doe"),
@@ -17,17 +16,17 @@ public class UserTests
         UserPassword.Create("password123"),
         DateTime.UtcNow
     );
-    
+
     [Fact]
     public void CreateUser_ValidUser_ShouldCreateUserSuccessfully()
     {
         // Arrange
         var (name, bio, email, password, createdAt) = BuildValidUserData();
         var precision = TimeSpan.FromSeconds(1);
-        
+
         // Act
         var user = User.Create(name, bio, email, password, createdAt);
-        
+
         // Assert
         user.Should().BeEquivalentTo(new
         {
@@ -46,10 +45,10 @@ public class UserTests
         // Arrange 
         var (name, bio, email, password, _) = BuildValidUserData();
         var futureDate = DateTime.UtcNow.AddMinutes(10);
-        
+
         // Actions
         Action act = () => User.Create(name, bio, email, password, futureDate);
-        
+
         // Assert
         act.Should().Throw<DomainException>()
             .WithMessage("Creation date cannot be in the future.");

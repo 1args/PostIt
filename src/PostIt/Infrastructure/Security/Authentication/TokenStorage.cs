@@ -1,10 +1,10 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
-using PostIt.Application.Abstractions.Auth.Authentication;
+using PostIt.Application.Abstractions.Security.Authentication;
 using PostIt.Contracts.Exceptions;
 using PostIt.Contracts.Options;
 
-namespace PostIt.Infrastructure.Auth.Authentication; 
+namespace PostIt.Infrastructure.Security.Authentication; 
 
 /// <inheritdoc/>
 public class TokenStorage(

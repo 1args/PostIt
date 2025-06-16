@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PostIt.Application.Abstractions.Auth.Authentication;
 using PostIt.Application.Abstractions.Auth.Authorization;
+using PostIt.Application.Abstractions.Security.Authentication;
 using PostIt.Application.Abstractions.Services;
 using PostIt.Application.Services;
 using PostIt.Contracts.Options;
-using PostIt.Infrastructure.Auth.Authentication;
-using PostIt.Infrastructure.Auth.Authorization;
 using PostIt.Infrastructure.Messaging;
+using PostIt.Infrastructure.Security.Authentication;
+using PostIt.Infrastructure.Security.Authorization;
 using AuthorizationOptions = PostIt.Contracts.Options.AuthorizationOptions;
 
 namespace PostIt.Infrastructure.Extensions;

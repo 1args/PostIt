@@ -11,10 +11,16 @@ public interface IAvatarService
     /// Uploads an avatar image for a specified user.
     /// </summary>
     /// <param name="userId">ID of the user to whom the avatar belongs.</param>
-    /// <param name="avatar">Binary content of the avatar image.</param>
+    /// <param name="payload">Image data as a stream.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>Path of the uploaded avatar.</returns>
-    Task<string> UploadAvatarAsync(Guid userId, ReadOnlyMemory<byte> avatar, CancellationToken cancellationToken);
+    Task<string> UploadAvatarAsync(Guid userId, Stream payload, CancellationToken cancellationToken);
 
-    Task<ReadOnlyMemory<byte>> DownloadAvatarAsync(User user, CancellationToken cancellationToken);
+    /// <summary>
+    /// Downloads the avatar image of a given user.
+    /// </summary>
+    /// <param name="user">User entity whose avatar is to be downloaded.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Stream containing the user's avatar image.</returns>
+    Task<Stream> DownloadAvatarAsync(User user, CancellationToken cancellationToken);
 }

@@ -1,14 +1,29 @@
-networks:
-  postit-network:
-    driver: bridge
-
-volumes:
-  postit-postgres: 
-  postit-redis:
-  postit-logs:
-  postit-minio:
-    
+# Services    
 services:
+  
+  # Api
+  api:
+    build:
+      context: ../src
+      dockerfile: PostIt/Hosts/Dockerfile
+    container_name: url-postit-api
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: Host=postit-postgres;Port=5432;Database=postit-general;Username=postgres;Password=bvytnfr,jkmyj;ApplicationName=postit-api
+      ConnectionStrings__RedisConnection: postit-redis:6379,abortConnect=false,password=p4ssword
+      ConnectionStrings__OpenSearchConnection: http://postit-opensearch:9200
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    networks:
+      - postit-network
   
   # PostgreSQL
   postgres:
@@ -120,3 +135,15 @@ services:
       - postit-minio:/data
     networks:
       - postit-network
+
+# Networks   
+networks:
+  postit-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  postit-postgres:
+  postit-redis:
+  postit-logs:
+  postit-minio:

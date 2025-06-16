@@ -18,23 +18,23 @@ public class AvatarManagementService(
 {
     /// <inheritdoc/>
     public async Task UploadAvatarAsync(
-        ReadOnlyMemory<byte> avatar,
+        Stream payload,
         CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
         
         var user = await GetUserAsync(userId, cancellationToken);
 
-        await transactionManager.ExecuteInTransactionAsync(async () =>
+        await transactionManager.StartEffect(async () =>
         {
-            var avatarPath = await avatarService.UploadAvatarAsync(userId, avatar, cancellationToken);
+            var avatarPath = await avatarService.UploadAvatarAsync(userId, payload, cancellationToken);
             
             user.UpdateAvatar(avatarPath);
             await userRepository.UpdateAsync(user, cancellationToken);
         }, cancellationToken);
     }
 
-    public async Task<ReadOnlyMemory<byte>> GetCurrentUserAvatarAsync(
+    public async Task<Stream> GetCurrentUserAvatarAsync(
         CancellationToken cancellationToken)
     {
         var userId = GetCurrentUserId();
@@ -44,7 +44,7 @@ public class AvatarManagementService(
     }
     
     /// <inheritdoc/>
-    public async Task<ReadOnlyMemory<byte>> GetAvatarAsync(
+    public async Task<Stream> GetAvatarAsync(
         Guid userId,
         CancellationToken cancellationToken)
     {

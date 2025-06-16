@@ -13,11 +13,16 @@ public class ImageProcessor(
     private readonly ImageResizeOptions _options = options.Value;
     
     /// <inheritdoc/>
-    public async Task<ReadOnlyMemory<byte>> ResizeImageAsync(
-        ReadOnlyMemory<byte> imageStream,
+    public async Task<Stream> ResizeImageAsync(
+        Stream payload,
         CancellationToken cancellationToken)
     {
-        using var image = Image.Load(imageStream.Span); 
+        if (payload.CanSeek)
+        {
+            payload.Seek(0, SeekOrigin.Begin);
+        }
+        
+        using var image = await Image.LoadAsync(payload, cancellationToken); 
     
         var resizeOptions = new ResizeOptions
         {
@@ -28,9 +33,9 @@ public class ImageProcessor(
     
         image.Mutate(i => i.Resize(resizeOptions));
         
-        using var outputStream = new MemoryStream();
+        var outputStream = new MemoryStream();
         await image.SaveAsWebpAsync(outputStream, cancellationToken);
     
-        return outputStream.ToArray();
+        return outputStream;
     }
 }

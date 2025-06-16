@@ -15,10 +15,10 @@ public class Comment : Entity<Guid>, IAuditableEntity, IAuthoredEntity
     /// <summary>Date when the comment was created.</summary>
     public DateTime CreatedAt { get; private set; }
     
-    private readonly List<CommentLike> _likes = [];
+    private readonly List<CommentLike> _likes;
     
     /// <summary>Read-only list of likes.</summary>
-    public IReadOnlyList<CommentLike> Likes => _likes;
+    public IReadOnlyList<CommentLike> Likes => _likes.AsReadOnly();
     
     /// <summary>Author's user ID.</summary>
     public Guid AuthorId { get; private set; }

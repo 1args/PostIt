@@ -31,7 +31,7 @@ public class Post : Entity<Guid>, IAuditableEntity, IAuthoredEntity
     /// <summary>Visibility status of the post.</summary>
     public Visibility Visibility { get; private set; }
 
-    private readonly List<PostLike> _likes = [];
+    private readonly List<PostLike> _likes;
     
     /// <summary>Read-only list of likes on the post.</summary>
     public IReadOnlyCollection<PostLike> Likes => _likes.AsReadOnly();

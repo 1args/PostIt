@@ -12,13 +12,13 @@ public interface IMinioFileStorage
     /// <param name="format">Format or MIME type of the file.</param>
     /// <param name="payload">File's binary content.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    Task UploadFileAsync(string fileName, string format, ReadOnlyMemory<byte> payload, CancellationToken cancellationToken);
+    Task UploadFileAsync(string fileName, string format, Stream payload, CancellationToken cancellationToken);
 
     /// <summary>
     /// Download the file from MinIO.
     /// </summary>
     /// <param name="fileName">File name.</param>
     /// <param name="cancellationToken">Token to cancel the operation.</param>
-    /// <returns></returns>
-    Task<ReadOnlyMemory<byte>> DownloadFileAsync(string fileName, CancellationToken cancellationToken);
+    /// <returns>Stream containing the downloaded file.</returns>
+    Task<Stream> DownloadFileAsync(string fileName, CancellationToken cancellationToken);
 }

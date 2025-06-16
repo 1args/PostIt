@@ -1,4 +1,4 @@
-namespace PostIt.Application.Abstractions.Auth.Authentication;
+namespace PostIt.Application.Abstractions.Security.Authentication;
 
 /// <summary>
 /// Provides functionality for hashing passwords.
